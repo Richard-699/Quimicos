@@ -2,14 +2,7 @@
 
 namespace App\Domain\DTO;
 
-use App\Domain\DTO\PermisosAdministradoresDTO;
-use App\Domain\DTO\PermisosDTO;
-
 class AdministradoresDTO {
-    /**
-     * @param PermisosAdministradoresDTO[]|null $permisosAdministradoresDTO
-     * @param PermisosDTO[]|null $permisosDTO
-     */
     public function __construct(
         public ?string $id_administrador = null,
         public ?int $cedula_administrador = null,

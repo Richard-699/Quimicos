@@ -35,9 +35,6 @@ try {
     $is_temporal = false;
 
     if($administradorLogin){
-        if($administradorLogin->permisosAdministradoresDTO == null){
-            throw new Exception("No tiene permisos en el sistema.");
-        }
         if($administradorLogin->password_is_temporal == 1){
             $is_temporal = true;
         }

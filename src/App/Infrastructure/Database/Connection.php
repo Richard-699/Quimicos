@@ -5,7 +5,7 @@ use PDO;
 use PDOException;
 
 class Connection {
-    public $dbInventarioHwi;
+    public $dbQuimicosHwi;
 
     public function __construct() {
         $configPath = '../../../../../config/database.json';
@@ -15,12 +15,12 @@ class Connection {
             die("Error al leer la configuración de la base de datos.");
         }
 
-        $dsnInventarioHwi = "mysql:host={$config['inventario_hwi']['host']};dbname={$config['inventario_hwi']['database']};charset=utf8mb4";
+        $dsnQuimicosHwiHwi = "mysql:host={$config['quimicos_hwi']['host']};dbname={$config['quimicos_hwi']['database']};charset=utf8mb4";
         try {
-            $this->dbInventarioHwi = new PDO($dsnInventarioHwi, $config['inventario_hwi']['user'], $config['inventario_hwi']['password']);
-            $this->dbInventarioHwi->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->dbQuimicosHwi = new PDO($dsnQuimicosHwiHwi, $config['quimicos_hwi']['user'], $config['quimicos_hwi']['password']);
+            $this->dbQuimicosHwi->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            die("Error de conexión con la base de datos inventario_hwi: " . $e->getMessage());
+            die("Error de conexión con la base de datos quimicos_hwi: " . $e->getMessage());
         }
     }
 }

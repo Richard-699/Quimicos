@@ -29,11 +29,11 @@
                 </div>
                 <div class="col-12 form-group mt-3">
                     <input type="text" class="custom-input" id="inputUsername" placeholder=" " name="nombre_administrador">
-                    <label for="inputUsername" class="floating-label">Nombre: *</label>
+                    <label for="inputUsername" class="floating-label">Nombre(s): *</label>
                 </div>
                 <div class="col-12 form-group mt-3">
                     <input type="text" class="custom-input" id="inputUsername" placeholder=" " name="apellidos_administrador">
-                    <label for="inputUsername" class="floating-label">Apellidos: *</label>
+                    <label for="inputUsername" class="floating-label">Apellido(s): *</label>
                 </div>
                 <div class="col-12 form-group mt-3">
                     <input type="text" class="custom-input" id="correo_hwi_administrador" placeholder=" " name="correo_hwi_administrador">

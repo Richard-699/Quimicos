@@ -1,0 +1,169 @@
+html, body {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.dt-buttons {
+    margin-bottom: 1em;
+}
+
+
+.table {
+    font-size: 0.8em;
+}
+
+/* Ajustar el ancho de las columnas */
+.table th,
+.table td {
+    padding: 0.5rem;
+    text-align: center;
+    /* Centrar el texto en las celdas */
+}
+
+/* Definir anchos específicos para cada columna */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+    width: 8%;
+    /* Cédula */
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    width: 22%;
+    /* Usuario */
+}
+
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    width: 8%;
+    /* Fecha */
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    width: 12%;
+    /* Fecha */
+}
+
+.table th:nth-child(5),
+.table td:nth-child(5) {
+    width: 12%;
+    /* Hora Acceso */
+}
+
+.table th:nth-child(6),
+.table td:nth-child(6) {
+    width: 12%;
+    /* Hora Salida */
+}
+
+
+.table th:nth-child(7),
+.table td:nth-child(7) {
+    width: 12%;
+    /* Total Horas Extras */
+}
+
+.table th:nth-child(8),
+.table td:nth-child(8) {
+    width: 10%;
+    /* Columna extra (botón de acción) */
+}
+
+/* Mejorar la visibilidad de los títulos */
+.table th {
+    background-color: #072B31;
+    color: white;
+    font-weight: 600;
+}
+
+/* Estilo para columnas con contenido largo */
+.table td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.dt-buttons {
+    margin-bottom: 0.5em;
+}
+
+.btn {
+    font-size: 0.75em;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Estilos personalizados para tabla moderna */
+/* 1) Contenedor de la tabla: posición relativa, altura máxima y scroll interno */
+.table-container {
+    position: relative;
+    max-height: 80vh;    /* por ejemplo, 80% de la altura de la ventana */
+    overflow-y: auto;    /* sólo el cuerpo de la tabla scrollea */
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(181,181,181,0.1);
+    padding: 1rem;
+  }
+  
+  /* 2) Aseguramos que el wrapper de DataTables no rompa el flujo */
+  .dataTables_wrapper {
+    display: block;      /* ya no flex, para que el sticky funcione bien */
+  }
+  
+  /* 3) Hacemos sticky la fila de paginación y la info */
+  .dataTables_wrapper .dataTables_paginate,
+  .dataTables_wrapper .dataTables_info {
+    position: sticky;
+    bottom: 0;
+    background: #fff;     /* mismo fondo que el contenedor */
+    padding: .5rem 0;
+    z-index: 10;          /* por encima de las filas al hacer scroll */
+  }
+  
+  /* 4) Opcional: separador visual */
+  .dataTables_wrapper .dataTables_paginate::before {
+    content: "";
+    display: block;
+    height: 1px;
+    background: #ddd;
+    margin-bottom: .5rem;
+  }
+
+table.dataTable {
+    width: 99.5% !important;
+    /* Asegura que la tabla se ajuste al ancho del contenedor */
+    table-layout: fixed;
+    /* Evita que las columnas se desborden */
+}
+
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: #072B31;
+    color: white;
+    font-weight: 600;
+}
+
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #f4f6f9;
+}
+
+.table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #e2e6ea;
+}
+
+.custom-length {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

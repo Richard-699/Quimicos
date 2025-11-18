@@ -1,0 +1,8 @@
+{
+  "inventario_hwi": {
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "inventario_hwi"
+  }
+}

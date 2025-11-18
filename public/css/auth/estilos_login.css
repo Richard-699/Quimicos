@@ -1,0 +1,128 @@
+.bg {
+    background-image: url(../../img/LogoBlanco.png);
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+
+body {
+    background: #072B31;
+    background: linear-gradient(to left, #0093B2, #072B31);
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.floating-label {
+    position: absolute;
+    pointer-events: none;
+    top: -12px;
+    left: 0px;
+    transition: top 0.3s, font-size 0.3s, color 0.3s;
+    color: #333;
+}
+
+.custom-input {
+    border: none;
+    border-bottom: 2px solid #ced4da;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    width: 100%;
+    transition: border-color 0.3s;
+    margin-bottom: 30px;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #17a2b8;
+}
+
+.custom-input:focus+.floating-label,
+.custom-input:not(:placeholder-shown)+.floating-label {
+    top: -30px;
+    font-size: 0.9rem;
+    color: #17a2b8;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    margin-top: -15px;
+    display: none;
+    background: none;
+    border: none;
+}
+
+.container {
+    max-width: 800px;
+}
+
+#btningresar {
+    background-color: #17a2b8; /* Color base */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#btningresar:hover {
+    background-color: #138496; /* Un poco más oscuro */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+#btningresar:disabled {
+    background-color: #a5cdd3; /* Color desactivado */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.text-Ingresar{
+    margin-top: -10px;
+}
+
+
+@media (max-width: 767.98px) {
+    .bg {
+        display: none !important; /* Oculta imagen en pantallas pequeñas */
+    }
+
+    .rounded-start {
+        border-radius: 0 !important;
+    }
+
+    .rounded-end {
+        border-radius: 0 !important;
+    }
+
+    .container {
+        padding: 3rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .custom-input {
+        font-size: 1rem;
+    }
+
+    .floating-label {
+        font-size: 0.9rem;
+    }
+
+    #btningresar {
+        font-size: 1rem;
+        padding: 10px;
+    }
+}

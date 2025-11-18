@@ -1,0 +1,108 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Evita el desbordamiento horizontal */
+}
+
+.bg {
+    background-image: url(../../img/LogoBlanco.png);
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+
+body {
+    background: #072B31;
+    background: linear-gradient(to left, #0093B2, #072B31);
+    overflow-x: hidden;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.floating-label {
+    position: absolute;
+    pointer-events: none;
+    top: 12px;
+    left: 0px;
+    transition: top 0.3s, font-size 0.3s, color 0.3s;
+    color: #333;
+    margin-left: 68px;
+}
+
+.custom-input {
+    border: none;
+    border-bottom: 2px solid #ced4da;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    width: 80%;
+    transition: border-color 0.3s;
+    margin-bottom: 30px;
+    width: 85%;
+    margin-left: 55px;
+    margin-top: 20px;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #17a2b8;
+}
+
+.custom-input:focus+.floating-label,
+.custom-input:not(:placeholder-shown)+.floating-label {
+    top: -10px;
+    font-size: 0.9rem;
+    color: #17a2b8;
+}
+
+.titleContraseña{
+    margin-top: 20px;
+    margin-left: 40px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+button {
+    width: 20%;
+    float: right;
+    margin-right: 35px;
+}
+
+/* Media query para ajustar el tamaño del botón en dispositivos móviles */
+@media (max-width: 768px) {
+    button {
+        width: 50%;
+        margin-right: 30px;
+    }
+}
+
+.card{
+    margin-top: 100px;
+}
+
+#validate_email_btn {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#validate_email_btn:hover {
+    background-color: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+#validate_email_btn:disabled {
+    background-color: #3ba0b4;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

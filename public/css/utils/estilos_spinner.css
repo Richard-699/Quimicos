@@ -1,0 +1,119 @@
+/* Bloqueador de contenido */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que esté sobre todo el contenido */
+}
+
+/* Estilos del spinner */
+.spinner {
+    position: relative;
+    width: 40px;  /* Tamaño del spinner */
+    height: 40px; /* Tamaño del spinner */
+    border-radius: 50%;  /* Forma circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: spin 3s linear infinite; /* Giro más lento */
+}
+
+/* Estilos de las bolitas */
+.spinner .dot {
+    position: absolute;
+    width: 8px;  /* Tamaño de las bolitas */
+    height: 8px; /* Tamaño de las bolitas */
+    background-color: #072B31; /* Color de las bolitas */
+    border-radius: 50%;  /* Forma redonda de las bolitas */
+    opacity: 0;  /* Inicialmente invisibles */
+    animation: dot-animation 3s linear infinite;  /* Animación de la bolita */
+}
+
+/* Posiciones de las bolitas distribuidas en un círculo */
+.spinner .dot:nth-child(1) {
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.spinner .dot:nth-child(2) {
+    top: 14%;
+    left: 86%;
+    transform: translate(-50%, -50%);
+}
+
+.spinner .dot:nth-child(3) {
+    top: 50%;
+    left: 100%;
+    transform: translate(-50%, -50%);
+}
+
+.spinner .dot:nth-child(4) {
+    top: 86%;
+    left: 86%;
+    transform: translate(-50%, -50%);
+}
+
+.spinner .dot:nth-child(5) {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(50%);
+}
+
+.spinner .dot:nth-child(6) {
+    top: 86%;
+    left: 14%;
+    transform: translate(-50%, -50%);
+}
+
+.spinner .dot:nth-child(7) {
+    top: 50%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+}
+
+.spinner .dot:nth-child(8) {
+    top: 14%;
+    left: 14%;
+    transform: translate(-50%, -50%);
+}
+
+/* Animación de la bolita */
+@keyframes dot-animation {
+    0% {
+        opacity: 0;  /* Empieza invisible */
+        transform: translate(-50%, -50%) scale(0); /* Comienza pequeño */
+    }
+    20% {
+        opacity: 1;  /* Aparece */
+        transform: translate(-50%, -50%) scale(1); /* Tamaño normal */
+    }
+    50% {
+        opacity: 0;  /* Se oculta */
+        transform: translate(-50%, -50%) scale(0); /* Se hace pequeño */
+    }
+    80% {
+        opacity: 1;  /* Vuelve a aparecer */
+        transform: translate(-50%, -50%) scale(1); /* Tamaño normal */
+    }
+    100% {
+        opacity: 0;  /* Se oculta nuevamente al final */
+        transform: translate(-50%, -50%) scale(0); /* Se hace pequeño */
+    }
+}
+
+/* Animación general del giro */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

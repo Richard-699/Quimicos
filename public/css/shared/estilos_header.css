@@ -1,0 +1,246 @@
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #072B31;
+  color: white;
+  transition: transform 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 2000;
+  overflow-y: auto;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  /* Asegura la alineación vertical */
+  justify-content: flex-start;
+  /* Alinea al inicio */
+}
+
+.sidebar a i {
+  margin-right: 8px;
+  /* Espacio entre el ícono y el texto */
+  font-size: 16px;
+  /* Tamaño de icono consistente */
+  width: 24px;
+  /* Ajusta el ancho */
+  height: 24px;
+  /* Ajusta el alto */
+  display: inline-flex;
+  align-items: center;
+  /* Centra el ícono verticalmente */
+  justify-content: center;
+  /* Centra el ícono horizontalmente */
+}
+
+.sidebar a.hov:hover {
+  background-color: #495057;
+}
+
+.content {
+  flex-grow: 1;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed~.content {
+  margin-left: 0 !important;
+  width: 100% !important;
+}
+
+/* Mostrar normalmente en pantallas grandes */
+.sidebar.collapsed {
+  transform: translateX(-100%);
+}
+
+/* Cuando el sidebar no está colapsado (en pantallas grandes) */
+.sidebar:not(.collapsed) ~ .navbar {
+  margin-left: 200px; /* mismo ancho que el sidebar */
+}
+
+/* Cuando el sidebar está colapsado */
+.sidebar.collapsed ~ .navbar {
+  margin-left: 0;
+}
+
+@media (min-width: 993px) {
+  .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar:not(.collapsed)~.content {
+    margin-left: 200px;
+  }
+}
+
+/* Adaptar contenido al 100% cuando sidebar está colapsado */
+@media (max-width: 992px) {
+  .content {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+
+.content.expanded {
+  margin-left: 0;
+  width: 100%;
+}
+
+.navbar {
+  background-color: #E0E0E0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: black;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  transition: margin-left 0.3s ease;
+}
+
+.navbar-brand {
+  color: black;
+  cursor: pointer;
+}
+
+.menu-toggle {
+  margin-right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: black;
+  cursor: pointer;
+  transition: margin-left 0.3s ease;
+}
+
+.menu-toggle:hover {
+  color: #072B31;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    z-index: 999;
+    height: 100%;
+  }
+
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+
+  .content {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+.fondo-img {
+  background-color: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 15px;
+}
+
+.img-logo {
+  width: 85px;
+  height: 50px;
+  margin-left: 20%;
+  margin-right: 10px;
+}
+
+.icon-config i {
+  transition: transform 0.5s ease, color 0.3s ease;
+  color: black;
+}
+
+.icon-config:hover i {
+  transform: rotate(180deg);
+  color: #072B31;
+}
+
+.icon-logout i {
+  color: black;
+}
+
+.icon-logout:hover i {
+  color: #072B31;
+}
+
+#BtnCerrarSesion {
+  position: absolute;
+  /* Fija el botón en la parte inferior */
+  bottom: 2px;
+  /* Alinea el botón a 20px del fondo */
+  left: 0;
+  width: 100%;
+  /* Asegura que ocupe todo el ancho del menú */
+  padding: 10px 15px;
+  text-align: center;
+  /* Centra el contenido del botón */
+  background-color: #072B31;
+  color: white;
+  text-decoration: none;
+}
+
+#BtnCerrarSesion:hover {
+  background-color: #495057;
+}
+
+
+
+.nombre-celula {
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  border-radius: 5px;
+  min-width: 180px;
+  background-color: #072B31;
+  z-index: 9999;
+}
+
+.dropdown-item {
+  color: white;
+}
+
+.dropdown-item:hover {
+  background-color: #495057;
+}
+
+/* ---- */
+
+/* Evita la flecha generada por defecto de Bootstrap */
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+/* Alinea engranaje y flecha */
+.icon-config i {
+  line-height: 1;
+}
+
+/* Ajuste visual para asegurar que no haya guiones o subrayados */
+.icon-config {
+  text-decoration: none;
+}
+
+/* Asegura que los íconos estén alineados correctamente */
+.icon-config i+i {
+  font-size: 0.8rem;
+  /* Tamaño menor para la flechita */
+}

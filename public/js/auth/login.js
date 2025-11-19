@@ -44,7 +44,7 @@ $('#formLogin').on('submit', function (e) {
                 notification('alert', 'Aún no has sido aprobado en el sistema.', 2500);
             }
             else if (result.success && result.approved) {
-                window.location.href = '../inventory/index.php';
+                window.location.href = '../quimicos/index.php';
             }else{
                 notification('error', result.message, 2500);
             }

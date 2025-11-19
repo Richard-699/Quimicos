@@ -2,13 +2,6 @@
 require_once __DIR__ . '/../../../../../vendor/autoload.php';
 require_once '../../Handler/auth/validateSesionHandler.php';
 include('../../../Shared/Util/spinner.php');
-
-if (isset($_SESSION['administrador'])) {
-    $administrador = $_SESSION['administrador'];
-    $permisosAdministradores = $administrador->permisosAdministradoresDTO;
-    $permisos = $administrador->permisosDTO;
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -16,7 +9,7 @@ if (isset($_SESSION['administrador'])) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inventario</title>
+    <title>Químicos</title>
     <link rel="shortcut icon" href="../../../../../public/img/LogoBlanco.png" type="image/x-icon">
     <link rel="stylesheet" href="../../../../../public/css/utils/libs/libs.css">
     <link rel="stylesheet" href="../../../../../public/css/shared/estilos_header.css" />
@@ -29,43 +22,15 @@ if (isset($_SESSION['administrador'])) {
         <a class="fondo-img" href="index.php"><img src="../../../../../public/img/LogoBlanco.png" class="img-logo"></a>
         <a href="javascript:void(0);" onclick="Inicio();" class="mt-3 hov"><i class="fas fa-home"></i> Inicio</a>
         <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
-        <?php
-
-        foreach ($permisosAdministradores as $permisoAdministrador) {
-            $id_permiso_permisos = $permisoAdministrador->id_permiso_permisos;
-            foreach ($permisos as $permiso) {
-                if ($permiso->id_permiso == $id_permiso_permisos) {
-                    if ($permiso->tipo_permiso == 'Gestión Interna Inventario') {
-                        echo '<a class="hov" href="javascript:void(0);" onclick="Almacen();"><i class="fa-solid fa-warehouse"></i> Almacenes</a>';
-                        echo '<hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        echo '<a class="hov" href="javascript:void(0);" onclick="Localizaciones();"><i class="fa-solid fa-location-dot"></i> Localizaciones</a>';
-                        echo '<hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        echo '<a class="hov" href="javascript:void(0);" onclick="Grupos();"><i class="fa-solid fa-layer-group"></i> Grupos</a>';
-                        echo '<hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        echo '<a class="hov" href="javascript:void(0);" onclick="PartNumbers();"><i class="fa-solid fa-dolly"></i> Part Numbers</a>';
-                        echo '<hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        echo '<a class="hov" href="javascript:void(0);" onclick="Cronograma();"><i class="fa-solid fa-calendar-check"></i> Cronograma</a>';
-                        echo '<hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        echo '<a class="hov" href="javascript:void(0);" onclick="Exactitud();"><i class="fa-solid fa-crosshairs"></i> Exactitud</a>';
-                        echo '<hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        break;
-                    }
-                    if ($permiso->tipo_permiso == 'Gestionar Administradores') {
-                        echo '<a class="hov" href="javascript:void(0);" onclick="GestionarAdministradores();"><i class="fa-solid fa-users-gear"></i> Gestionar Administradores</a>';
-                        echo '<hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        break;
-                    }
-                    if ($permiso->tipo_permiso == 'Aprobación y Ajuste Inventario') {
-                        echo '<a class="hov" href="javascript:void(0);" onclick="Aprobacion();"><i class="fa-regular fa-circle-check"></i> Aprobación Inventario</a>';
-                        echo '<hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        break;
-                    }
-                }
-            }
-        }
-        ?>
-
-        <a href="javascript:void(0);" class="hov" id="BtnCerrarSesion"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            <a class="hov" href="javascript:void(0);" onclick="Quimicos();"><i class="fa-solid fa-flask"></i> Químicos</a>
+            <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
+            <a class="hov" href="javascript:void(0);" onclick="Solicitudes();"><i class="fa-solid fa-file-circle-exclamation"></i> Solicitudes</a>
+            <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
+            <a class="hov" href="javascript:void(0);" onclick="Inventario();"><i class="fa-solid fa-warehouse"></i> Inventario</a>
+            <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
+            <a class="hov" href="javascript:void(0);" onclick="Administradores();"><i class="fa-solid fa-users"></i> Administradores</a>
+            <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
+            <a href="javascript:void(0);" class="hov" id="BtnCerrarSesion"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
     </div>
 
 
@@ -73,7 +38,7 @@ if (isset($_SESSION['administrador'])) {
         <nav class="navbar navbar-expand-lg navbar-light px-3">
             <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰ Menú</button>
             <div class="ms-auto d-flex align-items-center">
-                <span class='nombre-celula'>Administrador Master</span>
+                <span class='nombre-celula'>Administrador</span>
                 <a href="javascript:void(0);" id="BtnCerrarSesionMenu" class="text-dark icon-logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
             </div>
         </nav>

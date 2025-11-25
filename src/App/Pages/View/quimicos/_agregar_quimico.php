@@ -82,7 +82,7 @@
                     <input type="text" class="form-control double-input" id="precio_quimico" name="precio_quimico">
                 </div>
                 <div class="mb-4">
-                    <label for="id_celulas_areas_quimicos" class="form-label">
+                    <label for="celulas_areas_quimicos" class="form-label">
                         Células autorizadas: *
                     </label>
 

@@ -3,9 +3,11 @@ require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 use App\Application\Service\QuimicosService;
 use App\Domain\DTO\QuimicosDTO;
+use App\Shared\Util\Utilidades;
 use App\Shared\Validation\Validator;
 
-function onGetQuimicos() {
+function onGetQuimicos()
+{
     try {
         $quimicosService = new QuimicosService();
 
@@ -24,7 +26,8 @@ function onGetQuimicos() {
     }
 }
 
-function onGetCelulasAreas() {
+function onGetCelulasAreas()
+{
     try {
         $quimicosService = new QuimicosService();
 
@@ -43,7 +46,8 @@ function onGetCelulasAreas() {
     }
 }
 
-function onGetUmbs() {
+function onGetUmbs()
+{
     try {
         $quimicosService = new QuimicosService();
 
@@ -62,7 +66,8 @@ function onGetUmbs() {
     }
 }
 
-function onPostDeleteQuimico(array $data){
+function onPostDeleteQuimico(array $data)
+{
     try {
         $id_quimico = $data['id'] ?? null;
 
@@ -75,6 +80,62 @@ function onPostDeleteQuimico(array $data){
 
         if (!$delete_quimico) {
             throw new Exception("No se pudo eliminar el quimico.");
+        }
+
+        return [
+            'success' => true
+        ];
+    } catch (Exception $e) {
+        return [
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
+    }
+}
+
+function onPostSaveQuimicos(array $data)
+{
+    try {
+        $form = $data['form'] ?? [];
+        $descripcion_quimico = isset($form['descripcion_quimico']) ? ucfirst(strtolower($form['descripcion_quimico'])) : null;
+        $celulas_areas_quimicos = $form['celulas_areas_quimicos'] ?? [];
+        $cantidad_disponible = $form['cantidad_disponible_quimico'] === '' ? null : (float) $form['cantidad_disponible_quimico'];
+        $cantidad_maxima = $form['cantidad_maxima_retiro_quimico'] === '' ? null : (float) $form['cantidad_maxima_retiro_quimico'];
+        $tope_minimo = $form['tope_minimo_quimico'] === '' ? null : (float) $form['tope_minimo_quimico'];
+        $precio = $form['precio_quimico'] === '' ? null : (float) $form['precio_quimico'];
+        $id_estado = 4; //Activo
+
+        if (!is_array($celulas_areas_quimicos)) {
+            $celulas_areas_quimicos = [$celulas_areas_quimicos];
+        }
+
+        $celulas_areas_quimicosIds = [];
+        foreach ($celulas_areas_quimicos as $celulas_areas_quimicos_id) {
+            $celulas_areas_quimicosIds[] = (int)$celulas_areas_quimicos_id;
+        }
+
+        $id_quimico = Utilidades::generarGUID();
+
+        $quimicosDTO = new QuimicosDTO(
+            id_quimico: $id_quimico,
+            descripcion_quimico: $descripcion_quimico ?? null,
+            id_umb_quimico: $form['id_umb_quimico'] ?? null,
+            cantidad_disponible_quimico: $cantidad_disponible,
+            cantidad_maxima_retiro_quimico: $cantidad_maxima,
+            tope_minimo_quimico: $tope_minimo,
+            precio_quimico: $precio,
+            id_estado_quimico: $id_estado,
+            quimicosCelulasAreasDTO: $celulas_areas_quimicosIds,
+        );
+
+        Validator::validateQuimicosDTO($quimicosDTO);
+
+        $quimicosService = new QuimicosService();
+
+        $saveQuimicos = $quimicosService->saveQuimicos($quimicosDTO);
+
+        if (!$saveQuimicos) {
+            throw new Exception("No se pudo guardar el químico");
         }
 
         return [
@@ -102,8 +163,8 @@ try {
         $action = $data['action'] ?? null;
 
         switch ($action) {
-            case 'approve':
-                $response = onPostAprobarAdministrador($data);
+            case 'save_quimico':
+                $response = onPostSaveQuimicos($data);
                 break;
             case 'update':
                 $response = onPostUpdatePermisosAdministrador($data);
@@ -145,5 +206,3 @@ try {
 header('Content-Type: application/json');
 echo json_encode($response);
 exit();
-
-?>

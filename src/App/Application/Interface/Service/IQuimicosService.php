@@ -9,6 +9,7 @@ interface IQuimicosService {
     public function deleteQuimico($id_quimico): bool;
     public function onGetCelulas(): array;
     public function onGetUmbs(): array;
+    public function saveQuimicos(QuimicosDTO $quimicosDTO): bool;
 }
 
 ?>

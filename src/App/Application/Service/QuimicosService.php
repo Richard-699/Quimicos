@@ -8,8 +8,9 @@ use App\Infrastructure\Database\Connection;
 use App\Infrastructure\Repository\QuimicosRepository;
 use App\Infrastructure\Repository\UMBRepository;
 use App\Domain\DTO\QuimicosDTO;
-use App\Domain\DTO\UMBDTO;
+use App\Domain\Model\QuimicosCelulasAreas;
 use App\Infrastructure\Repository\CelulasAreasRepository;
+use App\Infrastructure\Repository\QuimicosCelulasAreasRepository;
 use App\Shared\Mapper\Mapper;
 
 class QuimicosService implements IQuimicosService {
@@ -18,6 +19,7 @@ class QuimicosService implements IQuimicosService {
     private $quimicosRepository;
     private $umbRepository;
     private $celulasAreasRepository;
+    private $quimicosCelulasAreasRepository;
 
     public function __construct() {
         $this->db = (new Connection())->dbQuimicosHwi;
@@ -25,6 +27,7 @@ class QuimicosService implements IQuimicosService {
         $this->quimicosRepository = new QuimicosRepository($this->db);
         $this->umbRepository = new UMBRepository($this->db);
         $this->celulasAreasRepository = new CelulasAreasRepository($this->db);
+        $this->quimicosCelulasAreasRepository = new QuimicosCelulasAreasRepository($this->db);
     }
 
     public function ongetQuimicos(): array{
@@ -92,8 +95,7 @@ class QuimicosService implements IQuimicosService {
         }
     }
 
-    public function onGetUmbs(): array
-    {
+    public function onGetUmbs(): array{
         try{
             $umbsBd = $this->umbRepository->onGet();
             $umbs = Mapper::modelToUmbsDTO($umbsBd);
@@ -106,6 +108,46 @@ class QuimicosService implements IQuimicosService {
             throw $e;
         }
     }
+
+    public function saveQuimicos(QuimicosDTO $quimicosDTO): bool
+    {
+        try {
+            $this->db->beginTransaction();
+
+            $quimicos = Mapper::quimicosDTOToModel($quimicosDTO);
+
+            $saveQuimico = $this->quimicosRepository->save($quimicos);
+            if (!$saveQuimico) {
+                throw new Exception("No se pudo guardar el químico");
+            }
+
+            $idQuimico = $quimicosDTO->id_quimico;
+
+            foreach ($quimicosDTO->quimicosCelulasAreasDTO as $idcelulaArea) {
+                $QuimicosCelulasAreasModel = new QuimicosCelulasAreas(
+                    id_quimico_celula_area: null,
+                    id_quimico_quimicos: (string)$idQuimico,
+                    id_celulas_areas_quimicos: (int)$idcelulaArea
+                );
+
+                $guardarRelacion = $this->quimicosCelulasAreasRepository->save($QuimicosCelulasAreasModel);
+
+                if (!$guardarRelacion) {
+                    throw new Exception("No se pudo asociar célula al químico");
+                }
+            }
+
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            error_log('Error al guardar almacén con clasificaciones: ' . $e->getMessage());
+            return false;
+        }
+    }
+
 }
 
 

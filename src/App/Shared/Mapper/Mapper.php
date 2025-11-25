@@ -4,6 +4,12 @@ namespace App\Shared\Mapper;
 
 use App\Domain\Model\Administradores;
 use App\Domain\DTO\AdministradoresDTO;
+use App\Domain\DTO\CelulasAreasDTO;
+use App\Domain\DTO\QuimicosDTO;
+use App\Domain\DTO\UMBDTO;
+use App\Domain\Model\CelulasAreas;
+use App\Domain\Model\Quimicos;
+use App\Domain\Model\UMB;
 
 class Mapper
 {
@@ -32,6 +38,81 @@ class Mapper
             $dto->password_administrador,
             $dto->password_is_temporal,
             $dto->estado_administrador
+        );
+    }
+
+    public static function modelToQuimicosDTO(array $models): array
+    {
+        if (empty($models)) {
+            return [];
+        }
+        return array_map(function (Quimicos $model): QuimicosDTO {
+            return new QuimicosDTO(
+                id_quimico: $model->id_quimico,
+                descripcion_quimico: $model->descripcion_quimico,
+                id_umb_quimico: $model->id_umb_quimico,
+                cantidad_disponible_quimico: $model->cantidad_disponible_quimico,
+                cantidad_maxima_retiro_quimico: $model->cantidad_maxima_retiro_quimico,
+                tope_minimo_quimico: $model->tope_minimo_quimico,
+                precio_quimico: $model->precio_quimico,
+                id_estado_quimico: $model->id_estado_quimico,
+            );
+        }, $models);
+    }
+
+    public static function quimicosDTOToModel(QuimicosDTO $dto): Quimicos
+    {
+        return new Quimicos(
+            $dto->id_quimico,
+            $dto->descripcion_quimico,
+            $dto->id_umb_quimico,
+            $dto->cantidad_disponible_quimico,
+            $dto->cantidad_maxima_retiro_quimico,
+            $dto->tope_minimo_quimico,
+            $dto->precio_quimico,
+            $dto->id_estado_quimico
+        );
+    }
+
+    public static function modelToCelulasAreasDTO(array $models): array
+    {
+        if (empty($models)) {
+            return [];
+        }
+        return array_map(function (CelulasAreas $model): CelulasAreasDTO {
+            return new CelulasAreasDTO(
+                id_celulas_areas: $model->id_celulas_areas,
+                nombre_celula: $model->nombre_celula
+            );
+        }, $models);
+    }
+
+    public static function celulasAreasDTOToModel(CelulasAreasDTO $dto): CelulasAreas
+    {
+        return new CelulasAreas(
+            $dto->id_celulas_areas,
+            $dto->nombre_celula
+        );
+    }
+
+    public static function modelToUmbsDTO(array $models): array
+    {
+        if (empty($models)) {
+            return [];
+        }
+        return array_map(function (UMB $model): UMBDTO {
+            return new UMBDTO(
+                id_umb: $model->id_umb,
+                descripcion_umb: $model->descripcion_umb
+            );
+        }, $models);
+    }
+
+    public static function umbsDTOToModel(UMBDTO $dto): UMB
+    {
+        return new UMB(
+            $dto->id_umb,
+            $dto->descripcion_umb
         );
     }
 }

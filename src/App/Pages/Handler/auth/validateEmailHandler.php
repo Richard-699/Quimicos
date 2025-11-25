@@ -17,7 +17,6 @@ try {
     }
 
     $correo_hwi_administrador = $_POST['correo_hwi_administrador'] ?? '';
-    $correo_hwi_administrador = $_POST['correo_hwi_administrador'] ?? '';
 
     $loginService = new LoginService();
 

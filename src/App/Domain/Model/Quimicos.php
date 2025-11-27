@@ -11,6 +11,7 @@ class Quimicos {
         public ?float $cantidad_maxima_retiro_quimico,
         public ?float $tope_minimo_quimico,
         public ?float $precio_quimico,
+        public ?string $url_etiqueta_emergencia_quimico,
         public ?int $id_estado_quimico
     ) {}
 
@@ -23,6 +24,7 @@ class Quimicos {
             $data['cantidad_maxima_retiro_quimico'] ?? null,
             $data['tope_minimo_quimico'] ?? null,
             $data['precio_quimico'] ?? null,
+            $data['url_etiqueta_emergencia_quimico'] ?? null,
             $data['id_estado_quimico'] ?? null
         );
     }
@@ -37,6 +39,7 @@ class Quimicos {
             'cantidad_maxima_retiro_quimico' => $this->cantidad_maxima_retiro_quimico,
             'tope_minimo_quimico' => $this->tope_minimo_quimico,
             'precio_quimico' => $this->precio_quimico,
+            'url_etiqueta_emergencia_quimico' => $this->url_etiqueta_emergencia_quimico,
             'id_estado_quimico' => $this->id_estado_quimico
         ];
     }

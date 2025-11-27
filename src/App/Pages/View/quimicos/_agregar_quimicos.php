@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../../../../public/css/quimicos/agregar_quimico.css" rel="stylesheet">
+    <link href="../../../../../public/css/quimicos/agregar_quimicos.css" rel="stylesheet">
     <link rel="shortcut icon" href="../../../public/img/LogoBlanco.png" type="image/x-icon">
 
     <link rel="stylesheet" href="../../../../../public/css/utils/libs/libs.css">
@@ -78,8 +78,12 @@
                     <input type="text" class="form-control double-input" id="tope_minimo_quimico" name="tope_minimo_quimico">
                 </div>
                 <div class="mb-3">
-                    <label for="precio_quimico" class="form-label">Precio: *</label>
+                    <label for="precio_quimico" class="form-label">Precio (und): *</label>
                     <input type="text" class="form-control double-input" id="precio_quimico" name="precio_quimico">
+                </div>
+                <div class="mb-3">
+                    <label for="url_etiqueta_emergencia_quimico" class="form-label">Url Etiqueta Emergencia: *</label>
+                    <input type="text" class="form-control" id="url_etiqueta_emergencia_quimico" name="url_etiqueta_emergencia_quimico">
                 </div>
                 <div class="mb-4">
                     <label for="celulas_areas_quimicos" class="form-label">
@@ -128,7 +132,7 @@
     <script src="../../../../../public/js/utils/libs/select2.js"></script>
     <script src="../../../../../public/js/utils/spinner.js"></script>
     <script src="../../../../../public/js/utils/notifications.js"></script>
-    <script src="../../../../../public/js/quimicos/agregar_quimico.js"></script>
+    <script src="../../../../../public/js/quimicos/agregar_quimicos.js"></script>
 </body>
 
 </html>

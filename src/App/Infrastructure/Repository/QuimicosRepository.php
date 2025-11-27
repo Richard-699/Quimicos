@@ -23,6 +23,17 @@ class QuimicosRepository implements IQuimicosRepository
         return array_map([Quimicos::class, 'fromArray'], $rows);
     }
 
+    public function onGet_By__Id($id_quimico): ?Quimicos {
+        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_quimicos WHERE id_quimico = ?");
+        $stmt->execute([$id_quimico]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$row) {
+            return null;
+        }
+        return Quimicos::fromArray($row);
+    }
+
     public function delete_By__Id_Quimico($id_quimico, $id_estado): bool {
         $query = "UPDATE quimicos_hwi_quimicos 
                     SET id_estado_quimico = :id_estado

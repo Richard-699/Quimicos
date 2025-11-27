@@ -12,6 +12,7 @@ class QuimicosDTO {
         public ?float $cantidad_maxima_retiro_quimico = null,
         public ?float $tope_minimo_quimico = null,
         public ?float $precio_quimico = null,
+        public ?string $url_etiqueta_emergencia_quimico = null,
         public ?int $id_estado_quimico = null,
         public ?array $quimicosCelulasAreasDTO = null
     ) {}

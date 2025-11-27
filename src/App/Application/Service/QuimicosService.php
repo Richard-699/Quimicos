@@ -95,6 +95,34 @@ class QuimicosService implements IQuimicosService {
         }
     }
 
+    public function onGetQuimicosCelulasAreas_By__Id_Quimico($id): array{
+        try{
+            $quimicosCelulasAreasBd = $this->quimicosCelulasAreasRepository->onGet_By__Id_Quimico($id);
+            $quimicosCelulasAreas = Mapper::modelToQuimicosCelulasAreasDTO($quimicosCelulasAreasBd);
+
+            if(!$quimicosCelulasAreas){
+                throw new Exception("No se encontraron datos de células para este quimico");
+            }
+            return $quimicosCelulasAreas;
+        }catch (\Throwable $e) {
+            throw $e;
+        }
+    }
+
+    public function onGetQuimicos_By__Id($id): QuimicosDTO{
+        try{
+            $quimicobd = $this->quimicosRepository->onGet_By__Id($id);
+            $quimico = Mapper::modelToQuimicoDTO($quimicobd);
+
+            if(!$quimico){
+                throw new Exception("No se encontró el químico.");
+            }
+            return $quimico;
+        }catch (\Throwable $e) {
+            throw $e;
+        }
+    }
+
     public function onGetUmbs(): array{
         try{
             $umbsBd = $this->umbRepository->onGet();
@@ -109,8 +137,7 @@ class QuimicosService implements IQuimicosService {
         }
     }
 
-    public function saveQuimicos(QuimicosDTO $quimicosDTO): bool
-    {
+    public function saveQuimicos(QuimicosDTO $quimicosDTO): bool {
         try {
             $this->db->beginTransaction();
 
@@ -148,7 +175,6 @@ class QuimicosService implements IQuimicosService {
         }
     }
 
+    
 }
-
-
 ?>

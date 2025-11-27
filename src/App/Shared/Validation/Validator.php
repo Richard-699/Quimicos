@@ -68,6 +68,9 @@ class Validator
         if (empty($dto->precio_quimico)) {
             throw new Exception('El precio es obligatorio.');
         }
+        if (empty($dto->url_etiqueta_emergencia_quimico)) {
+            throw new Exception('La url de la etiqueta de emergencia es obligatoria.');
+        }
         if (!is_array($dto->quimicosCelulasAreasDTO) || count($dto->quimicosCelulasAreasDTO) === 0) {
             throw new Exception('Debe autorizar al menos una célula.');
         }

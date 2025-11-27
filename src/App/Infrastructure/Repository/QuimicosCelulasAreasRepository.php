@@ -28,4 +28,13 @@ class QuimicosCelulasAreasRepository implements IQuimicosCelulasAreasRepository
         }
         return $stmt->execute();
     }
+
+    public function onGet_By__Id_Quimico(string $id_quimico): array
+    {
+        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_quimicos_celulas_areas WHERE id_quimico_quimicos = ?");
+        $stmt->execute([$id_quimico]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_map([QuimicosCelulasAreas::class, 'fromArray'], $rows);
+    }
 }

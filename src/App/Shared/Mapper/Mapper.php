@@ -5,10 +5,12 @@ namespace App\Shared\Mapper;
 use App\Domain\Model\Administradores;
 use App\Domain\DTO\AdministradoresDTO;
 use App\Domain\DTO\CelulasAreasDTO;
+use App\Domain\DTO\QuimicosCelulasAreasDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\DTO\UMBDTO;
 use App\Domain\Model\CelulasAreas;
 use App\Domain\Model\Quimicos;
+use App\Domain\Model\QuimicosCelulasAreas;
 use App\Domain\Model\UMB;
 
 class Mapper
@@ -55,9 +57,25 @@ class Mapper
                 cantidad_maxima_retiro_quimico: $model->cantidad_maxima_retiro_quimico,
                 tope_minimo_quimico: $model->tope_minimo_quimico,
                 precio_quimico: $model->precio_quimico,
-                id_estado_quimico: $model->id_estado_quimico,
+                url_etiqueta_emergencia_quimico: $model->url_etiqueta_emergencia_quimico,
+                id_estado_quimico: $model->id_estado_quimico
             );
         }, $models);
+    }
+
+    public static function modelToQuimicoDTO(Quimicos $model): QuimicosDTO
+    {
+        return new QuimicosDTO(
+            id_quimico: $model->id_quimico,
+            descripcion_quimico: $model->descripcion_quimico,
+            id_umb_quimico: $model->id_umb_quimico,
+            cantidad_disponible_quimico: $model->cantidad_disponible_quimico,
+            cantidad_maxima_retiro_quimico: $model->cantidad_maxima_retiro_quimico,
+            tope_minimo_quimico: $model->tope_minimo_quimico,
+            precio_quimico: $model->precio_quimico,
+            url_etiqueta_emergencia_quimico: $model->url_etiqueta_emergencia_quimico,
+            id_estado_quimico: $model->id_estado_quimico
+        );
     }
 
     public static function quimicosDTOToModel(QuimicosDTO $dto): Quimicos
@@ -70,6 +88,7 @@ class Mapper
             $dto->cantidad_maxima_retiro_quimico,
             $dto->tope_minimo_quimico,
             $dto->precio_quimico,
+            $dto->url_etiqueta_emergencia_quimico,
             $dto->id_estado_quimico
         );
     }
@@ -113,6 +132,29 @@ class Mapper
         return new UMB(
             $dto->id_umb,
             $dto->descripcion_umb
+        );
+    }
+
+    public static function modelToQuimicosCelulasAreasDTO(array $models): array
+    {
+        if (empty($models)) {
+            return [];
+        }
+        return array_map(function (QuimicosCelulasAreas $model): QuimicosCelulasAreasDTO {
+            return new QuimicosCelulasAreasDTO(
+                id_quimico_celula_area: $model->id_quimico_celula_area,
+                id_quimico_quimicos: $model->id_quimico_quimicos,
+                id_celulas_areas_quimicos: $model->id_celulas_areas_quimicos,
+            );
+        }, $models);
+    }
+
+    public static function quimicosCelulasAreasDTOToModel(QuimicosCelulasAreasDTO $dto): QuimicosCelulasAreas
+    {
+        return new QuimicosCelulasAreas(
+            $dto->id_quimico_celula_area,
+            $dto->id_quimico_quimicos,
+            $dto->id_celulas_areas_quimicos
         );
     }
 }

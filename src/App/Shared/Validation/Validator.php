@@ -5,6 +5,7 @@ namespace App\Shared\Validation;
 use Exception;
 use App\Domain\DTO\AdministradoresDTO;
 use App\Domain\DTO\QuimicosDTO;
+use App\Domain\DTO\SolicitudesConsumoDTO;
 
 class Validator
 {
@@ -16,6 +17,9 @@ class Validator
                 break;
             case $dto instanceof QuimicosDTO:
                 self::validateQuimicosDTO($dto);
+                break;
+            case $dto instanceof SolicitudesConsumoDTO:
+                self::validateSolicitudesConsumoDTO($dto);
                 break;
             default:
                 throw new Exception('No hay reglas de validación definidas para este DTO.');
@@ -73,6 +77,28 @@ class Validator
         }
         if (!is_array($dto->quimicosCelulasAreasDTO) || count($dto->quimicosCelulasAreasDTO) === 0) {
             throw new Exception('Debe autorizar al menos una célula.');
+        }
+    }
+
+    public static function validateSolicitudesConsumoDTO(SolicitudesConsumoDTO $dto): void
+    {
+        if (empty($dto->id_celula_area_solicitud_consumo)) {
+            throw new Exception('La célula es obligatoria.');
+        }
+        if (empty($dto->id_quimico_solicitud_consumo)) {
+            throw new Exception('El químico es obligatorio.');
+        }
+        if (empty($dto->cantidad_solicitud_consumo)) {
+            throw new Exception('La cantidad es obligatoria.');
+        }
+        if (empty($dto->cedula_solicitante)) {
+            throw new Exception('La cédula es obligatoria.');
+        }
+        if (empty($dto->nombres_solicitante_consumo)) {
+            throw new Exception('El nombre es obligatorio.');
+        }
+        if (empty($dto->apellidos_solicitante_consumo)) {
+            throw new Exception('Los apellidos son obligatorios.');
         }
     }
 }

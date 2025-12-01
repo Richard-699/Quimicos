@@ -17,7 +17,7 @@ class CelulasAreasRepository implements ICelulasAreasRepository
 
     public function onGet(): array
     {
-        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_celulas_areas");
+        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_celulas_areas ORDER BY nombre_celula ASC");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

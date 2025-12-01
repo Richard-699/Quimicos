@@ -7,10 +7,12 @@ use App\Domain\DTO\AdministradoresDTO;
 use App\Domain\DTO\CelulasAreasDTO;
 use App\Domain\DTO\QuimicosCelulasAreasDTO;
 use App\Domain\DTO\QuimicosDTO;
+use App\Domain\DTO\SolicitudesConsumoDTO;
 use App\Domain\DTO\UMBDTO;
 use App\Domain\Model\CelulasAreas;
 use App\Domain\Model\Quimicos;
 use App\Domain\Model\QuimicosCelulasAreas;
+use App\Domain\Model\SolicitudesConsumo;
 use App\Domain\Model\UMB;
 
 class Mapper
@@ -155,6 +157,36 @@ class Mapper
             $dto->id_quimico_celula_area,
             $dto->id_quimico_quimicos,
             $dto->id_celulas_areas_quimicos
+        );
+    }
+
+    public static function modelToSolicitudesConsumoDTO(SolicitudesConsumo $model): SolicitudesConsumoDTO
+    {
+        return new SolicitudesConsumoDTO(
+            id_solicitud_consumo: $model->id_solicitud_consumo,
+            fecha_solicitud_consumo: $model->fecha_solicitud_consumo,
+            id_celula_area_solicitud_consumo: $model->id_celula_area_solicitud_consumo,
+            id_quimico_solicitud_consumo: $model->id_quimico_solicitud_consumo,
+            cantidad_solicitud_consumo: $model->cantidad_solicitud_consumo,
+            cedula_solicitante: $model->cedula_solicitante,
+            nombres_solicitante_consumo: $model->nombres_solicitante_consumo,
+            apellidos_solicitante_consumo: $model->apellidos_solicitante_consumo,
+            id_estado_solicitud_quimico: $model->id_estado_solicitud_quimico
+        );
+    }
+
+    public static function solicitudesConsumoDTOToModel(SolicitudesConsumoDTO $dto): SolicitudesConsumo
+    {
+        return new SolicitudesConsumo(
+            $dto->id_solicitud_consumo,
+            $dto->fecha_solicitud_consumo,
+            $dto->id_celula_area_solicitud_consumo,
+            $dto->id_quimico_solicitud_consumo,
+            $dto->cantidad_solicitud_consumo,
+            $dto->cedula_solicitante,
+            $dto->nombres_solicitante_consumo,
+            $dto->apellidos_solicitante_consumo,
+            $dto->id_estado_solicitud_quimico
         );
     }
 }

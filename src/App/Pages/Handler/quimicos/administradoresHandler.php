@@ -75,14 +75,6 @@ function onPostDeleteAdministrador(array $data){
 function onPostUpdatePermisosAdministrador(array $data){
     try {
         $form = $data['form'] ?? [];
-        $idsPermisos = $form['permisos_administradores'] ?? [];
-        $listaPermisosDTO = [];
-
-        if (!is_array($idsPermisos)) {
-            $idsPermisos = [$idsPermisos];
-        }
-
-        Validator::validateListaPermisos($listaPermisosDTO);
 
         $administradoresService = new AdministradoresService();
 

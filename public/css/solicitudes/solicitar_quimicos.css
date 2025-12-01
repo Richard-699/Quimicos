@@ -1,0 +1,113 @@
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.floating-label {
+    position: absolute;
+    pointer-events: none;
+    top: -12px;
+    left: 35px;
+    transition: top 0.3s, font-size 0.3s, color 0.3s;
+    color: #333;
+}
+
+.custom-input {
+    border: none;
+    border-bottom: 2px solid #ced4da;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    width: 90%;
+    transition: border-color 0.3s;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #17a2b8;
+}
+
+.custom-input:focus+.floating-label,
+.custom-input:not(:placeholder-shown)+.floating-label {
+    top: -30px;
+    font-size: 0.9rem;
+    color: #17a2b8;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120vh;
+    margin: 0;
+    background: #072B31;
+    background: linear-gradient(to left, #0093B2, #072B31);
+    color: #333;
+}
+
+.form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.title {
+    text-align: center;
+    z-index: 2;
+    margin-top: 40px;
+}
+
+.logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 70px;
+    height: auto;
+    margin: 10px;
+    z-index: 2;
+}
+
+p {
+    text-align: left;
+    margin-top: -10px;
+    margin-left: 22px;
+}
+
+.pContrato {
+    margin-top: 5px;
+}
+
+#btningresar {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#btningresar:hover {
+    background-color: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.text-Ingresar {
+    margin-top: -10px;
+}
+
+.form-label {
+    margin-left: 22px;
+}

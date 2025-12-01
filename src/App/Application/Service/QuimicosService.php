@@ -170,11 +170,54 @@ class QuimicosService implements IQuimicosService {
             if ($this->db->inTransaction()) {
                 $this->db->rollBack();
             }
-            error_log('Error al guardar almacén con clasificaciones: ' . $e->getMessage());
+            error_log('Error al guardar el químico con las células: ' . $e->getMessage());
             return false;
         }
     }
 
-    
+    public function updateQuimicos(QuimicosDTO $quimicosDTO): bool
+    {
+        try {
+            $this->db->beginTransaction();
+
+            $quimicos = Mapper::quimicosDTOToModel($quimicosDTO);
+
+            $updateQuimico = $this->quimicosRepository->update_By__Id($quimicos);
+            if (!$updateQuimico) {
+                throw new Exception("No se pudo actualizar el químico");
+            }
+
+            $idQuimico = $quimicosDTO->id_quimico;
+
+            $delete_quimicosCelulasAreas = $this->quimicosCelulasAreasRepository->delete_By__Id_Quimico($idQuimico);
+            if ($delete_quimicosCelulasAreas == 0) {
+                throw new Exception("Error al eliminar las células relacionadas a los químicos");
+            }
+
+            foreach ($quimicosDTO->quimicosCelulasAreasDTO as $idcelulaArea) {
+                $QuimicosCelulasAreasModel = new QuimicosCelulasAreas(
+                    id_quimico_celula_area: null,
+                    id_quimico_quimicos: (string)$idQuimico,
+                    id_celulas_areas_quimicos: (int)$idcelulaArea
+                );
+
+                $guardarRelacion = $this->quimicosCelulasAreasRepository->save($QuimicosCelulasAreasModel);
+
+                if (!$guardarRelacion) {
+                    throw new Exception("No se pudo asociar célula al químico");
+                }
+            }
+
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            error_log('Error al actualizar el químico con las células: ' . $e->getMessage());
+            return false;
+        }
+        throw new \Exception('Not implemented');
+    }    
 }
 ?>

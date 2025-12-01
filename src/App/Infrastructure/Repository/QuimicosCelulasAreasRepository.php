@@ -37,4 +37,12 @@ class QuimicosCelulasAreasRepository implements IQuimicosCelulasAreasRepository
 
         return array_map([QuimicosCelulasAreas::class, 'fromArray'], $rows);
     }
+
+    public function delete_By__Id_Quimico(string $id_quimico): bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM quimicos_hwi_quimicos_celulas_areas WHERE id_quimico_quimicos = :id");
+        $stmt->bindParam(':id', $id_quimico);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
 }

@@ -235,9 +235,8 @@ function onPostUpdateQuimico(array $data){
 
         Validator::validateQuimicosDTO($quimicosDTO);
 
-
         $quimicosService = new QuimicosService();
-        $saveQuimicos = $quimicosService->saveQuimicos($quimicosDTO);
+        $saveQuimicos = $quimicosService->updateQuimicos($quimicosDTO);
 
         if (!$saveQuimicos) {
             throw new Exception("No se pudo actualizar el químico");

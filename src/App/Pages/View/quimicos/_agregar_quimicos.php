@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="cantidad_disponible_quimico" class="form-label">Cantidad Inicial: *</label>
+                    <label for="cantidad_disponible_quimico" class="form-label">Cantidad disponible: *</label>
                     <input type="text" class="form-control double-input" id="cantidad_disponible_quimico" name="cantidad_disponible_quimico">
                 </div>
                 <div class="mb-3">

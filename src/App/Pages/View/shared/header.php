@@ -26,13 +26,10 @@ include('../../../Shared/Util/spinner.php');
             <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
             <a class="hov" href="javascript:void(0);" onclick="Solicitudes();"><i class="fa-solid fa-file-circle-exclamation"></i> Solicitudes</a>
             <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
-            <a class="hov" href="javascript:void(0);" onclick="Inventario();"><i class="fa-solid fa-warehouse"></i> Inventario</a>
-            <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
             <a class="hov" href="javascript:void(0);" onclick="Administradores();"><i class="fa-solid fa-users"></i> Administradores</a>
             <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
             <a href="javascript:void(0);" class="hov" id="BtnCerrarSesion"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
     </div>
-
 
     <div class="content">
         <nav class="navbar navbar-expand-lg navbar-light px-3">

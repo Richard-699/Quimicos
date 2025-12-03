@@ -19,6 +19,7 @@ $(document).ready(function () {
             { "data": "descripcion_quimico", "className": "dt-center" },
             { "data": "umb_quimico", "className": "dt-center" },
             { "data": "precio_quimico", "className": "dt-center" },
+            { "data": "cantidad_disponible_quimico", "className": "dt-center" },
             {
                 "data": "id_quimico",
                 "className": "dt-center",

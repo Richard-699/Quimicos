@@ -29,6 +29,10 @@ $(document).ready(function () {
                 "data": "id_administrador",
                 "className": "dt-center",
                 "render": function (data, type, row) {
+                    if (row.estado_administrador == 1) {
+                        return '-';
+                    }
+
                     return `
                         <button class="btn btn-success btn-sm me-1" onclick="update(this, '${data}')">
                             <i class="bi bi-check-lg"></i>

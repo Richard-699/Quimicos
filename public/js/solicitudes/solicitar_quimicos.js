@@ -149,7 +149,7 @@ $(document).ready(function () {
                     }
 
                     location.reload();
-                }, 2000);
+                }, 3000);
             } else {
                 notification('error', resultado.message, 4000);
             }

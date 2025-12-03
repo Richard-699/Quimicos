@@ -175,6 +175,26 @@ class Mapper
         );
     }
 
+    public static function modelToSolicitudesConsumosDTO(array $models): array
+    {
+        if (empty($models)) {
+            return [];
+        }
+        return array_map(function (SolicitudesConsumo $model): SolicitudesConsumoDTO {
+            return new SolicitudesConsumoDTO(
+                id_solicitud_consumo: $model->id_solicitud_consumo,
+                fecha_solicitud_consumo: $model->fecha_solicitud_consumo,
+                id_celula_area_solicitud_consumo: $model->id_celula_area_solicitud_consumo,
+                id_quimico_solicitud_consumo: $model->id_quimico_solicitud_consumo,
+                cantidad_solicitud_consumo: $model->cantidad_solicitud_consumo,
+                cedula_solicitante: $model->cedula_solicitante,
+                nombres_solicitante_consumo: $model->nombres_solicitante_consumo,
+                apellidos_solicitante_consumo: $model->apellidos_solicitante_consumo,
+                id_estado_solicitud_quimico: $model->id_estado_solicitud_quimico
+            );
+        }, $models);
+    }
+
     public static function solicitudesConsumoDTOToModel(SolicitudesConsumoDTO $dto): SolicitudesConsumo
     {
         return new SolicitudesConsumo(

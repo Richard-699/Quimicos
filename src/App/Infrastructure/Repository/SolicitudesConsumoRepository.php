@@ -28,4 +28,26 @@ class SolicitudesConsumoRepository implements ISolicitudesConsumoRepository
         }
         return $stmt->execute();
     }
+
+    public function onGet_By__Id_Estado($id_estado): array
+    {
+        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_solicitudes_consumo WHERE id_estado_solicitud_quimico = ?");
+        $stmt->execute([$id_estado]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_map([SolicitudesConsumo::class, 'fromArray'], $rows);
+    }
+
+    public function update_Id_Estado_By__Id(int $id_solicitud, int $id_estado): bool
+    {
+        $query = "UPDATE quimicos_hwi_solicitudes_consumo 
+                    SET id_estado_solicitud_quimico = :id_estado
+                    WHERE id_solicitud_consumo = :id_solicitud";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_estado', $id_estado);
+        $stmt->bindParam(':id_solicitud', $id_solicitud);
+
+        return $stmt->execute();
+    }
 }

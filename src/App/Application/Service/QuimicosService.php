@@ -155,7 +155,9 @@ class QuimicosService implements IQuimicosService {
                 if (!$quimico) {
                     throw new Exception("No se encontró el químico");
                 }
-                $quimicos[] = $quimico;
+                if($quimico->id_estado_quimico == 4){
+                    $quimicos[] = $quimico;
+                }
             }
 
             return $quimicos;
@@ -228,27 +230,32 @@ class QuimicosService implements IQuimicosService {
                 throw new Exception("No se pudo actualizar el químico");
             }
 
-            $idQuimico = $quimicosDTO->id_quimico;
+            $celulas_areas = $quimicosDTO->quimicosCelulasAreasDTO ?? [];
 
-            $delete_quimicosCelulasAreas = $this->quimicosCelulasAreasRepository->delete_By__Id_Quimico($idQuimico);
-            if ($delete_quimicosCelulasAreas == 0) {
-                throw new Exception("Error al eliminar las células relacionadas a los químicos");
-            }
+            if (!empty($celulas_areas)) {
 
-            foreach ($quimicosDTO->quimicosCelulasAreasDTO as $idcelulaArea) {
-                $QuimicosCelulasAreasModel = new QuimicosCelulasAreas(
-                    id_quimico_celula_area: null,
-                    id_quimico_quimicos: (string)$idQuimico,
-                    id_celulas_areas_quimicos: (int)$idcelulaArea
-                );
+                $idQuimico = $quimicosDTO->id_quimico;
 
-                $guardarRelacion = $this->quimicosCelulasAreasRepository->save($QuimicosCelulasAreasModel);
+                $delete_quimicosCelulasAreas = $this->quimicosCelulasAreasRepository->delete_By__Id_Quimico($idQuimico);
+                if ($delete_quimicosCelulasAreas == 0) {
+                    throw new Exception("Error al eliminar las células relacionadas a los químicos");
+                }
 
-                if (!$guardarRelacion) {
-                    throw new Exception("No se pudo asociar célula al químico");
+                foreach ($quimicosDTO->quimicosCelulasAreasDTO as $idcelulaArea) {
+                    $QuimicosCelulasAreasModel = new QuimicosCelulasAreas(
+                        id_quimico_celula_area: null,
+                        id_quimico_quimicos: (string)$idQuimico,
+                        id_celulas_areas_quimicos: (int)$idcelulaArea
+                    );
+
+                    $guardarRelacion = $this->quimicosCelulasAreasRepository->save($QuimicosCelulasAreasModel);
+
+                    if (!$guardarRelacion) {
+                        throw new Exception("No se pudo asociar célula al químico");
+                    }
                 }
             }
-
+            
             $this->db->commit();
             return true;
         } catch (Exception $e) {

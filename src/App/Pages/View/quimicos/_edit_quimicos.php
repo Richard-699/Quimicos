@@ -109,7 +109,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="cantidad_disponible_quimico" class="form-label">Cantidad Inicial: *</label>
+                <label for="cantidad_disponible_quimico" class="form-label">Cantidad Disponible: *</label>
                 <input type="text" class="form-control double-input" id="cantidad_disponible_quimico" name="cantidad_disponible_quimico"
                     value="<?= htmlspecialchars($quimicoSelected->cantidad_disponible_quimico ?? '') ?>">
             </div>

@@ -46,6 +46,26 @@ function onGetCelulasAreas()
     }
 }
 
+function onGetPeligrosidades()
+{
+    try {
+        $quimicosService = new QuimicosService();
+
+        $peligrosidades = $quimicosService->onGetPeligrosidades();
+
+        if ($peligrosidades) {
+            return $peligrosidades;
+        } else {
+            throw new Exception("No se encontraron peligrosidades.");
+        }
+    } catch (Exception $e) {
+        return [
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
+    }
+}
+
 function onGetCelulasAreasSelected($data)
 {
     try {
@@ -148,6 +168,8 @@ function onPostSaveQuimicos(array $data)
     try {
         $form = $data['form'] ?? [];
         $descripcion_quimico = isset($form['descripcion_quimico']) ? mb_strtoupper($form['descripcion_quimico'], 'UTF-8') : null;
+        $fabricante_quimico = isset($form['fabricante_quimico']) ? mb_strtoupper($form['fabricante_quimico'], 'UTF-8') : null;
+        $uso_quimico = isset($form['uso_quimico']) ? $form['uso_quimico'] : null;
         $celulas_areas_quimicos = $form['celulas_areas_quimicos'] ?? [];
         $cantidad_disponible = $form['cantidad_disponible_quimico'] === '' ? null : (float) $form['cantidad_disponible_quimico'];
         $cantidad_maxima = $form['cantidad_maxima_retiro_quimico'] === '' ? null : (float) $form['cantidad_maxima_retiro_quimico'];
@@ -169,6 +191,9 @@ function onPostSaveQuimicos(array $data)
         $quimicosDTO = new QuimicosDTO(
             id_quimico: $id_quimico,
             descripcion_quimico: $descripcion_quimico ?? null,
+            fabricante_quimico: $fabricante_quimico ?? null,
+            id_peligrosidad_quimico: $form['id_peligrosidad_quimico'] ?? null,
+            uso_quimico: $uso_quimico,
             id_umb_quimico: $form['id_umb_quimico'] ?? null,
             cantidad_disponible_quimico: $cantidad_disponible,
             cantidad_maxima_retiro_quimico: $cantidad_maxima,
@@ -204,6 +229,8 @@ function onPostUpdateQuimico(array $data){
         $form = $data['form'] ?? [];
         $id_quimico = isset($form['id_quimico']) ? (string)$form['id_quimico'] : null;
         $descripcion_quimico = isset($form['descripcion_quimico']) ? mb_strtoupper($form['descripcion_quimico'], 'UTF-8') : null;
+        $fabricante_quimico = isset($form['fabricante_quimico']) ? mb_strtoupper($form['fabricante_quimico'], 'UTF-8') : null;
+        $uso_quimico = isset($form['uso_quimico']) ? $form['uso_quimico'] : null;
         $celulas_areas_quimicos = $form['celulas_areas_quimicos'] ?? [];
         $cantidad_disponible = $form['cantidad_disponible_quimico'] === '' ? null : (float) $form['cantidad_disponible_quimico'];
         $cantidad_maxima = $form['cantidad_maxima_retiro_quimico'] === '' ? null : (float) $form['cantidad_maxima_retiro_quimico'];
@@ -223,6 +250,9 @@ function onPostUpdateQuimico(array $data){
         $quimicosDTO = new QuimicosDTO(
             id_quimico: $id_quimico,
             descripcion_quimico: $descripcion_quimico ?? null,
+            fabricante_quimico: $fabricante_quimico ?? null,
+            id_peligrosidad_quimico: $form['id_peligrosidad_quimico'] ?? null,
+            uso_quimico: $uso_quimico,
             id_umb_quimico: $form['id_umb_quimico'] ?? null,
             cantidad_disponible_quimico: $cantidad_disponible,
             cantidad_maxima_retiro_quimico: $cantidad_maxima,
@@ -295,6 +325,9 @@ try {
                 break;
             case 'onGet_umbs':
                 $response = onGetUmbs();
+                break;
+            case 'onGet_peligrosidades':
+                $response = onGetPeligrosidades();
                 break;
             case 'onGet_quimicoSelected':
                 $response = onGetQuimicoSelected($_GET);

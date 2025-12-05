@@ -39,6 +39,18 @@
     } else {
         $umbs = [];
     }
+
+    if (isset($_GET['peligrosidades'])) {
+        $peligrosidadesEncoded = $_GET['peligrosidades'];
+        $peligrosidadesJson = urldecode($peligrosidadesEncoded);
+        $peligrosidades = json_decode($peligrosidadesJson);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log('JSON Decode Error in agregar_quimico.php: ' . json_last_error_msg());
+        }
+    } else {
+        $peligrosidades = [];
+    }
     ?>
 
     <div class="contenido-agregar-quimico">
@@ -48,6 +60,29 @@
                 <div class="mb-3">
                     <label for="descripcion_quimico" class="form-label">Nombre Químico: *</label>
                     <input type="text" class="form-control" id="descripcion_quimico" name="descripcion_quimico">
+                </div>
+                <div class="mb-3">
+                    <label for="fabricante_quimico" class="form-label">Fabricante: *</label>
+                    <input type="text" class="form-control" id="fabricante_quimico" name="fabricante_quimico">
+                </div>
+                <div class="mb-3">
+                    <label for="id_peligrosidad_quimico" class="form-label">Peligrosidad: *</label>
+                    <select class="form-select" id="id_peligrosidad_quimico" name="id_peligrosidad_quimico">
+                        <option value="" selected disabled>Seleccione un tipo</option>
+                        <?php
+                        if (!empty($peligrosidades)) {
+                            foreach ($peligrosidades as $peligrosidad) {
+                                $id = $peligrosidad->id_peligrosidad ?? '';
+                                $descripcion = $peligrosidad->descripcion_peligrosidad ?? 'N/A';
+                                echo "<option value='{$id}'>{$descripcion}</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="uso_quimico" class="form-label">Uso: *</label>
+                    <textarea type="text" class="form-control" id="uso_quimico" name="uso_quimico"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="id_umb_quimico" class="form-label">UMB: *</label>

@@ -57,6 +57,15 @@ class Validator
         if (empty($dto->descripcion_quimico)) {
             throw new Exception('El nombre del químico es obligatorio.');
         }
+        if (empty($dto->fabricante_quimico)) {
+            throw new Exception('El fabricante del químico es obligatorio.');
+        }
+        if (empty($dto->id_peligrosidad_quimico)) {
+            throw new Exception('La peligrosidad del químico es obligatoria.');
+        }
+        if (empty($dto->uso_quimico)) {
+            throw new Exception('El uso del químico es obligatorio.');
+        }
         if (empty($dto->id_umb_quimico)) {
             throw new Exception('La Umb es obligatoria.');
         }

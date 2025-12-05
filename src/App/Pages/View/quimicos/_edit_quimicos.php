@@ -27,6 +27,19 @@
         }
     }
 
+    $peligrosidades = [];
+
+    if (isset($_GET['peligrosidades'])) {
+        $peligrosidadesJson = $_GET['peligrosidades'];
+        $peligrosidadesDecoded = json_decode($peligrosidadesJson);
+
+        if (json_last_error() === JSON_ERROR_NONE && is_array($peligrosidadesDecoded)) {
+            $peligrosidades = $peligrosidadesDecoded;
+        } else {
+            error_log('Error decodificando peligrosidades');
+        }
+    }
+
     $celulasAreas = [];
 
     if (isset($_GET['celulasAreas'])) {
@@ -88,7 +101,33 @@
                 <input type="text" class="form-control" id="descripcion_quimico" name="descripcion_quimico"
                     value="<?= htmlspecialchars($quimicoSelected->descripcion_quimico ?? '') ?>">
             </div>
+            <div class="mb-3">
+                <label for="fabricante_quimico" class="form-label">Fabricante: *</label>
+                <input type="text" class="form-control" id="fabricante_quimico" name="fabricante_quimico"
+                    value="<?= htmlspecialchars($quimicoSelected->fabricante_quimico ?? '') ?>">
+            </div>
+            <div class="mb-3">
+                <label for="id_peligrosidad_quimico" class="form-label">Peligrosidad: *</label>
+                <select class="form-select" id="id_peligrosidad_quimico" name="id_peligrosidad_quimico">
+                    <option value="" selected disabled>Seleccione un tipo</option>
+                    <?php
+                    if (!empty($peligrosidades)) {
+                        $selectedId = $quimicoSelected->id_peligrosidad_quimico ?? '';
 
+                        foreach ($peligrosidades as $peligrosidad) {
+                            $id = $peligrosidad->id_peligrosidad ?? '';
+                            $descripcion = $peligrosidad->descripcion_peligrosidad ?? 'N/A';
+                            $selected = ($selectedId == $id) ? 'selected' : '';
+                            echo "<option value='{$id}' {$selected}>{$descripcion}</option>";
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="uso_quimico" class="form-label">Uso: *</label>
+                <textarea type="text" class="form-control" id="uso_quimico" name="uso_quimico"><?= htmlspecialchars($quimicoSelected->uso_quimico ?? '') ?></textarea>
+            </div>
             <div class="mb-3">
                 <label for="id_umb_quimico" class="form-label">UMB: *</label>
                 <select class="form-select" id="id_umb_quimico" name="id_umb_quimico">
@@ -107,7 +146,6 @@
                     ?>
                 </select>
             </div>
-
             <div class="mb-3">
                 <label for="cantidad_disponible_quimico" class="form-label">Cantidad Disponible: *</label>
                 <input type="text" class="form-control double-input" id="cantidad_disponible_quimico" name="cantidad_disponible_quimico"

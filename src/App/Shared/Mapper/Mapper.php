@@ -5,11 +5,13 @@ namespace App\Shared\Mapper;
 use App\Domain\Model\Administradores;
 use App\Domain\DTO\AdministradoresDTO;
 use App\Domain\DTO\CelulasAreasDTO;
+use App\Domain\DTO\PeligrosidadDTO;
 use App\Domain\DTO\QuimicosCelulasAreasDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\DTO\SolicitudesConsumoDTO;
 use App\Domain\DTO\UMBDTO;
 use App\Domain\Model\CelulasAreas;
+use App\Domain\Model\Peligrosidad;
 use App\Domain\Model\Quimicos;
 use App\Domain\Model\QuimicosCelulasAreas;
 use App\Domain\Model\SolicitudesConsumo;
@@ -54,6 +56,9 @@ class Mapper
             return new QuimicosDTO(
                 id_quimico: $model->id_quimico,
                 descripcion_quimico: $model->descripcion_quimico,
+                fabricante_quimico: $model->fabricante_quimico,
+                id_peligrosidad_quimico: $model->id_peligrosidad_quimico,
+                uso_quimico: $model->uso_quimico,
                 id_umb_quimico: $model->id_umb_quimico,
                 cantidad_disponible_quimico: $model->cantidad_disponible_quimico,
                 cantidad_maxima_retiro_quimico: $model->cantidad_maxima_retiro_quimico,
@@ -70,6 +75,9 @@ class Mapper
         return new QuimicosDTO(
             id_quimico: $model->id_quimico,
             descripcion_quimico: $model->descripcion_quimico,
+            fabricante_quimico: $model->fabricante_quimico,
+            id_peligrosidad_quimico: $model->id_peligrosidad_quimico,
+            uso_quimico: $model->uso_quimico,
             id_umb_quimico: $model->id_umb_quimico,
             cantidad_disponible_quimico: $model->cantidad_disponible_quimico,
             cantidad_maxima_retiro_quimico: $model->cantidad_maxima_retiro_quimico,
@@ -85,6 +93,9 @@ class Mapper
         return new Quimicos(
             $dto->id_quimico,
             $dto->descripcion_quimico,
+            $dto->fabricante_quimico,
+            $dto->id_peligrosidad_quimico,
+            $dto->uso_quimico,
             $dto->id_umb_quimico,
             $dto->cantidad_disponible_quimico,
             $dto->cantidad_maxima_retiro_quimico,
@@ -208,5 +219,18 @@ class Mapper
             $dto->apellidos_solicitante_consumo,
             $dto->id_estado_solicitud_quimico
         );
+    }
+
+    public static function modelToPeligrosidadesDTO(array $models): array
+    {
+        if (empty($models)) {
+            return [];
+        }
+        return array_map(function (Peligrosidad $model): PeligrosidadDTO {
+            return new PeligrosidadDTO(
+                id_peligrosidad: $model->id_peligrosidad,
+                descripcion_peligrosidad: $model->descripcion_peligrosidad
+            );
+        }, $models);
     }
 }

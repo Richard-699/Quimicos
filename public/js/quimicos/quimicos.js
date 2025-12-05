@@ -17,6 +17,7 @@ $(document).ready(function () {
         },
         "columns": [
             { "data": "descripcion_quimico", "className": "dt-center" },
+            { "data": "peligrosidad_quimico", "className": "dt-center" },
             { "data": "umb_quimico", "className": "dt-center" },
             { "data": "precio_quimico", "className": "dt-center" },
             { "data": "cantidad_disponible_quimico", "className": "dt-center" },
@@ -60,13 +61,19 @@ $(document).ready(function () {
             const umbs = await responseUMBS.json();
             const umbsEncoded = encodeURIComponent(JSON.stringify(umbs));
 
+            const responsePeligrosidades = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_peligrosidades', {
+                method: 'GET'
+            });
+            const peligrosidades = await responsePeligrosidades.json();
+            const peligrosidadesEncoded = encodeURIComponent(JSON.stringify(peligrosidades));
+
             const responseCelulasAreas = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_celulasAreas', {
                 method: 'GET'
             });
             const celulasAreas = await responseCelulasAreas.json();
             const celulasAreasEncoded = encodeURIComponent(JSON.stringify(celulasAreas));
 
-            var url = `_agregar_quimicos.php?celulasAreas=${celulasAreasEncoded}&umbs=${umbsEncoded}`;
+            var url = `_agregar_quimicos.php?celulasAreas=${celulasAreasEncoded}&umbs=${umbsEncoded}&peligrosidades=${peligrosidadesEncoded}`;
 
             Fancybox.show([{
                 src: url,
@@ -161,13 +168,19 @@ async function update(btn, id) {
         const celulasAreasSelected = await responseCelulasAreasSelected.json();
         const celulasAreasSelectedEncoded = encodeURIComponent(JSON.stringify(celulasAreasSelected));
 
+        const responsePeligrosidades = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_peligrosidades', {
+                method: 'GET'
+            });
+        const peligrosidades = await responsePeligrosidades.json();
+        const peligrosidadesEncoded = encodeURIComponent(JSON.stringify(peligrosidades));
+
         const responseQuimicoSelected = await fetch(`../../Handler/quimicos/quimicosHandler.php?action=onGet_quimicoSelected&id=${id}`, {
             method: 'GET'
         });
         const quimicoSelected = await responseQuimicoSelected.json();
         const quimicoSelectedEncoded = encodeURIComponent(JSON.stringify(quimicoSelected));
 
-        var url = `_edit_quimicos.php?quimicoSelected=${quimicoSelectedEncoded}&umbs=${umbsEncoded}&celulasAreas=${celulasAreasEncoded}&celulasAreasSelected=${celulasAreasSelectedEncoded}&id=${id}`;
+        var url = `_edit_quimicos.php?quimicoSelected=${quimicoSelectedEncoded}&umbs=${umbsEncoded}&celulasAreas=${celulasAreasEncoded}&celulasAreasSelected=${celulasAreasSelectedEncoded}&peligrosidades=${peligrosidadesEncoded}&id=${id}`;
 
         Fancybox.show([{
             src: url,

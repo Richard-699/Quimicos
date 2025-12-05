@@ -6,6 +6,9 @@ class Quimicos {
     public function __construct(
         public ?string $id_quimico,
         public ?string $descripcion_quimico,
+        public ?string $fabricante_quimico,
+        public ?int $id_peligrosidad_quimico,
+        public ?string $uso_quimico,
         public ?int $id_umb_quimico,
         public ?float $cantidad_disponible_quimico,
         public ?float $cantidad_maxima_retiro_quimico,
@@ -19,6 +22,9 @@ class Quimicos {
         return new self(
             $data['id_quimico'] ?? null,
             $data['descripcion_quimico'] ?? null,
+            $data['fabricante_quimico'] ?? null,
+            $data['id_peligrosidad_quimico'] ?? null,
+            $data['uso_quimico'] ?? null,
             $data['id_umb_quimico'] ?? null,
             $data['cantidad_disponible_quimico'] ?? null,
             $data['cantidad_maxima_retiro_quimico'] ?? null,
@@ -34,6 +40,9 @@ class Quimicos {
         return [
             'id_quimico' => $this->id_quimico,
             'descripcion_quimico' => $this->descripcion_quimico,
+            'fabricante_quimico' => $this->fabricante_quimico,
+            'id_peligrosidad_quimico' => $this->id_peligrosidad_quimico,
+            'uso_quimico' => $this->uso_quimico,
             'id_umb_quimico' => $this->id_umb_quimico,
             'cantidad_disponible_quimico' => $this->cantidad_disponible_quimico,
             'cantidad_maxima_retiro_quimico' => $this->cantidad_maxima_retiro_quimico,

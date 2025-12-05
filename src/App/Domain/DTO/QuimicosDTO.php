@@ -6,6 +6,10 @@ class QuimicosDTO {
     public function __construct(
         public ?string $id_quimico = null,
         public ?string $descripcion_quimico = null,
+        public ?string $fabricante_quimico = null,
+        public ?int $id_peligrosidad_quimico = null,
+        public ?string $peligrosidad_quimico = null,
+        public ?string $uso_quimico = null,
         public ?int $id_umb_quimico = null,
         public ?string $umb_quimico = null,
         public ?float $cantidad_disponible_quimico = null,

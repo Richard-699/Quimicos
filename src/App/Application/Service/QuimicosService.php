@@ -10,6 +10,7 @@ use App\Infrastructure\Repository\UMBRepository;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\Model\QuimicosCelulasAreas;
 use App\Infrastructure\Repository\CelulasAreasRepository;
+use App\Infrastructure\Repository\PeligrosidadesRepository;
 use App\Infrastructure\Repository\QuimicosCelulasAreasRepository;
 use App\Shared\Mapper\Mapper;
 
@@ -20,6 +21,7 @@ class QuimicosService implements IQuimicosService {
     private $umbRepository;
     private $celulasAreasRepository;
     private $quimicosCelulasAreasRepository;
+    private $peligrosidadesRepository;
 
     public function __construct() {
         $this->db = (new Connection())->dbQuimicosHwi;
@@ -28,6 +30,7 @@ class QuimicosService implements IQuimicosService {
         $this->umbRepository = new UMBRepository($this->db);
         $this->celulasAreasRepository = new CelulasAreasRepository($this->db);
         $this->quimicosCelulasAreasRepository = new QuimicosCelulasAreasRepository($this->db);
+        $this->peligrosidadesRepository = new PeligrosidadesRepository($this->db);
     }
 
     public function ongetQuimicos(): array{
@@ -52,6 +55,21 @@ class QuimicosService implements IQuimicosService {
                 foreach ($quimicos as $quimico) {
                     if ($id == $quimico->id_umb_quimico) {
                         $quimico->umb_quimico = $umb->descripcion_umb;
+                    }
+                }
+            }
+
+            $peligrosidades = $this->peligrosidadesRepository->onGet();
+
+            if(!$peligrosidades){
+                throw new Exception("No se encontraron peligrosidades");
+            }
+
+            foreach ($peligrosidades as $peligrosidad) {
+                $id = $peligrosidad->id_peligrosidad ?? null;
+                foreach ($quimicos as $quimico) {
+                    if ($id == $quimico->id_peligrosidad_quimico) {
+                        $quimico->peligrosidad_quimico = $peligrosidad->descripcion_peligrosidad;
                     }
                 }
             }
@@ -90,6 +108,20 @@ class QuimicosService implements IQuimicosService {
                 throw new Exception("No se encontraron células");
             }
             return $celulas;
+        }catch (\Throwable $e) {
+            throw $e;
+        }
+    }
+
+    public function onGetPeligrosidades(): array{
+        try{
+            $peligrosidadesDb = $this->peligrosidadesRepository->onGet();
+            $peligrosidades = Mapper::modelToPeligrosidadesDTO($peligrosidadesDb);
+
+            if(!$peligrosidades){
+                throw new Exception("No se encontraron peligrosidades");
+            }
+            return $peligrosidades;
         }catch (\Throwable $e) {
             throw $e;
         }

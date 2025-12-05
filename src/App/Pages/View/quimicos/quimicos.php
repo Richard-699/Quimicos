@@ -36,6 +36,7 @@
                 <thead class="table-light">
                     <tr>
                         <th style="width: 18%;">Químico</th>
+                        <th style="width: 18%;">Peligrosidad</th>
                         <th style="width: 18%;">UMB</th>
                         <th style="width: 18%;">Precio</th>
                         <th style="width: 18%;">Cant. Disponible</th>

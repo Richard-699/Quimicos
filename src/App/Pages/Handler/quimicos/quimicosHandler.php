@@ -147,7 +147,7 @@ function onPostSaveQuimicos(array $data)
 {
     try {
         $form = $data['form'] ?? [];
-        $descripcion_quimico = isset($form['descripcion_quimico']) ? ucfirst(strtolower($form['descripcion_quimico'])) : null;
+        $descripcion_quimico = isset($form['descripcion_quimico']) ? mb_strtoupper($form['descripcion_quimico'], 'UTF-8') : null;
         $celulas_areas_quimicos = $form['celulas_areas_quimicos'] ?? [];
         $cantidad_disponible = $form['cantidad_disponible_quimico'] === '' ? null : (float) $form['cantidad_disponible_quimico'];
         $cantidad_maxima = $form['cantidad_maxima_retiro_quimico'] === '' ? null : (float) $form['cantidad_maxima_retiro_quimico'];
@@ -203,7 +203,7 @@ function onPostUpdateQuimico(array $data){
     try {
         $form = $data['form'] ?? [];
         $id_quimico = isset($form['id_quimico']) ? (string)$form['id_quimico'] : null;
-        $descripcion_quimico = isset($form['descripcion_quimico']) ? ucfirst(strtolower($form['descripcion_quimico'])) : null;
+        $descripcion_quimico = isset($form['descripcion_quimico']) ? mb_strtoupper($form['descripcion_quimico'], 'UTF-8') : null;
         $celulas_areas_quimicos = $form['celulas_areas_quimicos'] ?? [];
         $cantidad_disponible = $form['cantidad_disponible_quimico'] === '' ? null : (float) $form['cantidad_disponible_quimico'];
         $cantidad_maxima = $form['cantidad_maxima_retiro_quimico'] === '' ? null : (float) $form['cantidad_maxima_retiro_quimico'];

@@ -3,46 +3,25 @@ function Inicio() {
     window.location.href = "index.php";
 }
 
-function Almacen() {
+function Quimicos() {
     mostrarCarga();
-    window.location.href = "almacenes.php";
+    window.location.href = "quimicos.php";
 }
 
-function Localizaciones() {
+function Solicitudes() {
     mostrarCarga();
-    window.location.href = "localizaciones.php";
+    window.location.href = "solicitudes.php";
 }
 
-function Grupos() {
+function Inventario() {
     mostrarCarga();
-    window.location.href = "grupos.php";
+    window.location.href = "inventario.php";
 }
 
-function PartNumbers() {
-    mostrarCarga();
-    window.location.href = "partnumbers.php";
-}
-
-function GestionarAdministradores() {
+function Administradores() {
     mostrarCarga();
     window.location.href = "administradores.php";
 }
-
-function Cronograma() {
-    mostrarCarga();
-    window.location.href = "cronograma.php";
-}
-
-function Aprobacion() {
-    mostrarCarga();
-    window.location.href = "aprobacionAjuste.php";
-}
-
-function Exactitud() {
-    mostrarCarga();
-    window.location.href = "exactitud.php";
-}
-
 
 document.querySelectorAll('#BtnCerrarSesion, #BtnCerrarSesionMenu').forEach(btn => {
     btn.addEventListener('click', function (e) {

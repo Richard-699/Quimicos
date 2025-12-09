@@ -1,0 +1,17 @@
+#btnAgregarQuimico {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#btnAgregarQuimico:hover {
+    background-color: #072B31;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}

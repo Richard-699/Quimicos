@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Inventario HWI</title>
-    <link rel="shortcut icon" href="../../../public/img/LogoBlanco.png" type="image/x-icon">
+    <title>Registro Quimicos HWI</title>
+    <link rel="shortcut icon" href="../../../../../public/img/LogoBlanco.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="../../../../../public/css/auth/estilos_register.css">
@@ -29,11 +29,11 @@
                 </div>
                 <div class="col-12 form-group mt-3">
                     <input type="text" class="custom-input" id="inputUsername" placeholder=" " name="nombre_administrador">
-                    <label for="inputUsername" class="floating-label">Nombre: *</label>
+                    <label for="inputUsername" class="floating-label">Nombre(s): *</label>
                 </div>
                 <div class="col-12 form-group mt-3">
                     <input type="text" class="custom-input" id="inputUsername" placeholder=" " name="apellidos_administrador">
-                    <label for="inputUsername" class="floating-label">Apellidos: *</label>
+                    <label for="inputUsername" class="floating-label">Apellido(s): *</label>
                 </div>
                 <div class="col-12 form-group mt-3">
                     <input type="text" class="custom-input" id="correo_hwi_administrador" placeholder=" " name="correo_hwi_administrador">

@@ -21,7 +21,7 @@ class Utilidades {
         try {
             $mail = new PHPMailer(true);
             $mail->isSMTP();
-            $mail->Host       = 'mail.hacebwhirlpoolindustrial.com';
+            $mail->Host       = 'gtxm1009.siteground.biz';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'hwiverificacion@hacebwhirlpoolindustrial.com';
             $mail->Password   = 'HWI2023*';

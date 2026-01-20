@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 use App\Application\Service\QuimicosService;
+use App\Domain\DTO\LogsPreciosDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Shared\Util\Utilidades;
 use App\Shared\Validation\Validator;
@@ -200,8 +201,8 @@ function onPostSaveQuimicos(array $data)
             tope_minimo_quimico: $tope_minimo,
             precio_quimico: $precio,
             id_estado_quimico: $id_estado,
-            url_etiqueta_emergencia_quimico:$form['url_etiqueta_emergencia_quimico'],
-            quimicosCelulasAreasDTO: $celulas_areas_quimicosIds,
+            url_etiqueta_emergencia_quimico: $form['url_etiqueta_emergencia_quimico'],
+            quimicosCelulasAreasDTO: $celulas_areas_quimicosIds
         );
 
         Validator::validateQuimicosDTO($quimicosDTO);
@@ -211,6 +212,18 @@ function onPostSaveQuimicos(array $data)
 
         if (!$saveQuimicos) {
             throw new Exception("No se pudo guardar el químico");
+        }
+
+        $logsPreciosDTO = new LogsPreciosDTO(
+            fecha_log_precio: date("Y-m-d"),
+            id_quimico_log_precio: $id_quimico,
+            precio_quimico: $precio
+        );
+
+        $saveLogsPrecios = $quimicosService->saveLogsPrecios($logsPreciosDTO);
+
+        if (!$saveLogsPrecios) {
+            throw new Exception("No se pudo guardar el log del precio");
         }
 
         return [
@@ -224,7 +237,8 @@ function onPostSaveQuimicos(array $data)
     }
 }
 
-function onPostUpdateQuimico(array $data){
+function onPostUpdateQuimico(array $data)
+{
     try {
         $form = $data['form'] ?? [];
         $id_quimico = isset($form['id_quimico']) ? (string)$form['id_quimico'] : null;
@@ -259,16 +273,32 @@ function onPostUpdateQuimico(array $data){
             tope_minimo_quimico: $tope_minimo,
             precio_quimico: $precio,
             id_estado_quimico: $id_estado,
-            url_etiqueta_emergencia_quimico:$form['url_etiqueta_emergencia_quimico'],
+            url_etiqueta_emergencia_quimico: $form['url_etiqueta_emergencia_quimico'],
             quimicosCelulasAreasDTO: $celulas_areas_quimicosIds,
         );
 
         Validator::validateQuimicosDTO($quimicosDTO);
 
         $quimicosService = new QuimicosService();
-        $saveQuimicos = $quimicosService->updateQuimicos($quimicosDTO);
 
-        if (!$saveQuimicos) {
+        $quimicosDTOdb = $quimicosService->onGetQuimicos_By__Id($id_quimico);
+        if ($quimicosDTOdb->precio_quimico !== $precio) {
+            $logsPreciosDTO = new LogsPreciosDTO(
+                fecha_log_precio: date("Y-m-d"),
+                id_quimico_log_precio: $id_quimico,
+                precio_quimico: $precio
+            );
+
+            $saveLogsPrecios = $quimicosService->saveLogsPrecios($logsPreciosDTO);
+
+            if (!$saveLogsPrecios) {
+                throw new Exception("No se pudo guardar el log del precio");
+            }
+        }
+
+        $updateQuimicos = $quimicosService->updateQuimicos($quimicosDTO);
+
+        if (!$updateQuimicos) {
             throw new Exception("No se pudo actualizar el químico");
         }
 

@@ -41,7 +41,7 @@ function onPostSaveSolicitud(array $data)
             throw new Exception("No se pudo registrar la solicitud.");
         }
 
-        $email_superAdmin = 'ricardo.rojas@hacebwhirlpool.com';
+        $email_superAdmin = 'almacen.indirectos@hacebwhirlpool.com';
         $asunto = 'Solicitud Químico';
         $titulo = 'Nueva Solicitud de Químico Registrada';
         $contenido = '

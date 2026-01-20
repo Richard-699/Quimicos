@@ -38,10 +38,10 @@ function onPostUpdateEstadoSolicitud(array $data)
         if ($id_estado === null) {
             throw new Exception("Error al procesar el Id del estado.");
         }
-        if ($cantidad_solicitud === null) {
+        if ($cantidad_solicitud === null && $id_estado == 1) {
             throw new Exception("Error al procesar la cantidad de la solicitud.");
         }
-        if ($id_quimico === null) {
+        if ($id_quimico === null && $id_estado == 1) {
             throw new Exception("Error al procesar el id del químico.");
         }
 

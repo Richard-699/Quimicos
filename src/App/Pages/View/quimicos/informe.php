@@ -9,41 +9,36 @@ include '../../Handler/auth/session_init.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administradores</title>
+    <title>Químicos</title>
     <link rel="shortcut icon" href="../../../../../public/img/LogoBlanco.png" type="image/x-icon">
 
+    <link rel="stylesheet" href="../../../../../public/css/quimicos/quimicos.css">
     <link rel="stylesheet" href="../../../../../public/css/utils/libs/libs.css">
     <link rel="stylesheet" href="../../../../../public/css/utils/estilos_spinner.css">
-    <link rel="stylesheet" href="../../../../../public/css/dataTable/dataTable.css"> 
-    <link rel="stylesheet" href="../../../../../public/css/utils/select_multiple.css"> 
+    <link rel="stylesheet" href="../../../../../public/css/dataTable/dataTable.css">
+    <link rel="stylesheet" href="../../../../../public/css/utils/select_multiple.css">
     <!-- CSS Choices -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <?php include('../../../Shared/Util/spinner.php'); ?>
 </head>
+
 <body>
     <?php include '../shared/header.php' ?>
 
     <div class="container-fluid px-2 py-3">
         <div class="table-container table-responsive">
-            <div class="d-flex align-items-center mb-4 border-bottom pb-2">
-            <i class="fa-solid fa-users-gear me-2 fs-4"></i>
-                <h5 class="m-0 fw-semibold text-dark"> Administradores</h5>
+            <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-2">
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-file me-2 fs-4"></i>
+                    <h5 class="m-0 fw-semibold text-dark"> Informe</h5>
+                </div>
             </div>
-            <table id="tabla-administradores" class="table table-striped table-bordered table-sm dt-responsive nowrap" style="width:100%">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width: 5%;">Cédula</th>
-                        <th style="width: 18%;">Administrador</th>
-                        <th style="width: 18%;">Correo Corporativo</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+
+            <iframe title="BI Quimicos" width="1200" height="553.5" src="https://app.powerbi.com/view?r=eyJrIjoiMGY4N2ZkM2QtOWVlNS00YzAxLTg0MWItY2UyMjEwMzRiY2ExIiwidCI6ImY2NDFlNWU4LTgzZWYtNGY5OS04OTMyLWQyOTlmM2JhZDMwYiJ9" frameborder="0" allowFullScreen="true"></iframe>
         </div>
     </div>
 
@@ -60,6 +55,7 @@ include '../../Handler/auth/session_init.php';
     <!-- Scripts funcionalidades -->
     <script src="../../../../../public/js/utils/spinner.js"></script>
     <script src="../../../../../public/js/utils/notifications.js"></script>
-    <script src="../../../../../public/js/quimicos/administradores.js"></script>
+    <script src="../../../../../public/js/quimicos/quimicos.js"></script>
 </body>
+
 </html>

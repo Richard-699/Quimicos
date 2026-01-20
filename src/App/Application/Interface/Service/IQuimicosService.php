@@ -2,6 +2,7 @@
 
 namespace App\Application\Interface\Service;
 
+use App\Domain\DTO\LogsPreciosDTO;
 use App\Domain\DTO\QuimicosDTO;
 
 interface IQuimicosService {
@@ -14,6 +15,7 @@ interface IQuimicosService {
     public function onGetQuimicos_By__Id(string $id_quimico): QuimicosDTO;
     public function onGetQuimicos_By__Id_Celula(int $id_celula): array;
     public function saveQuimicos(QuimicosDTO $quimicosDTO): bool;
+    public function saveLogsPrecios(LogsPreciosDTO $logsPreciosDTO): bool;
     public function updateQuimicos(QuimicosDTO $quimicosDTO): bool;
 }
 

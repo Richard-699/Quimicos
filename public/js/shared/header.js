@@ -23,6 +23,11 @@ function Administradores() {
     window.location.href = "administradores.php";
 }
 
+function Informe() {
+    mostrarCarga();
+    window.location.href = "informe.php";
+}
+
 document.querySelectorAll('#BtnCerrarSesion, #BtnCerrarSesionMenu').forEach(btn => {
     btn.addEventListener('click', function (e) {
         debugger;

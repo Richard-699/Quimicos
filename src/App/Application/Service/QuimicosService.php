@@ -3,6 +3,7 @@
 namespace App\Application\Service;
 
 use App\Application\Interface\Service\IQuimicosService;
+use App\Domain\DTO\LogsPreciosDTO;
 use Exception;
 use App\Infrastructure\Database\Connection;
 use App\Infrastructure\Repository\QuimicosRepository;
@@ -10,6 +11,7 @@ use App\Infrastructure\Repository\UMBRepository;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\Model\QuimicosCelulasAreas;
 use App\Infrastructure\Repository\CelulasAreasRepository;
+use App\Infrastructure\Repository\LogsPreciosRepository;
 use App\Infrastructure\Repository\PeligrosidadesRepository;
 use App\Infrastructure\Repository\QuimicosCelulasAreasRepository;
 use App\Shared\Mapper\Mapper;
@@ -22,11 +24,13 @@ class QuimicosService implements IQuimicosService {
     private $celulasAreasRepository;
     private $quimicosCelulasAreasRepository;
     private $peligrosidadesRepository;
+    private $logsPreciosRepository;
 
     public function __construct() {
         $this->db = (new Connection())->dbQuimicosHwi;
 
         $this->quimicosRepository = new QuimicosRepository($this->db);
+        $this->logsPreciosRepository = new LogsPreciosRepository($this->db);
         $this->umbRepository = new UMBRepository($this->db);
         $this->celulasAreasRepository = new CelulasAreasRepository($this->db);
         $this->quimicosCelulasAreasRepository = new QuimicosCelulasAreasRepository($this->db);
@@ -246,6 +250,24 @@ class QuimicosService implements IQuimicosService {
                 $this->db->rollBack();
             }
             error_log('Error al guardar el químico con las células: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function saveLogsPrecios(LogsPreciosDTO $logsPreciosDTO): bool {
+        try {
+
+            $logPrecio = Mapper::logsPreciosDTOToModel($logsPreciosDTO);
+
+            $saveLogPrecio = $this->logsPreciosRepository->save($logPrecio);
+
+            if (!$saveLogPrecio) {
+                throw new Exception("No se pudo guardar el log del precio");
+            }
+
+            return true;
+        } catch (Exception $e) {
+            error_log('Error al guardar el log del precio: ' . $e->getMessage());
             return false;
         }
     }

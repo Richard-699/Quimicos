@@ -5,12 +5,14 @@ namespace App\Shared\Mapper;
 use App\Domain\Model\Administradores;
 use App\Domain\DTO\AdministradoresDTO;
 use App\Domain\DTO\CelulasAreasDTO;
+use App\Domain\DTO\LogsPreciosDTO;
 use App\Domain\DTO\PeligrosidadDTO;
 use App\Domain\DTO\QuimicosCelulasAreasDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\DTO\SolicitudesConsumoDTO;
 use App\Domain\DTO\UMBDTO;
 use App\Domain\Model\CelulasAreas;
+use App\Domain\Model\LogsPrecios;
 use App\Domain\Model\Peligrosidad;
 use App\Domain\Model\Quimicos;
 use App\Domain\Model\QuimicosCelulasAreas;
@@ -232,5 +234,15 @@ class Mapper
                 descripcion_peligrosidad: $model->descripcion_peligrosidad
             );
         }, $models);
+    }
+
+    public static function logsPreciosDTOToModel(LogsPreciosDTO $dto): LogsPrecios
+    {
+        return new LogsPrecios(
+            $dto->id_log_precio,
+            $dto->fecha_log_precio,
+            $dto->id_quimico_log_precio,
+            $dto->precio_quimico
+        );
     }
 }

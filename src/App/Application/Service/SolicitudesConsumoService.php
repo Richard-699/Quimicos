@@ -132,7 +132,7 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
                 }
 
                 if ($enviar_correo) {
-                    $email_superAdmin = 'ricardo.rojas@hacebwhirlpool.com';
+                    $email_superAdmin = 'almacen.indirectos@hacebwhirlpool.com';
                     $asunto = 'Alerta Inventario Químico';
                     $utilidades = new Utilidades();
                     $enviarCorreo = $utilidades->enviarCorreo($email_superAdmin, $asunto, $titulo, $contenido);

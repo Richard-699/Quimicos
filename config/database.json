@@ -1,7 +1,7 @@
 {
   "quimicos_hwi": {
-    "host": "local",
-    "user": "",
+    "host": "localhost",
+    "user": "usisuuglycde2",
     "password": "EquipoBI2024*",
     "database": "dbp492eljihwxp"
   }

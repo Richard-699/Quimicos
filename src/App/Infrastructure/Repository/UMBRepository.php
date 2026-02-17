@@ -17,7 +17,7 @@ class UMBRepository implements IUMBRepository
 
     public function onGet(): array
     {
-        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_umbs");
+        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_umbs ORDER BY descripcion_umb ASC");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

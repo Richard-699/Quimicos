@@ -109,7 +109,7 @@
                     <input type="text" class="form-control double-input" id="cantidad_maxima_retiro_quimico" name="cantidad_maxima_retiro_quimico">
                 </div>
                 <div class="mb-3">
-                    <label for="tope_minimo_quimico" class="form-label">Tope Mínimo: *</label>
+                    <label for="tope_minimo_quimico" class="form-label">Inventario Mínimo: *</label>
                     <input type="text" class="form-control double-input" id="tope_minimo_quimico" name="tope_minimo_quimico">
                 </div>
                 <div class="mb-3">

@@ -18,40 +18,50 @@
 </head>
 
 <body>
-    <div class="form-container">
-        <img src="../../../../../public/img/LogoBlanco.png" alt="HWI Logo" class="logo">
-        <h2 class="title">Solicitar Químicos</h2><br>
+
+    <div class="main-card">
+        <div class="header-section">
+            <img src="../../../../../public/img/LogoBlanco.png" alt="HWI Logo">
+            <h2 class="fw-bold">Solicitar Químicos</h2>
+        </div>
+
         <form id="formSolicitudQuimico">
-            <div class="row">
-                <div class="col-12 form-group mt-5">
-                    <input type="text" class="custom-input" id="cedula_solicitante" placeholder=" " name="cedula_solicitante">
-                    <label for="cedula_solicitante" class="floating-label">Cédula: *</label>
+            <div class="row g-3"> <div class="col-md-6">
+                    <label class="form-label-custom">Cédula: *</label>
+                    <input type="text" class="form-control custom-input" id="cedula_solicitante" name="cedula_solicitante">
                 </div>
-                <div class="col-12 form-group mt-3">
-                    <input type="text" class="custom-input" id="nombres_solicitante_consumo" placeholder=" " name="nombres_solicitante_consumo">
-                    <label for="inputUsername" class="floating-label">Nombre(s): *</label>
+                
+                <div class="col-md-6">
+                    <label class="form-label-custom">Nombre(s): *</label>
+                    <input type="text" class="form-control custom-input" id="nombres_solicitante_consumo" name="nombres_solicitante_consumo">
                 </div>
-                <div class="col-12 form-group mt-3">
-                    <input type="text" class="custom-input" id="apellidos_solicitante_consumo" placeholder=" " name="apellidos_solicitante_consumo">
-                    <label for="apellidos_solicitante_consumo" class="floating-label">Apellido(s): *</label>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Apellido(s): *</label>
+                    <input type="text" class="form-control custom-input" id="apellidos_solicitante_consumo" name="apellidos_solicitante_consumo">
                 </div>
-                <div class="col-12 form-group mt-3">
-                    <select class="custom-input" id="id_celula_area_solicitud_consumo" name="id_celula_area_solicitud_consumo">
-                        <option value="" disabled>Seleccione una célula</option>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Células: *</label>
+                    <select class="form-select custom-input" id="id_celula_area_solicitud_consumo" name="id_celula_area_solicitud_consumo">
+                        <option value="" selected disabled>Seleccione una célula</option>
                     </select>
-                    <label for="id_celula_area_solicitud_consumo" class="floating-label">Células: *</label>
                 </div>
-                <div class="col-12 form-group mt-3">
-                    <select class="custom-input" id="id_quimico_solicitud_consumo" name="id_quimico_solicitud_consumo">
-                    </select>
-                    <label for="id_quimico_solicitud_consumo" class="floating-label">Químicos: *</label>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Químicos: *</label>
+                    <select class="form-select custom-input" id="id_quimico_solicitud_consumo" name="id_quimico_solicitud_consumo">
+                        </select>
                 </div>
-                <div class="col-12 form-group mt-3">
-                    <input type="text" class="custom-input" id="cantidad_solicitud_consumo" placeholder=" " name="cantidad_solicitud_consumo">
-                    <label for="cantidad_solicitud_consumo" class="floating-label">Cantidad: *</label>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Cantidad: *</label>
+                    <input type="number" class="form-control custom-input" id="cantidad_solicitud_consumo" name="cantidad_solicitud_consumo">
                 </div>
-                <div class="d-grid mb-4 justify-content-center">
-                    <button type="submit" value="Ingresar" name="btningresar" class="btn btn-success align-items-center w-100 mx-auto" id="btningresar">
+
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-request" id="btningresar">
+                        <i class="material-icons align-middle">send</i>
                         <span class="align-middle">Solicitar</span>
                     </button>
                 </div>
@@ -59,18 +69,12 @@
         </form>
     </div>
 
+    <script src="../../../../../public/js/utils/libs/notification.js"></script>
     <script src="../../../../../public/js/utils/libs/jquery.js"></script>
     <script src="../../../../../public/js/utils/libs/bootstrap.js"></script>
-    <script src="../../../../../public/js/utils/libs/datatables.js"></script>
-    <script src="../../../../../public/js/utils/libs/fancybox.js"></script>
-    <script src="../../../../../public/js/utils/libs/notification.js"></script>
-    <!-- JS Choices -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
-    <!-- Scripts funcionalidades -->
-    <script src="../../../../../public/js/utils/spinner.js"></script>
-    <script src="../../../../../public/js/utils/notifications.js"></script>
     <script src="../../../../../public/js/solicitudes/solicitar_quimicos.js"></script>
+    <script src="../../../../../public/js/utils/notifications.js"></script>
 </body>
 
 </html>

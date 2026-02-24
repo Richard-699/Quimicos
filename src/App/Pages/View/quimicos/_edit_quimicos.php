@@ -218,7 +218,7 @@ header("Expires: 0");
     <!-- Scripts funcionalidades -->
     <script src="../../../../../public/js/utils/spinner.js"></script>
     <script src="../../../../../public/js/utils/notifications.js"></script>
-    <script src="js/quimicos/edit_quimicos.js?v=<?= filemtime('public/js/quimicos/edit_quimicos.js') ?>"></script>
+    <script src="../../../../../public/js/quimicos/edit_quimicos.js?v=<?= filemtime('../../../../../public/js/quimicos/edit_quimicos.js') ?>"></script>
 </body>
 
 </html>

@@ -5,7 +5,7 @@ if (!isset($_SESSION['sidebarinactive'])) {
 }
 
 if (!isset($_SESSION['administrador'])) {
-    header('Location: /inventario/src/App/Pages/View/auth/login.php');
+    header('Location: /Quimicos/src/App/Pages/View/auth/login.php');
     exit;
 }
 

@@ -148,31 +148,31 @@ async function update(btn, id) {
     btn.disabled = true;
 
     try {
-        const responseUMBS = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_umbs', {
+        const responseUMBS = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_umbs&t=${Date.now()}', {
             method: 'GET'
         });
         const umbs = await responseUMBS.json();
         const umbsEncoded = encodeURIComponent(JSON.stringify(umbs));
 
-        const responseCelulasAreas = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_celulasAreas', {
+        const responseCelulasAreas = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_celulasAreas&t=${Date.now()}', {
             method: 'GET'
         });
         const celulasAreas = await responseCelulasAreas.json();
         const celulasAreasEncoded = encodeURIComponent(JSON.stringify(celulasAreas));
 
-        const responseCelulasAreasSelected = await fetch(`../../Handler/quimicos/quimicosHandler.php?action=onGet_celulasAreasSelected&id=${id}`, {
+        const responseCelulasAreasSelected = await fetch(`../../Handler/quimicos/quimicosHandler.php?action=onGet_celulasAreasSelected&id=${id}&t=${Date.now()}`, {
             method: 'GET'
         });
         const celulasAreasSelected = await responseCelulasAreasSelected.json();
         const celulasAreasSelectedEncoded = encodeURIComponent(JSON.stringify(celulasAreasSelected));
 
-        const responsePeligrosidades = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_peligrosidades', {
+        const responsePeligrosidades = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_peligrosidades&t=${Date.now()}', {
             method: 'GET'
         });
         const peligrosidades = await responsePeligrosidades.json();
         const peligrosidadesEncoded = encodeURIComponent(JSON.stringify(peligrosidades));
 
-        const responseQuimicoSelected = await fetch(`../../Handler/quimicos/quimicosHandler.php?action=onGet_quimicoSelected&id=${id}`, {
+        const responseQuimicoSelected = await fetch(`../../Handler/quimicos/quimicosHandler.php?action=onGet_quimicoSelected&id=${id}&t=${Date.now()}`, {
             method: 'GET'
         });
         const quimicoSelected = await responseQuimicoSelected.json();

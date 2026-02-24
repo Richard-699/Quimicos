@@ -1,3 +1,8 @@
+<?php
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -211,10 +216,9 @@
 
 
     <!-- Scripts funcionalidades -->
-    <script src="../../../../../public/js/utils/libs/select2.js"></script>
     <script src="../../../../../public/js/utils/spinner.js"></script>
     <script src="../../../../../public/js/utils/notifications.js"></script>
-    <script src="../../../../../public/js/quimicos/edit_quimicos.js"></script>
+    <script src="js/quimicos/edit_quimicos.js?v=<?= filemtime('public/js/quimicos/edit_quimicos.js') ?>"></script>
 </body>
 
 </html>

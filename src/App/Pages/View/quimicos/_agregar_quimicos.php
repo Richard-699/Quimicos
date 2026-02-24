@@ -164,7 +164,6 @@
 
 
     <!-- Scripts funcionalidades -->
-    <script src="../../../../../public/js/utils/libs/select2.js"></script>
     <script src="../../../../../public/js/utils/spinner.js"></script>
     <script src="../../../../../public/js/utils/notifications.js"></script>
     <script src="../../../../../public/js/quimicos/agregar_quimicos.js"></script>

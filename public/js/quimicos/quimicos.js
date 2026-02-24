@@ -78,54 +78,52 @@ $(document).ready(function () {
             Fancybox.show([{
                 src: url,
                 type: 'ajax'
-            }]);
+            }], {
+                on: {
+                    reveal: (fancybox, slide) => {
+                        ocultarCarga();
 
-            setTimeout(() => {
-                ocultarCarga();
+                        const celulas_areas_quimicos = document.getElementById('celulas_areas_quimicos');
+                        if (celulas_areas_quimicos && !celulas_areas_quimicos.classList.contains('choices-initialized')) {
+                            const choicesInstance = new Choices(celulas_areas_quimicos, {
+                                removeItemButton: true,
+                                searchEnabled: true,
+                                placeholder: true,
+                                placeholderValue: 'Selecciona una o más células',
+                                searchPlaceholderValue: 'Buscar células...',
+                                shouldSort: false
+                            });
 
-                const celulas_areas_quimicos = document.getElementById('celulas_areas_quimicos');
-                if (celulas_areas_quimicos && !celulas_areas_quimicos.classList.contains('choices-initialized')) {
-                    const choicesInstance = new Choices(celulas_areas_quimicos, {
-                        removeItemButton: true,
-                        searchEnabled: true,
-                        placeholder: true,
-                        placeholderValue: 'Selecciona una o más células',
-                        searchPlaceholderValue: 'Buscar células...',
-                        shouldSort: false
-                    });
+                            document.addEventListener('click', function (e) {
+                                const opcion = e.target.closest('.choices__item--selectable');
+                                const contenedor = e.target.closest('.choices__list--dropdown');
 
-                    document.addEventListener('click', function (e) {
-                        const opcion = e.target.closest('.choices__item--selectable');
-                        const contenedor = e.target.closest('.choices__list--dropdown');
+                                if (opcion && contenedor) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
 
-                        if (opcion && contenedor) {
-                            e.preventDefault();
-                            e.stopPropagation();
+                                    const value = opcion.getAttribute('data-value');
+                                    if (!value) return;
 
-                            const value = opcion.getAttribute('data-value');
-                            if (!value) return;
+                                    const selectedValues = choicesInstance.getValue(true);
+                                    const isSelected = selectedValues.includes(value);
 
-                            const selectedValues = choicesInstance.getValue(true);
-                            const isSelected = selectedValues.includes(value);
+                                    if (isSelected) {
+                                        choicesInstance.removeActiveItemsByValue(value);
+                                    } else {
+                                        choicesInstance.setChoiceByValue(value);
+                                    }
+                                }
+                            });
 
-                            if (isSelected) {
-                                choicesInstance.removeActiveItemsByValue(value);
-                            } else {
-                                choicesInstance.setChoiceByValue(value);
-                            }
+                            celulas_areas_quimicos.classList.add('choices-initialized');
                         }
-                    });
-
-                    celulas_areas_quimicos.classList.add('choices-initialized');
-                }
-
-                Fancybox.getInstance().options = {
-                    ...Fancybox.getInstance().options,
-                    click: false,
-                    trapFocus: false,
-                    placeFocusBack: false
-                };
-            }, 100);
+                    }
+                },
+                click: false,
+                trapFocus: false,
+                placeFocusBack: false
+            });
 
         } catch (error) {
             console.error('Error al cargar la modal:', error);
@@ -169,8 +167,8 @@ async function update(btn, id) {
         const celulasAreasSelectedEncoded = encodeURIComponent(JSON.stringify(celulasAreasSelected));
 
         const responsePeligrosidades = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_peligrosidades', {
-                method: 'GET'
-            });
+            method: 'GET'
+        });
         const peligrosidades = await responsePeligrosidades.json();
         const peligrosidadesEncoded = encodeURIComponent(JSON.stringify(peligrosidades));
 
@@ -180,59 +178,57 @@ async function update(btn, id) {
         const quimicoSelected = await responseQuimicoSelected.json();
         const quimicoSelectedEncoded = encodeURIComponent(JSON.stringify(quimicoSelected));
 
-        var url = `_edit_quimicos.php?quimicoSelected=${quimicoSelectedEncoded}&umbs=${umbsEncoded}&celulasAreas=${celulasAreasEncoded}&celulasAreasSelected=${celulasAreasSelectedEncoded}&peligrosidades=${peligrosidadesEncoded}&id=${id}`;
+        var url = `_edit_quimicos.php?quimicoSelected=${quimicoSelectedEncoded}&umbs=${umbsEncoded}&celulasAreas=${celulasAreasEncoded}&celulasAreasSelected=${celulasAreasSelectedEncoded}&peligrosidades=${peligrosidadesEncoded}&id=${id}&t=${new Date().getTime()}`;
 
         Fancybox.show([{
             src: url,
             type: 'ajax'
-        }]);
+        }], {
+            on: {
+                reveal: (fancybox, slide) => {
+                    ocultarCarga();
 
-        setTimeout(() => {
-            ocultarCarga();
+                    const celulas_areas_quimicos = document.getElementById('celulas_areas_quimicos');
+                    if (celulas_areas_quimicos && !celulas_areas_quimicos.classList.contains('choices-initialized')) {
+                        const choicesInstance = new Choices(celulas_areas_quimicos, {
+                            removeItemButton: true,
+                            searchEnabled: true,
+                            placeholder: true,
+                            placeholderValue: 'Selecciona una o más células',
+                            searchPlaceholderValue: 'Buscar células...',
+                            shouldSort: false
+                        });
 
-            const celulas_areas_quimicos = document.getElementById('celulas_areas_quimicos');
-            if (celulas_areas_quimicos && !celulas_areas_quimicos.classList.contains('choices-initialized')) {
-                const choicesInstance = new Choices(celulas_areas_quimicos, {
-                    removeItemButton: true,
-                    searchEnabled: true,
-                    placeholder: true,
-                    placeholderValue: 'Selecciona una o más células',
-                    searchPlaceholderValue: 'Buscar células...',
-                    shouldSort: false
-                });
+                        document.addEventListener('click', function (e) {
+                            const opcion = e.target.closest('.choices__item--selectable');
+                            const contenedor = e.target.closest('.choices__list--dropdown');
 
-                document.addEventListener('click', function (e) {
-                    const opcion = e.target.closest('.choices__item--selectable');
-                    const contenedor = e.target.closest('.choices__list--dropdown');
+                            if (opcion && contenedor) {
+                                e.preventDefault();
+                                e.stopPropagation();
 
-                    if (opcion && contenedor) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                                const value = opcion.getAttribute('data-value');
+                                if (!value) return;
 
-                        const value = opcion.getAttribute('data-value');
-                        if (!value) return;
+                                const selectedValues = choicesInstance.getValue(true);
+                                const isSelected = selectedValues.includes(value);
 
-                        const selectedValues = choicesInstance.getValue(true);
-                        const isSelected = selectedValues.includes(value);
+                                if (isSelected) {
+                                    choicesInstance.removeActiveItemsByValue(value);
+                                } else {
+                                    choicesInstance.setChoiceByValue(value);
+                                }
+                            }
+                        });
 
-                        if (isSelected) {
-                            choicesInstance.removeActiveItemsByValue(value);
-                        } else {
-                            choicesInstance.setChoiceByValue(value);
-                        }
+                        celulas_areas_quimicos.classList.add('choices-initialized');
                     }
-                });
-
-                celulas_areas_quimicos.classList.add('choices-initialized');
-            }
-
-            Fancybox.getInstance().options = {
-                ...Fancybox.getInstance().options,
-                click: false,
-                trapFocus: false,
-                placeFocusBack: false
-            };
-        }, 100);
+                }
+            },
+            click: false,
+            trapFocus: false,
+            placeFocusBack: false
+        });
 
     } catch (error) {
         console.error('Error al cargar la modal:', error);

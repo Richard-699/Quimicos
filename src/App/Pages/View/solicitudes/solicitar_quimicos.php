@@ -75,6 +75,7 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script src="../../../../../public/js/solicitudes/solicitar_quimicos.js"></script>
     <script src="../../../../../public/js/utils/notifications.js"></script>
+    <script src="../../../../../public/js/utils/spinner.js"></script>
 </body>
 
 </html>

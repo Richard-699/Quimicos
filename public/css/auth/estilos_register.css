@@ -1,131 +1,118 @@
-.form-group {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-.floating-label {
-    position: absolute;
-    pointer-events: none;
-    top: -12px;
-    left: 35px;
-    transition: top 0.3s, font-size 0.3s, color 0.3s;
-    color: #333;
-}
-
-.custom-input {
-    border: none;
-    border-bottom: 2px solid #ced4da;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 0;
-    width: 90%;
-    transition: border-color 0.3s;
-    margin-bottom: 20px;
-    margin-left: 20px;
-}
-
-.custom-input:focus {
-    outline: none;
-    border-color: #17a2b8;
-}
-
-.custom-input:focus+.floating-label,
-.custom-input:not(:placeholder-shown)+.floating-label {
-    top: -30px;
-    font-size: 0.9rem;
-    color: #17a2b8;
-}
-
-.password-toggle {
-    position: absolute;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    margin-top: -15px;
-    display: none;
-    background: none;
-    border: none;
+* {
+    box-sizing: border-box;
 }
 
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 120vh;
-    /* Cambiar 150vh a 100vh para que ocupe toda la altura de la ventana */
+    min-height: 100vh;
     margin: 0;
-    background: #072B31;
-    background: linear-gradient(to left, #0093B2, #072B31);
+    padding: 20px;
+    background: linear-gradient(135deg, #0093B2, #072B31);
     color: #333;
+    font-family: system-ui, -apple-system, sans-serif;
 }
 
 .form-container {
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 1;
-    max-width: 500px;
-    margin: 0 auto;
+    padding: 40px 30px; /* Más espacio interior para respirar */
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Sombra más suave y moderna */
     width: 100%;
-    /* Asegurarse de que el formulario no quede más ancho de lo necesario */
-    box-sizing: border-box;
+    max-width: 450px;
 }
 
-.title {
+.header-section {
     text-align: center;
-    z-index: 2;
-    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 .logo {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 70px;
+    width: 80px;
     height: auto;
-    margin: 10px;
-    z-index: 2;
+    margin-bottom: 15px;
 }
 
-p {
-    text-align: left;
-    margin-top: -10px;
-    margin-left: 22px;
+.title {
+    margin: 0;
+    color: #072B31;
 }
 
-.pContrato {
-    margin-top: 5px;
+.form-group {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.custom-input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #ced4da;
+    border-radius: 0;
+    padding: 8px 0;
+    background-color: transparent;
+    transition: border-color 0.3s;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #17a2b8;
+    box-shadow: none;
+}
+
+.floating-label {
+    position: absolute;
+    pointer-events: none;
+    top: 8px;
+    left: 0;
+    transition: top 0.3s, font-size 0.3s, color 0.3s;
+    color: #6c757d;
+}
+
+.custom-input:focus + .floating-label,
+.custom-input:not(:placeholder-shown) + .floating-label {
+    top: -18px;
+    font-size: 0.85rem;
+    color: #17a2b8;
+    font-weight: 500;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #6c757d;
+    display: flex;
+    padding: 0;
 }
 
 #btningresar {
     background-color: #17a2b8;
     color: white;
     border: none;
-    padding: 8px 16px;
-    font-size: 15px;
-    border-radius: 6px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(23, 162, 184, 0.2);
 }
 
 #btningresar:hover {
     background-color: #138496;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(23, 162, 184, 0.3);
 }
 
 #btningresar:disabled {
-    background-color: #3ba0b4;
+    background-color: #8accd7;
     cursor: not-allowed;
-    opacity: 0.7;
-}
-
-.text-Ingresar {
-    margin-top: -10px;
+    transform: none;
+    box-shadow: none;
 }
 
 .select2-container--default .select2-selection--multiple {
@@ -133,12 +120,16 @@ p {
     border-radius: 0.25rem;
     min-height: 38px;
     padding: 4px 8px;
-    width: 90%;
-    margin-left: 20px;
+    width: 100%;
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
-.form-label {
-    margin-left: 22px;
+a {
+    text-decoration: none;
+    color: #0093B2;
+}
+
+a:hover {
+    text-decoration: none;
 }

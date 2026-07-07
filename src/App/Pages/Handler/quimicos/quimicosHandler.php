@@ -175,6 +175,10 @@ function onPostSaveQuimicos(array $data)
         $cantidad_disponible = $form['cantidad_disponible_quimico'] === '' ? null : (float) $form['cantidad_disponible_quimico'];
         $cantidad_maxima = $form['cantidad_maxima_retiro_quimico'] === '' ? null : (float) $form['cantidad_maxima_retiro_quimico'];
         $tope_minimo = $form['tope_minimo_quimico'] === '' ? null : (float) $form['tope_minimo_quimico'];
+        $cantidad_minima_almacenamiento = $form['cantidad_minima_almacenamiento_quimico'] === '' ? null : (float) $form['cantidad_minima_almacenamiento_quimico'];
+        $cantidad_maxima_almacenamiento = $form['cantidad_maxima_almacenamiento_quimico'] === '' ? null : (float) $form['cantidad_maxima_almacenamiento_quimico'];
+        $tiempo_entrega_minimo = $form['tiempo_entrega_minimo_quimico'] === '' ? null : (int) $form['tiempo_entrega_minimo_quimico'];
+        $tiempo_entrega_maximo = $form['tiempo_entrega_maximo_quimico'] === '' ? null : (int) $form['tiempo_entrega_maximo_quimico'];
         $precio = $form['precio_quimico'] === '' ? null : (float) $form['precio_quimico'];
         $id_estado = 4; //Activo
 
@@ -199,6 +203,10 @@ function onPostSaveQuimicos(array $data)
             cantidad_disponible_quimico: $cantidad_disponible,
             cantidad_maxima_retiro_quimico: $cantidad_maxima,
             tope_minimo_quimico: $tope_minimo,
+            cantidad_minima_almacenamiento_quimico: $cantidad_minima_almacenamiento,
+            cantidad_maxima_almacenamiento_quimico: $cantidad_maxima_almacenamiento,
+            tiempo_entrega_minimo_quimico: $tiempo_entrega_minimo,
+            tiempo_entrega_maximo_quimico: $tiempo_entrega_maximo,
             precio_quimico: $precio,
             id_estado_quimico: $id_estado,
             url_etiqueta_emergencia_quimico: $form['url_etiqueta_emergencia_quimico'],
@@ -249,6 +257,10 @@ function onPostUpdateQuimico(array $data)
         $cantidad_disponible = $form['cantidad_disponible_quimico'] === '' ? null : (float) $form['cantidad_disponible_quimico'];
         $cantidad_maxima = $form['cantidad_maxima_retiro_quimico'] === '' ? null : (float) $form['cantidad_maxima_retiro_quimico'];
         $tope_minimo = $form['tope_minimo_quimico'] === '' ? null : (float) $form['tope_minimo_quimico'];
+        $cantidad_minima_almacenamiento = $form['cantidad_minima_almacenamiento_quimico'] === '' ? null : (float) $form['cantidad_minima_almacenamiento_quimico'];
+        $cantidad_maxima_almacenamiento = $form['cantidad_maxima_almacenamiento_quimico'] === '' ? null : (float) $form['cantidad_maxima_almacenamiento_quimico'];
+        $tiempo_entrega_minimo = $form['tiempo_entrega_minimo_quimico'] === '' ? null : (int) $form['tiempo_entrega_minimo_quimico'];
+        $tiempo_entrega_maximo = $form['tiempo_entrega_maximo_quimico'] === '' ? null : (int) $form['tiempo_entrega_maximo_quimico'];
         $precio = $form['precio_quimico'] === '' ? null : (float) $form['precio_quimico'];
         $id_estado = 4; //Activo
 
@@ -271,6 +283,10 @@ function onPostUpdateQuimico(array $data)
             cantidad_disponible_quimico: $cantidad_disponible,
             cantidad_maxima_retiro_quimico: $cantidad_maxima,
             tope_minimo_quimico: $tope_minimo,
+            cantidad_minima_almacenamiento_quimico: $cantidad_minima_almacenamiento,
+            cantidad_maxima_almacenamiento_quimico: $cantidad_maxima_almacenamiento,
+            tiempo_entrega_minimo_quimico: $tiempo_entrega_minimo,
+            tiempo_entrega_maximo_quimico: $tiempo_entrega_maximo,
             precio_quimico: $precio,
             id_estado_quimico: $id_estado,
             url_etiqueta_emergencia_quimico: $form['url_etiqueta_emergencia_quimico'],

@@ -56,6 +56,14 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
             $solicitudesBd = $this->solicitudesConsumoRepository->onGet_By__Id_Estado($id_estado);
             $solicitudes = Mapper::modelToSolicitudesConsumosDTO($solicitudesBd);
 
+            foreach ($solicitudes as $solicitud) {
+                $solicitud->ultima_fecha_solicitud_consumo =
+                    $this->solicitudesConsumoRepository->findUltimaFechaSolicitudConsumo_By__IdQuimico_And_IdCelula(
+                        $solicitud->id_quimico_solicitud_consumo,
+                        $solicitud->id_celula_area_solicitud_consumo
+                    ) ?? "No registra";
+            }
+
             $celulas_areas = $this->quimicosService->ongetCelulas();
 
             foreach ($solicitudes as $solicitud) {
@@ -114,19 +122,21 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
                 $rango_preventivo = $tope_minimo + ($tope_minimo * 0.20);
 
                 $enviar_correo = false;
+                $titulo = null;
+                $contenido = null;
 
                 if ($new_cantidad_disponible <= $tope_minimo) {
                     $contenido = '<p style="margin-top: 10px;">⚠ Nivel crítico: 
                         El químico ha llegado o bajado del tope mínimo 
-                        ('. $quimico->tope_minimo_quimico. ' ' .$quimico->umb_quimico.') 
-                        quedan disponibles: ' .$new_cantidad_disponible. '.</p>';
+                        (' . $quimico->tope_minimo_quimico . ' ' . $quimico->umb_quimico . ') 
+                        quedan disponibles: ' . $new_cantidad_disponible . '.</p>';
                     $titulo = '⚠ Nivel crítico con el químico: ' . $quimico->descripcion_quimico;
                     $enviar_correo = true;
                 } elseif ($new_cantidad_disponible <= $rango_preventivo) {
                     $contenido = '<p style="margin-top: 10px;">⚠ Atención: 
                         La cantidad disponible se está acercando al tope mínimo
-                        ('. $quimico->tope_minimo_quimico . ' ' .$quimico->umb_quimico.') 
-                        quedan disponibles: ' .$new_cantidad_disponible. '.</p>';
+                        (' . $quimico->tope_minimo_quimico . ' ' . $quimico->umb_quimico . ') 
+                        quedan disponibles: ' . $new_cantidad_disponible . '.</p>';
                     $titulo = '⚠ Atención con el químico: ' . $quimico->descripcion_quimico;
                     $enviar_correo = true;
                 }

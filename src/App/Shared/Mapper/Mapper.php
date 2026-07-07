@@ -65,6 +65,10 @@ class Mapper
                 cantidad_disponible_quimico: $model->cantidad_disponible_quimico,
                 cantidad_maxima_retiro_quimico: $model->cantidad_maxima_retiro_quimico,
                 tope_minimo_quimico: $model->tope_minimo_quimico,
+                cantidad_minima_almacenamiento_quimico: $model->cantidad_minima_almacenamiento_quimico,
+                cantidad_maxima_almacenamiento_quimico: $model->cantidad_maxima_almacenamiento_quimico,
+                tiempo_entrega_minimo_quimico: $model->tiempo_entrega_minimo_quimico,
+                tiempo_entrega_maximo_quimico: $model->tiempo_entrega_maximo_quimico,
                 precio_quimico: $model->precio_quimico,
                 url_etiqueta_emergencia_quimico: $model->url_etiqueta_emergencia_quimico,
                 id_estado_quimico: $model->id_estado_quimico
@@ -84,6 +88,10 @@ class Mapper
             cantidad_disponible_quimico: $model->cantidad_disponible_quimico,
             cantidad_maxima_retiro_quimico: $model->cantidad_maxima_retiro_quimico,
             tope_minimo_quimico: $model->tope_minimo_quimico,
+            cantidad_minima_almacenamiento_quimico: $model->cantidad_minima_almacenamiento_quimico,
+            cantidad_maxima_almacenamiento_quimico: $model->cantidad_maxima_almacenamiento_quimico,
+            tiempo_entrega_minimo_quimico: $model->tiempo_entrega_minimo_quimico,
+            tiempo_entrega_maximo_quimico: $model->tiempo_entrega_maximo_quimico,
             precio_quimico: $model->precio_quimico,
             url_etiqueta_emergencia_quimico: $model->url_etiqueta_emergencia_quimico,
             id_estado_quimico: $model->id_estado_quimico
@@ -102,6 +110,10 @@ class Mapper
             $dto->cantidad_disponible_quimico,
             $dto->cantidad_maxima_retiro_quimico,
             $dto->tope_minimo_quimico,
+            $dto->cantidad_minima_almacenamiento_quimico,
+            $dto->cantidad_maxima_almacenamiento_quimico,
+            $dto->tiempo_entrega_minimo_quimico,
+            $dto->tiempo_entrega_maximo_quimico,
             $dto->precio_quimico,
             $dto->url_etiqueta_emergencia_quimico,
             $dto->id_estado_quimico
@@ -197,6 +209,7 @@ class Mapper
             return new SolicitudesConsumoDTO(
                 id_solicitud_consumo: $model->id_solicitud_consumo,
                 fecha_solicitud_consumo: $model->fecha_solicitud_consumo,
+                ultima_fecha_solicitud_consumo: null,
                 id_celula_area_solicitud_consumo: $model->id_celula_area_solicitud_consumo,
                 id_quimico_solicitud_consumo: $model->id_quimico_solicitud_consumo,
                 cantidad_solicitud_consumo: $model->cantidad_solicitud_consumo,

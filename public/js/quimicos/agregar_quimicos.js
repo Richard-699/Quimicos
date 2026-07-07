@@ -16,6 +16,12 @@ $(document).ready(function () {
         });
     });
 
+    document.querySelectorAll('.int-input').forEach(input => {
+        input.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '');
+        });
+    });
+
     document.getElementById('formAgregarQuimico').addEventListener('submit', async function (e) {
         e.preventDefault();
         mostrarCarga();

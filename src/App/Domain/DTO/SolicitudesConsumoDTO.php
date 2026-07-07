@@ -6,6 +6,7 @@ class SolicitudesConsumoDTO {
     public function __construct(
         public ?int $id_solicitud_consumo = null,
         public ?string $fecha_solicitud_consumo = null,
+        public ?string $ultima_fecha_solicitud_consumo = null,
         public ?int $id_celula_area_solicitud_consumo = null,
         public ?string $celula_area = null,
         public ?string $id_quimico_solicitud_consumo = null,

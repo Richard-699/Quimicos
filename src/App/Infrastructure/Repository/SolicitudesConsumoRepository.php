@@ -4,6 +4,7 @@ namespace App\Infrastructure\Repository;
 
 use App\Application\Interface\Repository\ISolicitudesConsumoRepository;
 use App\Domain\Model\SolicitudesConsumo;
+use Override;
 use PDO;
 
 class SolicitudesConsumoRepository implements ISolicitudesConsumoRepository
@@ -49,5 +50,29 @@ class SolicitudesConsumoRepository implements ISolicitudesConsumoRepository
         $stmt->bindParam(':id_solicitud', $id_solicitud);
 
         return $stmt->execute();
+    }
+
+    public function findUltimaFechaSolicitudConsumo_By__IdQuimico_And_IdCelula(string $id_quimico, int $id_celula_area): ?string
+    {
+        $id_estado_aprobada = 1;
+
+        $query = "SELECT fecha_solicitud_consumo
+              FROM quimicos_hwi_solicitudes_consumo
+              WHERE id_quimico_solicitud_consumo = :id_quimico
+                AND id_celula_area_solicitud_consumo = :id_celula_area
+                AND id_estado_solicitud_quimico = :id_estado
+              ORDER BY fecha_solicitud_consumo DESC
+              LIMIT 1";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_quimico', $id_quimico);
+        $stmt->bindParam(':id_celula_area', $id_celula_area);
+        $stmt->bindParam(':id_estado', $id_estado_aprobada, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $fecha = $stmt->fetchColumn();
+
+        return $fecha ?: null;
     }
 }

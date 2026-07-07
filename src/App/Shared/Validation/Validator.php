@@ -78,6 +78,18 @@ class Validator
         if (empty($dto->tope_minimo_quimico)) {
             throw new Exception('El tope mínimo es obligatorio.');
         }
+        if (empty($dto->cantidad_minima_almacenamiento_quimico)) {
+            throw new Exception('La cantidad mínima de almacenamiento es obligatoria.');
+        }
+        if (empty($dto->cantidad_maxima_almacenamiento_quimico)) {
+            throw new Exception('La cantidad máxima de almacenamiento es obligatoria.');
+        }
+        if (empty($dto->tiempo_entrega_minimo_quimico)) {
+            throw new Exception('El tiempo de entrega mínimo es obligatorio.');
+        }
+        if (empty($dto->tiempo_entrega_maximo_quimico)) {
+            throw new Exception('El tiempo de entrega máximo es obligatorio.');
+        }
         if (empty($dto->precio_quimico)) {
             throw new Exception('El precio es obligatorio.');
         }

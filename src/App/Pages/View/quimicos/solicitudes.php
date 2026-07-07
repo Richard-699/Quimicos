@@ -42,6 +42,7 @@ include '../../Handler/auth/session_init.php';
                     <tr>
                         <th style="width: 10%;">Fecha</th>
                         <th style="width: 16%;">Célula</th>
+                        <th style="width: 16%;">Última Solicitud</th>
                         <th style="width: 18%;">Químico</th>
                         <th style="width: 18%;">UMB</th>
                         <th style="width: 18%;">Cantidad</th>

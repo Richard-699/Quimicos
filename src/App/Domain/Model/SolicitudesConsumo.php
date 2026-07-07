@@ -31,17 +31,7 @@ class SolicitudesConsumo {
 
     public function toArray(): array
     {
-        return [
-            'id_solicitud_consumo' => $this->id_solicitud_consumo,
-            'fecha_solicitud_consumo' => $this->fecha_solicitud_consumo,
-            'id_celula_area_solicitud_consumo' => $this->id_celula_area_solicitud_consumo,
-            'id_quimico_solicitud_consumo' => $this->id_quimico_solicitud_consumo,
-            'cantidad_solicitud_consumo' => $this->cantidad_solicitud_consumo,
-            'cedula_solicitante' => $this->cedula_solicitante,
-            'nombres_solicitante_consumo' => $this->nombres_solicitante_consumo,
-            'apellidos_solicitante_consumo' => $this->apellidos_solicitante_consumo,
-            'id_estado_solicitud_quimico' => $this->id_estado_solicitud_quimico
-        ];
+        return get_object_vars($this);
     }
 }
 

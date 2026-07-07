@@ -1,11 +1,5 @@
 <?php
-// *****************************************************************
-// INICIALIZACIÓN DE VISTA PROTEGIDA
-// Este archivo carga Composer, Inicia la Sesión, Valida la Sesión 
-// y define las variables de administrador requeridas por el header.
-// *****************************************************************
 include '../../Handler/auth/session_init.php'; 
-// Las variables $administrador, $permisosAdministradores, y $permisos ya están definidas aquí.
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -20,6 +14,7 @@ include '../../Handler/auth/session_init.php';
     <link rel="stylesheet" href="../../../../../public/css/utils/estilos_spinner.css">
     <link rel="stylesheet" href="../../../../../public/css/dataTable/dataTable.css">
     <link rel="stylesheet" href="../../../../../public/css/utils/select_multiple.css">
+    <link rel="stylesheet" href="../../../../../public/css/quimicos/solicitudes.css">
     <!-- CSS Choices -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <?php include('../../../Shared/Util/spinner.php'); ?>
@@ -35,6 +30,9 @@ include '../../Handler/auth/session_init.php';
                     <i class="fa-solid fa-file-circle-exclamation me-2 fs-4"></i>
                     <h5 class="m-0 fw-semibold text-dark"> Solicitudes</h5>
                 </div>
+                <button class="btn btn-primary btn-sm" id="btnCadencia">
+                    <i class="fa-regular fa-clock me-1"></i> Actualizar Cadencia
+                </button>
             </div>
 
             <table id="tabla-solicitudes" class="table table-striped table-bordered table-sm dt-responsive nowrap" style="width:100%">

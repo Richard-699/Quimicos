@@ -1,0 +1,36 @@
+.contenido_edit_cadencia {
+    max-width: 800px;
+    width: 500px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .contenido_edit_cadencia {
+        padding: 0 10px;
+        width: 300px;
+    }
+}
+
+#btn-actualizar {
+    background-color: #17a2b8; /* Color base */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#btn-actualizar:hover {
+    background-color: #138496; /* Un poco más oscuro */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+#btn-actualizar:disabled {
+    background-color: #a5cdd3; /* Color desactivado */
+    cursor: not-allowed;
+    opacity: 0.7;
+}

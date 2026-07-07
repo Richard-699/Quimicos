@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 use App\Application\Service\SolicitudesConsumoService;
+use App\Domain\DTO\CadenciaActualDTO;
 use App\Shared\Util\Utilidades;
 use App\Shared\Validation\Validator;
 
@@ -15,6 +16,42 @@ function onGetSolicitudes()
             return $solicitudes;
         } else {
             throw new Exception("No se encontraron solicitudes.");
+        }
+    } catch (Exception $e) {
+        return [
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
+    }
+}
+
+function obtenerCadencias() {
+    try {
+        $solicitudesConsumoService = new SolicitudesConsumoService();
+        $cadencias = $solicitudesConsumoService->obtenerCadencias();
+
+        if ($cadencias) {
+            return $cadencias;
+        } else {
+            throw new Exception("No se encontraron cadencias.");
+        }
+    } catch (Exception $e) {
+        return [
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
+    }
+}
+
+function obtenerCadenciaActual() {
+    try {
+        $solicitudesConsumoService = new SolicitudesConsumoService();
+        $cadenciaActual = $solicitudesConsumoService->obtenerCadenciaActual();
+
+        if ($cadenciaActual) {
+            return $cadenciaActual;
+        } else {
+            throw new Exception("No se encontró la cadencia actual.");
         }
     } catch (Exception $e) {
         return [
@@ -63,6 +100,48 @@ function onPostUpdateEstadoSolicitud(array $data)
     }
 }
 
+function updateCadenciaActual(array $data) {
+    try {
+        date_default_timezone_set('America/Bogota');
+        $fecha_hora_registro_cadencia_actual = date('Y-m-d H:i:s');
+        $id_cadencias_cadencia_actual = isset($data['id_cadencias_cadencia_actual']) ? $data['id_cadencias_cadencia_actual'] : null;
+        $session_path = realpath(__DIR__ . '/../../../../../sessions');
+
+        if ($session_path && is_writable($session_path)) {
+            ini_set('session.save_path', $session_path);
+        }
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $id_administrador_cadencia_actual = $_SESSION['administrador']->id_administrador;
+
+        $cadenciaActualDTO = new CadenciaActualDTO(
+            id_cadencia_actual: null,
+            fecha_hora_registro_cadencia_actual: $fecha_hora_registro_cadencia_actual,
+            id_cadencias_cadencia_actual: $id_cadencias_cadencia_actual,
+            cadencia: null,
+            id_administrador_cadencia_actual: $id_administrador_cadencia_actual 
+        );
+
+        Validator::validateDTO($cadenciaActualDTO);
+
+        $solicitudesConsumoService = new SolicitudesConsumoService();
+        if(!$solicitudesConsumoService->guardarCadenciaActual($cadenciaActualDTO)){
+            throw new Exception("No se pudo guardar la cadencia actual.");
+        }
+
+        return [
+            'success' => true
+        ];
+    } catch (Exception $e) {
+        return [
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
+    }
+}
+
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 try {
@@ -80,6 +159,9 @@ try {
             case 'update_estado_solicitud':
                 $response = onPostUpdateEstadoSolicitud($data);
                 break;
+            case 'updateCadenciaActual':
+                $response = updateCadenciaActual($data['form'] ?? []);
+                break;
             default:
                 throw new Exception("Acción no permitida.");
                 break;
@@ -90,6 +172,12 @@ try {
         switch ($action) {
             case 'onGet_solicitudes':
                 $response = onGetSolicitudes();
+                break;
+            case 'obtenerCadencias':
+                $response = obtenerCadencias();
+                break;
+            case 'obtenerCadenciaActual':
+                $response = obtenerCadenciaActual();
                 break;
             default:
                 throw new Exception("Acción no permitida.");

@@ -26,11 +26,12 @@
         </div>
 
         <form id="formSolicitudQuimico">
-            <div class="row g-3"> <div class="col-md-6">
+            <div class="row g-3">
+                <div class="col-md-6">
                     <label class="form-label-custom">Cédula: *</label>
                     <input type="text" class="form-control custom-input" id="cedula_solicitante" name="cedula_solicitante">
                 </div>
-                
+
                 <div class="col-md-6">
                     <label class="form-label-custom">Nombre(s): *</label>
                     <input type="text" class="form-control custom-input" id="nombres_solicitante_consumo" name="nombres_solicitante_consumo">
@@ -51,12 +52,23 @@
                 <div class="col-md-6">
                     <label class="form-label-custom">Químicos: *</label>
                     <select class="form-select custom-input" id="id_quimico_solicitud_consumo" name="id_quimico_solicitud_consumo">
-                        </select>
+                    </select>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label-custom">Cantidad: *</label>
                     <input type="number" class="form-control custom-input" id="cantidad_solicitud_consumo" name="cantidad_solicitud_consumo">
+                </div>
+
+                <div class="col-12 text-center mt-5">
+                    <a id="btnTarjetaEmergencia"
+                        class="btn btn-warning d-none"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="width: 300px;">
+                        <i class="material-icons align-middle">description</i>
+                        <span class="align-middle">Visualizar tarjeta de emergencia</span>
+                    </a>
                 </div>
 
                 <div class="col-12 text-center mt-4">

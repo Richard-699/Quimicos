@@ -55,101 +55,121 @@
 
     <div class="contenido-agregar-quimico">
         <div class="p-3">
-            <h5 class="mb-4"><i class="fa-solid fa-flask me-2 fs-4"></i>Nuevo Químico</h5>
+            <h5 class="mb-4">
+                <i class="fa-solid fa-flask me-2 fs-4"></i>
+                Nuevo Químico
+            </h5>
             <form id="formAgregarQuimico">
-                <div class="mb-3">
-                    <label for="descripcion_quimico" class="form-label">Nombre Químico: *</label>
-                    <input type="text" class="form-control" id="descripcion_quimico" name="descripcion_quimico">
-                </div>
-                <div class="mb-3">
-                    <label for="fabricante_quimico" class="form-label">Fabricante: *</label>
-                    <input type="text" class="form-control" id="fabricante_quimico" name="fabricante_quimico">
-                </div>
-                <div class="mb-3">
-                    <label for="id_peligrosidad_quimico" class="form-label">Peligrosidad: *</label>
-                    <select class="form-select" id="id_peligrosidad_quimico" name="id_peligrosidad_quimico">
-                        <option value="" selected disabled>Seleccione un tipo</option>
-                        <?php
-                        if (!empty($peligrosidades)) {
-                            foreach ($peligrosidades as $peligrosidad) {
-                                $id = $peligrosidad->id_peligrosidad ?? '';
-                                $descripcion = $peligrosidad->descripcion_peligrosidad ?? 'N/A';
-                                echo "<option value='{$id}'>{$descripcion}</option>";
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="uso_quimico" class="form-label">Uso: *</label>
-                    <textarea type="text" class="form-control" id="uso_quimico" name="uso_quimico"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="id_umb_quimico" class="form-label">UMB: *</label>
-                    <select class="form-select" id="id_umb_quimico" name="id_umb_quimico">
-                        <option value="" selected disabled>Seleccione un tipo</option>
-                        <?php
-                        if (!empty($umbs)) {
-                            foreach ($umbs as $umb) {
-                                $id = $umb->id_umb ?? '';
-                                $descripcion = $umb->descripcion_umb ?? 'N/A';
-                                echo "<option value='{$id}'>{$descripcion}</option>";
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="cantidad_disponible_quimico" class="form-label">Cantidad disponible: *</label>
-                    <input type="text" class="form-control double-input" id="cantidad_disponible_quimico" name="cantidad_disponible_quimico">
-                </div>
-                <div class="mb-3">
-                    <label for="cantidad_maxima_retiro_quimico" class="form-label">Cantidad Máxima Retiro: *</label>
-                    <input type="text" class="form-control double-input" id="cantidad_maxima_retiro_quimico" name="cantidad_maxima_retiro_quimico">
-                </div>
-                <div class="mb-3">
-                    <label for="tope_minimo_quimico" class="form-label">Inventario Mínimo: *</label>
-                    <input type="text" class="form-control double-input" id="tope_minimo_quimico" name="tope_minimo_quimico">
-                </div>
-                <div class="mb-3">
-                    <label for="precio_quimico" class="form-label">Precio (und): *</label>
-                    <input type="text" class="form-control double-input" id="precio_quimico" name="precio_quimico">
-                </div>
-                <div class="mb-3">
-                    <label for="url_etiqueta_emergencia_quimico" class="form-label">Url Etiqueta Emergencia: *</label>
-                    <input type="text" class="form-control" id="url_etiqueta_emergencia_quimico" name="url_etiqueta_emergencia_quimico">
-                </div>
-                <div class="mb-4">
-                    <label for="celulas_areas_quimicos" class="form-label">
-                        Células autorizadas: *
-                    </label>
-
-                    <select id="celulas_areas_quimicos"
-                        class="form-control shadow-sm rounded"
-                        multiple
-                        name="celulas_areas_quimicos"
-                        multiple>
-                        <?php
-                        foreach ($celulasAreas as $c):
-                            $id_celulas_areas = (int)$c->id_celulas_areas;
-                        ?>
-                            <option value="<?= htmlspecialchars($id_celulas_areas) ?>">
-                                <?= htmlspecialchars($c->nombre_celula) ?>
-                            </option>
-                        <?php endforeach;
-                        ?>
-                    </select>
-                    <div class="form-text mt-1">
-                        Puedes buscar y seleccionar múltiples opciones.
+                <div class="row g-3 mb-6 mt-4">
+                    <div class="col-md-6 mb-3">
+                        <label for="descripcion_quimico" class="form-label">Nombre Químico: *</label>
+                        <input type="text" class="form-control" id="descripcion_quimico" name="descripcion_quimico">
                     </div>
-                </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="fabricante_quimico" class="form-label">Fabricante: *</label>
+                        <input type="text" class="form-control" id="fabricante_quimico" name="fabricante_quimico">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="id_peligrosidad_quimico" class="form-label">Peligrosidad: *</label>
+                        <select class="form-select" id="id_peligrosidad_quimico" name="id_peligrosidad_quimico">
+                            <option value="" selected disabled>Seleccione un tipo</option>
+                            <?php
+                            if (!empty($peligrosidades)) {
+                                foreach ($peligrosidades as $peligrosidad) {
+                                    $id = $peligrosidad->id_peligrosidad ?? '';
+                                    $descripcion = $peligrosidad->descripcion_peligrosidad ?? 'N/A';
+                                    echo "<option value='{$id}'>{$descripcion}</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="id_umb_quimico" class="form-label">UMB: *</label>
+                        <select class="form-select" id="id_umb_quimico" name="id_umb_quimico">
+                            <option value="" selected disabled>Seleccione un tipo</option>
+                            <?php
+                            if (!empty($umbs)) {
+                                foreach ($umbs as $umb) {
+                                    $id = $umb->id_umb ?? '';
+                                    $descripcion = $umb->descripcion_umb ?? 'N/A';
+                                    echo "<option value='{$id}'>{$descripcion}</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="uso_quimico" class="form-label">Uso: *</label>
+                        <textarea type="text" class="form-control" id="uso_quimico" name="uso_quimico"></textarea>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="cantidad_disponible_quimico" class="form-label">Cantidad disponible: *</label>
+                        <input type="text" class="form-control double-input" id="cantidad_disponible_quimico" name="cantidad_disponible_quimico">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="cantidad_maxima_retiro_quimico" class="form-label">Cantidad Máxima Retiro: *</label>
+                        <input type="text" class="form-control double-input" id="cantidad_maxima_retiro_quimico" name="cantidad_maxima_retiro_quimico">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="tope_minimo_quimico" class="form-label">Inventario Mínimo: *</label>
+                        <input type="text" class="form-control double-input" id="tope_minimo_quimico" name="tope_minimo_quimico">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="precio_quimico" class="form-label">Precio (und): *</label>
+                        <input type="text" class="form-control double-input" id="precio_quimico" name="precio_quimico">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="cantidad_minima_almacenamiento_quimico" class="form-label">Cantidad Mínima de Almacenamiento: *</label>
+                        <input type="text" class="form-control double-input" id="cantidad_minima_almacenamiento_quimico" name="cantidad_minima_almacenamiento_quimico">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="cantidad_maxima_almacenamiento_quimico" class="form-label">Cantidad Máxima de Almacenamiento: *</label>
+                        <input type="text" class="form-control double-input" id="cantidad_maxima_almacenamiento_quimico" name="cantidad_maxima_almacenamiento_quimico">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="tiempo_entrega_minimo_quimico" class="form-label">Tiempo Mínimo Estimado de Entrega (Días): *</label>
+                        <input type="text" class="form-control int-input" id="tiempo_entrega_minimo_quimico" name="tiempo_entrega_minimo_quimico">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="tiempo_entrega_maximo_quimico" class="form-label">Tiempo Máximo Estimado de Entrega (Días): *</label>
+                        <input type="text" class="form-control int-input" id="tiempo_entrega_maximo_quimico" name="tiempo_entrega_maximo_quimico">
+                    </div>
+                    <div class="mb-3">
+                        <label for="url_etiqueta_emergencia_quimico" class="form-label">Url Etiqueta Emergencia: *</label>
+                        <input type="text" class="form-control" id="url_etiqueta_emergencia_quimico" name="url_etiqueta_emergencia_quimico">
+                    </div>
+                    <div class="mb-4">
+                        <label for="celulas_areas_quimicos" class="form-label">
+                            Células autorizadas: *
+                        </label>
+
+                        <select id="celulas_areas_quimicos"
+                            class="form-control shadow-sm rounded"
+                            multiple
+                            name="celulas_areas_quimicos"
+                            multiple>
+                            <?php
+                            foreach ($celulasAreas as $c):
+                                $id_celulas_areas = (int)$c->id_celulas_areas;
+                            ?>
+                                <option value="<?= htmlspecialchars($id_celulas_areas) ?>">
+                                    <?= htmlspecialchars($c->nombre_celula) ?>
+                                </option>
+                            <?php endforeach;
+                            ?>
+                        </select>
+                        <div class="form-text mt-1">
+                            Puedes buscar y seleccionar múltiples opciones.
+                        </div>
+                    </div>
 
 
-                <div class="text-end">
-                    <button type="submit" id="btn-save">
-                        <i class="fa fa-save me-1"></i> Guardar
-                    </button>
+                    <div class="text-end">
+                        <button type="submit" id="btn-save">
+                            <i class="fa fa-save me-1"></i> Guardar
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -161,7 +181,6 @@
     <script src="../../../../../public/js/utils/libs/bootstrap.js"></script>
     <script src="../../../../../public/js/utils/libs/fancybox.js"></script>
     <script src="../../../../../public/js/utils/libs/notification.js"></script>
-
 
     <!-- Scripts funcionalidades -->
     <script src="../../../../../public/js/utils/spinner.js"></script>

@@ -18,6 +18,7 @@ $(document).ready(function () {
         "columns": [
             { "data": "fecha_solicitud_consumo", "className": "dt-center" },
             { "data": "celula_area", "className": "dt-center" },
+            { "data": "ultima_fecha_solicitud_consumo", "className": "dt-center" },
             { "data": "descripcion_quimico", "className": "dt-center" },
             { "data": "umb_quimico", "className": "dt-center" },
             { "data": "cantidad_solicitud_consumo", "className": "dt-center" },

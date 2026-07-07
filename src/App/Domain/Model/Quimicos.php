@@ -13,6 +13,10 @@ class Quimicos {
         public ?float $cantidad_disponible_quimico,
         public ?float $cantidad_maxima_retiro_quimico,
         public ?float $tope_minimo_quimico,
+        public ?float $cantidad_minima_almacenamiento_quimico = null,
+        public ?float $cantidad_maxima_almacenamiento_quimico = null,
+        public ?int $tiempo_entrega_minimo_quimico = null,
+        public ?int $tiempo_entrega_maximo_quimico = null,
         public ?float $precio_quimico,
         public ?string $url_etiqueta_emergencia_quimico,
         public ?int $id_estado_quimico
@@ -29,6 +33,10 @@ class Quimicos {
             $data['cantidad_disponible_quimico'] ?? null,
             $data['cantidad_maxima_retiro_quimico'] ?? null,
             $data['tope_minimo_quimico'] ?? null,
+            $data['cantidad_minima_almacenamiento_quimico'] ?? null,
+            $data['cantidad_maxima_almacenamiento_quimico'] ?? null,
+            $data['tiempo_entrega_minimo_quimico'] ?? null,
+            $data['tiempo_entrega_maximo_quimico'] ?? null,
             $data['precio_quimico'] ?? null,
             $data['url_etiqueta_emergencia_quimico'] ?? null,
             $data['id_estado_quimico'] ?? null
@@ -37,20 +45,7 @@ class Quimicos {
 
     public function toArray(): array
     {
-        return [
-            'id_quimico' => $this->id_quimico,
-            'descripcion_quimico' => $this->descripcion_quimico,
-            'fabricante_quimico' => $this->fabricante_quimico,
-            'id_peligrosidad_quimico' => $this->id_peligrosidad_quimico,
-            'uso_quimico' => $this->uso_quimico,
-            'id_umb_quimico' => $this->id_umb_quimico,
-            'cantidad_disponible_quimico' => $this->cantidad_disponible_quimico,
-            'cantidad_maxima_retiro_quimico' => $this->cantidad_maxima_retiro_quimico,
-            'tope_minimo_quimico' => $this->tope_minimo_quimico,
-            'precio_quimico' => $this->precio_quimico,
-            'url_etiqueta_emergencia_quimico' => $this->url_etiqueta_emergencia_quimico,
-            'id_estado_quimico' => $this->id_estado_quimico
-        ];
+        return get_object_vars($this);
     }
 }
 

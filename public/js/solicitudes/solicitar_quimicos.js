@@ -121,6 +121,14 @@ $(document).ready(function () {
     );
     let umb = quimicoSeleccionado.umb_quimico;
 
+    if (isNaN(disponible) || disponible <= 0) {
+        notification("error", "No hay disponibilidad de este químico.", 2000);
+        $(this).val("");
+        return;
+    }
+
+    if (isNaN(cantidad)) return;
+
     if (cantidad > maxRetiro) {
       notification(
         "error",

@@ -9,6 +9,9 @@ use App\Domain\DTO\SolicitudesConsumoDTO;
 use App\Infrastructure\Repository\SolicitudesConsumoRepository;
 use App\Shared\Mapper\Mapper;
 use App\Application\Service\QuimicosService;
+use App\Domain\DTO\CadenciaActualDTO;
+use App\Infrastructure\Repository\CadenciaActualRepository;
+use App\Infrastructure\Repository\CadenciasRepository;
 use App\Shared\Util\Utilidades;
 
 class SolicitudesConsumoService implements ISolicitudesConsumoService
@@ -17,12 +20,16 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
     private $db;
     private $solicitudesConsumoRepository;
     private $quimicosService;
+    private $cadenciasRepository;
+    private $cadenciaActualRepository;
 
     public function __construct()
     {
         $this->db = (new Connection())->dbQuimicosHwi;
 
         $this->solicitudesConsumoRepository = new SolicitudesConsumoRepository($this->db);
+        $this->cadenciasRepository = new CadenciasRepository($this->db);
+        $this->cadenciaActualRepository = new CadenciaActualRepository($this->db);
         $this->quimicosService = new QuimicosService($this->db);
     }
 
@@ -30,7 +37,9 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
     {
         try {
             $this->db->beginTransaction();
-
+            
+            $cadenciaActual = $this->obtenerCadenciaActual();
+            $solicitudesConsumoDTO->id_cadencia_solicitud_consumo = $cadenciaActual->id_cadencias_cadencia_actual;
             $solicitudesConsumo = Mapper::solicitudesConsumoDTOToModel($solicitudesConsumoDTO);
 
             $saveSolicitudConsumo = $this->solicitudesConsumoRepository->save($solicitudesConsumo);
@@ -94,6 +103,34 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
         } catch (\Throwable $e) {
             throw $e;
         }
+    }
+
+    public function obtenerCadencias(): array
+    {
+        return Mapper::listModelToCadenciasDTOList($this->cadenciasRepository->findAll());
+    }
+
+    public function obtenerCadenciaActual(): ?CadenciaActualDTO
+    {
+        /** @var CadenciaActualDTO $cadenciaActualDTO */
+        $cadenciaActualDTO = Mapper::modelToCadenciaActualDTO($this->cadenciaActualRepository->findByUltimaFecha());
+        $id_cadencia_actual = $cadenciaActualDTO->id_cadencias_cadencia_actual;
+        $cadenciasDTOList = $this->obtenerCadencias();
+
+
+        /** @var CadenciasDTO $cadenciaDTO */
+        foreach ($cadenciasDTOList as $cadenciaDTO) {
+            if ($cadenciaDTO->id_cadencia == $id_cadencia_actual) {
+                $cadenciaActualDTO->cadencia = $cadenciaDTO->cadencia;
+            }
+        }
+        return $cadenciaActualDTO;
+    }
+
+    public function guardarCadenciaActual(CadenciaActualDTO $cadenciaActualDTO): bool
+    {
+        $cadenciaActual = Mapper::cadenciaActualDTOToModel($cadenciaActualDTO);
+        return $this->cadenciaActualRepository->save($cadenciaActual);
     }
 
     public function updateEstadoSolicitud(int $id_solicitud, int $id_estado, ?float $cantidad_solicitud, ?string $id_quimico): bool

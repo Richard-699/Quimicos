@@ -4,6 +4,8 @@ namespace App\Shared\Mapper;
 
 use App\Domain\Model\Administradores;
 use App\Domain\DTO\AdministradoresDTO;
+use App\Domain\DTO\CadenciaActualDTO;
+use App\Domain\DTO\CadenciasDTO;
 use App\Domain\DTO\CelulasAreasDTO;
 use App\Domain\DTO\LogsPreciosDTO;
 use App\Domain\DTO\PeligrosidadDTO;
@@ -11,6 +13,8 @@ use App\Domain\DTO\QuimicosCelulasAreasDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\DTO\SolicitudesConsumoDTO;
 use App\Domain\DTO\UMBDTO;
+use App\Domain\Model\CadenciaActual;
+use App\Domain\Model\Cadencias;
 use App\Domain\Model\CelulasAreas;
 use App\Domain\Model\LogsPrecios;
 use App\Domain\Model\Peligrosidad;
@@ -232,7 +236,8 @@ class Mapper
             $dto->cedula_solicitante,
             $dto->nombres_solicitante_consumo,
             $dto->apellidos_solicitante_consumo,
-            $dto->id_estado_solicitud_quimico
+            $dto->id_estado_solicitud_quimico,
+            $dto->id_cadencia_solicitud_consumo
         );
     }
 
@@ -256,6 +261,40 @@ class Mapper
             $dto->fecha_log_precio,
             $dto->id_quimico_log_precio,
             $dto->precio_quimico
+        );
+    }
+
+    public static function listModelToCadenciasDTOList(array $models): array
+    {
+        if (empty($models)) {
+            return [];
+        }
+        return array_map(function (Cadencias $model): CadenciasDTO {
+            return new CadenciasDTO(
+                id_cadencia: $model->id_cadencia,
+                cadencia: $model->cadencia,
+            );
+        }, $models);
+    }
+
+    public static function modelToCadenciaActualDTO(CadenciaActual $model): CadenciaActualDTO
+    {
+        return new CadenciaActualDTO(
+            id_cadencia_actual: $model->id_cadencia_actual,
+            fecha_hora_registro_cadencia_actual: $model->fecha_hora_registro_cadencia_actual,
+            id_cadencias_cadencia_actual: $model->id_cadencias_cadencia_actual,
+            cadencia: null,
+            id_administrador_cadencia_actual: $model->id_administrador_cadencia_actual,
+        );
+    }
+
+    public static function cadenciaActualDTOToModel(CadenciaActualDTO $dto): CadenciaActual
+    {
+        return new CadenciaActual(
+            $dto->id_cadencia_actual,
+            $dto->fecha_hora_registro_cadencia_actual,
+            $dto->id_cadencias_cadencia_actual,
+            $dto->id_administrador_cadencia_actual
         );
     }
 }

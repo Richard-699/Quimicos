@@ -29,7 +29,8 @@ function onPostSaveSolicitud(array $data)
             cedula_solicitante: $cedula_solicitante,
             nombres_solicitante_consumo: $nombres_solicitante_consumo,
             apellidos_solicitante_consumo: $apellidos_solicitante_consumo,
-            id_estado_solicitud_quimico: $id_estado
+            id_estado_solicitud_quimico: $id_estado,
+            id_cadencia_solicitud_consumo: null
         );
 
         Validator::validateSolicitudesConsumoDTO($solicitudesConsumoDTO);

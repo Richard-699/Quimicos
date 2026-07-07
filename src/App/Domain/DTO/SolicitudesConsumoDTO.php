@@ -16,6 +16,7 @@ class SolicitudesConsumoDTO {
         public ?int $cedula_solicitante = null,
         public ?string $nombres_solicitante_consumo = null,
         public ?string $apellidos_solicitante_consumo = null,
-        public ?int $id_estado_solicitud_quimico = null
+        public ?int $id_estado_solicitud_quimico = null,
+        public ?int $id_cadencia_solicitud_consumo = null
     ) {}
 }

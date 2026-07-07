@@ -12,7 +12,8 @@ class SolicitudesConsumo {
         public ?int $cedula_solicitante,
         public ?string $nombres_solicitante_consumo,
         public ?string $apellidos_solicitante_consumo,
-        public ?int $id_estado_solicitud_quimico
+        public ?int $id_estado_solicitud_quimico,
+        public ?int $id_cadencia_solicitud_consumo = null
     ) {}
 
     public static function fromArray(array $data): self {
@@ -25,7 +26,8 @@ class SolicitudesConsumo {
             $data['cedula_solicitante'] ?? null,
             $data['nombres_solicitante_consumo'] ?? null,
             $data['apellidos_solicitante_consumo'] ?? null,
-            $data['id_estado_solicitud_quimico'] ?? null
+            $data['id_estado_solicitud_quimico'] ?? null,
+            $data['id_cadencia_solicitud_consumo'] ?? null
         );
     }
 

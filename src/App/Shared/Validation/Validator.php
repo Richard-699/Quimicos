@@ -4,6 +4,7 @@ namespace App\Shared\Validation;
 
 use Exception;
 use App\Domain\DTO\AdministradoresDTO;
+use App\Domain\DTO\CadenciaActualDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\DTO\SolicitudesConsumoDTO;
 
@@ -20,6 +21,9 @@ class Validator
                 break;
             case $dto instanceof SolicitudesConsumoDTO:
                 self::validateSolicitudesConsumoDTO($dto);
+                break;
+            case $dto instanceof CadenciaActualDTO:
+                self::validateCadenciaActualDTO($dto);
                 break;
             default:
                 throw new Exception('No hay reglas de validación definidas para este DTO.');
@@ -120,6 +124,19 @@ class Validator
         }
         if (empty($dto->apellidos_solicitante_consumo)) {
             throw new Exception('Los apellidos son obligatorios.');
+        }
+    }
+
+    private static function validateCadenciaActualDTO(CadenciaActualDTO $dto): void
+    {
+        if (empty($dto->fecha_hora_registro_cadencia_actual)) {
+            throw new Exception('Error al generar la fecha y la hora.');
+        }
+        if (empty($dto->id_cadencias_cadencia_actual)) {
+            throw new Exception('La cadencia es obligatoria.');
+        }
+        if (empty($dto->id_administrador_cadencia_actual)) {
+            throw new Exception('Error al obtener el Id del administrador.');
         }
     }
 }

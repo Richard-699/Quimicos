@@ -53,6 +53,8 @@ $(document).ready(function () {
     info: true,
     searching: true,
   });
+
+  obtenerCadenciaActual();
 });
 
 async function update_status(
@@ -137,6 +139,23 @@ async function update_status(
     ocultarCarga();
     console.error("Error al actualizar el estado:", error);
     btn.disabled = false;
+  }
+}
+
+async function obtenerCadenciaActual() {
+  try {
+    const responseCadenciaActual = await fetch(
+      "../../Handler/quimicos/solicitudesHandler.php?action=obtenerCadenciaActual",
+      {
+        method: "GET",
+      },
+    );
+    const data = await responseCadenciaActual.json();
+
+    $("#cadencia-valor").text(data.cadencia + " unds x hora");
+  } catch (error) {
+    console.error("Error:", error);
+    $("#cadencia-valor").text("Error al cargar");
   }
 }
 

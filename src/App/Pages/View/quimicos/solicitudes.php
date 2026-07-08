@@ -35,6 +35,14 @@ include '../../Handler/auth/session_init.php';
                 </button>
             </div>
 
+            <div class="my-3">
+                <span class="text-muted fw-semibold">
+                    Cadencia Actual: 
+                    <span id="cadencia-valor">Cargando...</span>
+                </span>
+                <hr>
+            </div>
+
             <table id="tabla-solicitudes" class="table table-striped table-bordered table-sm dt-responsive nowrap" style="width:100%">
                 <thead class="table-light">
                     <tr>

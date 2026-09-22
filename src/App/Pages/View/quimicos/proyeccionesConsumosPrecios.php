@@ -24,7 +24,7 @@ include '../../Handler/auth/session_init.php';
         <div class="dashboard-embed-container">
             <!-- Carga de la aplicación Streamlit embebida -->
             <iframe 
-                src="http://localhost:8501/?embed=true" 
+                src="https://quimicos-ntkm32nnrhtltzfq5bjrat.streamlit.app/?embed=true" 
                 class="dashboard-iframe"
                 title="Proyecciones de Consumo y Precios - HWI">
             </iframe>

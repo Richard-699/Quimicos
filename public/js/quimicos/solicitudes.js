@@ -34,17 +34,36 @@ $(document).ready(function () {
         className: "dt-center",
         render: function (data, type, row) {
           const cantidad = row.cantidad_solicitud_consumo ?? 0;
+          const umb_quimico = row.umb_quimico ?? "Sin asignar";
           const id_quimico = row.id_quimico_solicitud_consumo ?? 0;
+          const cantidad_disponible_quimico = row.cantidad_disponible_quimico ?? 0;
+          const idEstado = parseInt(
+            row.id_estado_solicitud_quimico ?? row.id_estado,
+          );
 
-          return `
-                        <button class="btn btn-success btn-sm me-1" 
-                            onclick="update_status(this, 'approve', '${data}', '${cantidad}', '${id_quimico}')">
-                            <i class="bi bi-check-lg"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="update_status(this, 'rechazar', '${data}')">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    `;
+          if (idEstado === 3) {
+            return `
+              <button class="btn btn-success btn-sm me-1" title="Aprobar"
+                  onclick="update_status(this, 'approve', '${data}', '${cantidad}', '${id_quimico}')">
+                  <i class="bi bi-check-lg"></i>
+              </button>
+              <button class="btn btn-danger btn-sm" title="Rechazar"
+                  onclick="update_status(this, 'rechazar', '${data}')">
+                  <i class="bi bi-x-lg"></i>
+              </button>
+            `;
+          }
+
+          if (idEstado === 1) {
+            return `
+              <button class="btn btn-warning btn-sm text-dark"
+                  onclick="retornarCantidadSolicitada(this, '${data}', '${cantidad}', '${umb_quimico}', '${id_quimico}', '${cantidad_disponible_quimico}')">
+                  <i class="fas fa-undo"></i>
+              </button>
+            `;
+          }
+
+          return "";
         },
       },
     ],
@@ -156,6 +175,49 @@ async function obtenerCadenciaActual() {
   } catch (error) {
     console.error("Error:", error);
     $("#cadencia-valor").text("Error al cargar");
+  }
+}
+
+async function retornarCantidadSolicitada(btn, id, cantidad, umb_quimico, id_quimico, cantidad_disponible_quimico) {
+  try {
+    mostrarCarga();
+    btn.disabled = true;
+
+    var url = `_returnCantidadConsumoSolicitado.php?id=${id}&cantidad=${cantidad}&umb_quimico=${umb_quimico}`;
+
+    Fancybox.show(
+      [
+        {
+          src: url,
+          type: "ajax",
+        },
+      ],
+      {
+        on: {
+          reveal: (fancybox, slide) => {
+            ocultarCarga();
+
+            const $container = $(slide.$content);
+            $container.find("#lbl_cantidad_solicitada").text(cantidad + " " + umb_quimico);
+            $container.find("#id_solicitud_consumo").val(id);
+            $container.find("#id_quimico").val(id_quimico);
+            $container.find("#cantidad_solicitud_consumo").val(cantidad);
+            $container.find("#cantidad_disponible_quimico").val(cantidad_disponible_quimico);
+          },
+          destroy: () => {
+            btn.disabled = false;
+          },
+        },
+        click: false,
+        trapFocus: false,
+        placeFocusBack: false,
+      },
+    );
+
+  } catch (error) {
+    ocultarCarga();
+    console.error("Error al abrir el modal:", error);
+    btn.disabled = false;
   }
 }
 

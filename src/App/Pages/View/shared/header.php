@@ -28,6 +28,8 @@ include('../../../Shared/Util/spinner.php');
             <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
             <a class="hov" href="javascript:void(0);" onclick="Informe();"><i class="fa-solid fa-file"></i> Informe</a>
             <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
+            <a class="hov" href="javascript:void(0);" onclick="proyeccionesConsumosPrecios();"><i class="fa-solid fa-chart-line"></i> Proyecciones Consumo y Precios</a>
+            <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
             <a class="hov" href="javascript:void(0);" onclick="Administradores();"><i class="fa-solid fa-users"></i> Administradores</a>
             <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
             <a href="javascript:void(0);" class="hov" id="BtnCerrarSesion"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>

@@ -1,0 +1,8 @@
+streamlit
+pandas
+numpy
+mysql-connector-python
+plotly
+scikit-learn
+groq
+python-dotenv

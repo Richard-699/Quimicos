@@ -1,0 +1,14 @@
+.dashboard-embed-container {
+    width: 100%;
+    height: calc(100vh - 120px); /* Resta la altura del header/footer corporativo */
+    min-height: 750px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+.dashboard-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}

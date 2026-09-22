@@ -157,7 +157,7 @@ header("Expires: 0");
 
                     <div class="col-md-6 mb-3">
                         <label for="cantidad_disponible_quimico" class="form-label">Cantidad Disponible: *</label>
-                        <input type="text" class="form-control double-input" id="cantidad_disponible_quimico" name="cantidad_disponible_quimico"
+                        <input type="text" class="form-control double-input" id="cantidad_disponible_quimico" name="cantidad_disponible_quimico" readonly
                             value="<?= htmlspecialchars($quimicoSelected->cantidad_disponible_quimico ?? '') ?>">
                     </div>
                     <div class="col-md-6 mb-3">

@@ -1,11 +1,5 @@
 <?php
-// *****************************************************************
-// INICIALIZACIÓN DE VISTA PROTEGIDA
-// Este archivo carga Composer, Inicia la Sesión, Valida la Sesión 
-// y define las variables de administrador requeridas por el header.
-// *****************************************************************
 include '../../Handler/auth/session_init.php'; 
-// Las variables $administrador, $permisosAdministradores, y $permisos ya están definidas aquí.
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,7 +7,7 @@ include '../../Handler/auth/session_init.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administradores</title>
-    <link rel="shortcut icon" href="../../../../../public/img/LogoBlanco.png" type="image/x-icon">
+    <link rel="icon" href="../../../../../public/img/LogoBlanco.png?v=<?php echo time(); ?>" type="image/png">
 
     <link rel="stylesheet" href="../../../../../public/css/utils/libs/libs.css">
     <link rel="stylesheet" href="../../../../../public/css/utils/estilos_spinner.css">
@@ -21,9 +15,9 @@ include '../../Handler/auth/session_init.php';
     <link rel="stylesheet" href="../../../../../public/css/utils/select_multiple.css"> 
     <!-- CSS Choices -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <?php include('../../../Shared/Util/spinner.php'); ?>
 </head>
 <body>
+    <?php include('../../../Shared/Util/spinner.php'); ?>
     <?php include '../shared/header.php' ?>
 
     <div class="container-fluid px-2 py-3">

@@ -41,8 +41,8 @@ include '../../Handler/auth/session_init.php';
                         <th style="width: 18%;">Químico</th>
                         <th style="width: 18%;">Peligrosidad</th>
                         <th style="width: 18%;">UMB</th>
-                        <th style="width: 18%;">Precio</th>
-                        <th style="width: 18%;">Cant. Disponible</th>
+                        <th style="width: 10%;">Precio</th>
+                        <th style="width: 10%;">Cant. Disponible</th>
                         <th></th>
                     </tr>
                 </thead>

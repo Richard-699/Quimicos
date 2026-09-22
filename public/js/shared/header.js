@@ -23,6 +23,11 @@ function Administradores() {
     window.location.href = "administradores.php";
 }
 
+function proyeccionesConsumosPrecios() {
+    mostrarCarga();
+    window.location.href = "proyeccionesConsumosPrecios.php";
+}
+
 function Informe() {
     mostrarCarga();
     window.location.href = "informe.php";

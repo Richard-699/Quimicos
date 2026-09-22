@@ -3,14 +3,21 @@ require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 use App\Application\Service\SolicitudesConsumoService;
 use App\Domain\DTO\CadenciaActualDTO;
-use App\Shared\Util\Utilidades;
+use App\Domain\DTO\LogsRetornoSolicitudesConsumoDTO;
+use App\Domain\DTO\QuimicosDTO;
+use App\Domain\DTO\SolicitudesConsumoDTO;
 use App\Shared\Validation\Validator;
+use App\Shared\Util\Utilidades;
+
+date_default_timezone_set('America/Bogota');
 
 function onGetSolicitudes()
 {
     try {
+        $fecha = new DateTime('-1 week');
+        $fecha_minima = $fecha->format('Y-m-d H:i:s');
         $solicitudesConsumoService = new SolicitudesConsumoService();
-        $solicitudes = $solicitudesConsumoService->onGetSolicitudes();
+        $solicitudes = $solicitudesConsumoService->onGetSolicitudes($fecha_minima);
 
         if ($solicitudes) {
             return $solicitudes;
@@ -142,6 +149,47 @@ function updateCadenciaActual(array $data) {
     }
 }
 
+function updateCantidadConsumoSolicitado(array $data) {
+    try {
+        $idSolicitud = (int) ($data['id_solicitud_consumo'] ?? null);
+        $id_quimico = (string) ($data['id_quimico'] ?? null);
+        $retorno = (float) str_replace(',', '.', $data['cantidad_retorno_consumo'] ?? null);
+        $solicitud = (float) str_replace(',', '.', $data['cantidad_solicitud_consumo'] ?? null);
+        $cantidad_disponible_quimico = (float) str_replace(',', '.', $data['cantidad_disponible_quimico'] ?? null);
+
+        $quimicosDTO = new QuimicosDTO(
+            id_quimico: $id_quimico,
+            cantidad_disponible_quimico: $cantidad_disponible_quimico + $retorno
+        );
+
+        $solicitudesConsumoDTO = new solicitudesConsumoDTO(
+            id_solicitud_consumo: $idSolicitud,
+            cantidad_solicitud_consumo: $solicitud - $retorno,
+            cantidad_consumo_actualizada: true,
+            quimicoDTO: $quimicosDTO
+        );
+
+        $logsRetornoSolicitudesConsumoDTO = new LogsRetornoSolicitudesConsumoDTO(
+            id_log_retorno_solicitud_consumo: Utilidades::generarGUID(),
+            id_solicitud_consumo: $idSolicitud,
+            fecha_log_retorno: date('Y-m-d H:i:s'),
+            cantidad_retorno: $retorno,
+            solicitudesConsumoDTO: $solicitudesConsumoDTO
+        );
+
+        Validator::validateDTO($logsRetornoSolicitudesConsumoDTO);
+
+        $solicitudesConsumoService = new SolicitudesConsumoService();
+        if (!$solicitudesConsumoService->retornarSolicitudConsumo($logsRetornoSolicitudesConsumoDTO)) {
+            throw new Exception("No se pudo guardar el registro de retorno.");
+        }
+
+        return ['success' => true];
+
+    } catch (Exception $e) {
+        return ['success' => false, 'message' => $e->getMessage()];
+    }
+}
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 try {
@@ -161,6 +209,9 @@ try {
                 break;
             case 'updateCadenciaActual':
                 $response = updateCadenciaActual($data['form'] ?? []);
+                break;
+            case 'updateCantidadConsumoSolicitado':
+                $response = updateCantidadConsumoSolicitado($data['form'] ?? []);
                 break;
             default:
                 throw new Exception("Acción no permitida.");

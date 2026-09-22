@@ -26,11 +26,17 @@ $(document).ready(function () {
                 "className": "dt-center",
                 "render": function (data, type, row) {
                     let url = row.url_etiqueta_emergencia_quimico ?? '';
+                    let umb = row.umb_quimico ?? '';
+                    let cantidad_disponible_quimico = row.cantidad_disponible_quimico ?? 0;
+
                     return `
+                        <button class="btn btn-success btn-sm" onclick="update_inventario(this, '${data}', '${umb}', '${cantidad_disponible_quimico}')">
+                            <i class="fa-solid fa-warehouse"></i>
+                        </button>
                         <button class="btn btn-primary btn-sm me-1" onclick="update(this, '${data}')">
                             <i class="fa-regular fa-pen-to-square"></i>
                         </button>
-                         <button class="btn btn-warning btn-sm me-1" 
+                        <button class="btn btn-warning btn-sm me-1" 
                             onclick="verEtiqueta('${url}')">
                             <i class="fa-solid fa-file-pdf"></i>
                         </button>
@@ -277,4 +283,45 @@ async function delete_quimico(btn, id) {
         console.error('Error al rechazar:', error);
         btn.disabled = false;
     }
+}
+
+async function update_inventario (btn, id, umb, cantidad_disponible) {
+  try {
+    mostrarCarga();
+    btn.disabled = true;
+
+    var url = `_updateInventario.php?id=${id}`;
+
+    Fancybox.show(
+      [
+        {
+          src: url,
+          type: "ajax",
+        },
+      ],
+      {
+        on: {
+          reveal: (fancybox, slide) => {
+            ocultarCarga();
+
+            const $container = $(slide.$content);
+            $container.find("#lbl_cantidad_actual").text(cantidad_disponible + " " + umb);
+            $container.find("#id_quimico_ingreso_inventario").val(id);
+            $container.find("#cantidad_actual_inventario").val(cantidad_disponible);
+          },
+          destroy: () => {
+            btn.disabled = false;
+          },
+        },
+        click: false,
+        trapFocus: false,
+        placeFocusBack: false,
+      },
+    );
+
+  } catch (error) {
+    ocultarCarga();
+    console.error("Error al abrir el modal:", error);
+    btn.disabled = false;
+  }
 }

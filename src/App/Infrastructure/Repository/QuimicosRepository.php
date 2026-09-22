@@ -84,4 +84,17 @@ class QuimicosRepository implements IQuimicosRepository
         $stmt->bindValue(":id", $id);
         return $stmt->execute();
     }
+    
+    public function update_Inventario_By__Id(Quimicos $quimicos): bool
+    {
+        $query = "UPDATE quimicos_hwi_quimicos 
+                    SET cantidad_disponible_quimico = :cantidad_inventario_actualizada
+                    WHERE id_quimico = :id_quimico";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':cantidad_inventario_actualizada', $quimicos->cantidad_disponible_quimico);
+        $stmt->bindParam(':id_quimico', $quimicos->id_quimico);
+
+        return $stmt->execute();
+    }
 }

@@ -13,7 +13,7 @@ include '../../Handler/auth/session_init.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Químicos</title>
+    <title>Informe Químicos</title>
     <link rel="shortcut icon" href="../../../../../public/img/LogoBlanco.png" type="image/x-icon">
 
     <link rel="stylesheet" href="../../../../../public/css/quimicos/quimicos.css">

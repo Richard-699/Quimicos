@@ -9,7 +9,7 @@ include('../../../Shared/Util/spinner.php');
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Químicos</title>
+    <title>Gestión Ambiental</title>
     <link rel="shortcut icon" href="../../../../../public/img/LogoBlanco.png" type="image/x-icon">
     <link rel="stylesheet" href="../../../../../public/css/utils/libs/libs.css">
     <link rel="stylesheet" href="../../../../../public/css/shared/estilos_header.css" />

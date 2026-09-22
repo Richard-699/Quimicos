@@ -16,7 +16,7 @@ include '../../Handler/auth/session_init.php';
     <link href="../../../../../public/css/quimicos/index.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/69c3b582a7.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <title>Químicos HWI</title>
+    <title>Gestión Ambiental HWI</title>
     <link rel="shortcut icon" href="../../../../../public/img/LogoBlanco.png" type="image/x-icon">
 </head>
 <body>

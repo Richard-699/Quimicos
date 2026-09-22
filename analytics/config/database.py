@@ -1,42 +1,28 @@
 import os
-import json
-import mysql.connector
 import streamlit as st
+import mysql.connector
 
-def obtener_conexion():
-    directorio_raiz = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    ruta_json = os.path.join(directorio_raiz, 'config', 'database.json')
+if "DB_HOST" in st.secrets:
+    db_host = st.secrets["DB_HOST"]
+    db_user = st.secrets["DB_USER"]
+    db_pass = st.secrets["DB_PASSWORD"]
+    db_name = st.secrets["DB_NAME"]
+    db_port = int(st.secrets.get("DB_PORT", 3306))
+else:
+    db_host = os.getenv("DB_HOST", "localhost")
+    db_user = os.getenv("DB_USER", "root")
+    db_pass = os.getenv("DB_PASSWORD", "")
+    db_name = os.getenv("DB_NAME", "nombre_bd_local")
+    db_port = int(os.getenv("DB_PORT", 3306))
 
-    try:
-        with open(ruta_json, 'r', encoding='utf-8') as archivo:
-            data = json.load(archivo)
-        
-        credenciales = data.get('quimicos_hwi', {})
-        
-        db_host = credenciales.get('host', 'localhost')
-        db_user = credenciales.get('user', 'root')
-        db_pass = credenciales.get('password', '')
-        db_name = credenciales.get('database', 'quimicos_hwi3')
-
-        conexion = mysql.connector.connect(
-            host=db_host,
-            user=db_user,
-            password=db_pass,
-            database=db_name
-        )
-        
-        cursor = conexion.cursor()
-        cursor.execute(f"USE {db_name};")
-        cursor.close()
-        
-        return conexion
-
-    except FileNotFoundError:
-        st.error(f"❌ No se encontró el archivo de configuración en: {ruta_json}")
-        return None
-    except json.JSONDecodeError:
-        st.error("❌ El archivo database.json tiene un formato inválido o corrupto.")
-        return None
-    except Exception as e:
-        st.error(f"❌ Error conectando a MySQL: {e}")
-        return None
+try:
+    conn = mysql.connector.connect(
+        host=db_host,
+        user=db_user,
+        password=db_pass,
+        database=db_name,
+        port=db_port
+    )
+except mysql.connector.Error as err:
+    st.error(f"❌ Error conectando a MySQL en ({db_host}): {err}")
+    st.stop()

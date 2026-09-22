@@ -38,7 +38,13 @@ class SolicitudesConsumoRepository implements ISolicitudesConsumoRepository
                     id_estado_solicitud_quimico = :id_pendiente 
                     OR (id_estado_solicitud_quimico = :id_aprobado AND fecha_solicitud_consumo >= :fecha_minima)
                 )
-                AND cantidad_consumo_actualizada IS NULL;";
+                AND cantidad_consumo_actualizada IS NULL
+                ORDER BY 
+                    CASE 
+                        WHEN id_estado_solicitud_quimico = :id_pendiente THEN 1 
+                        ELSE 2 
+                    END ASC,
+                    fecha_solicitud_consumo DESC;";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([

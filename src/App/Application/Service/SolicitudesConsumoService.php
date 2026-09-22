@@ -10,8 +10,11 @@ use App\Infrastructure\Repository\SolicitudesConsumoRepository;
 use App\Shared\Mapper\Mapper;
 use App\Application\Service\QuimicosService;
 use App\Domain\DTO\CadenciaActualDTO;
+use App\Domain\DTO\LogsRetornoSolicitudesConsumoDTO;
 use App\Infrastructure\Repository\CadenciaActualRepository;
 use App\Infrastructure\Repository\CadenciasRepository;
+use App\Infrastructure\Repository\LogsRetornoSolicitudesConsumoRepository;
+use App\Infrastructure\Repository\QuimicosRepository;
 use App\Shared\Util\Utilidades;
 
 class SolicitudesConsumoService implements ISolicitudesConsumoService
@@ -22,6 +25,8 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
     private $quimicosService;
     private $cadenciasRepository;
     private $cadenciaActualRepository;
+    private $logsRetornoSolicitudesConsumoRepository;
+    private $quimicosRepository;
 
     public function __construct()
     {
@@ -30,7 +35,9 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
         $this->solicitudesConsumoRepository = new SolicitudesConsumoRepository($this->db);
         $this->cadenciasRepository = new CadenciasRepository($this->db);
         $this->cadenciaActualRepository = new CadenciaActualRepository($this->db);
-        $this->quimicosService = new QuimicosService($this->db);
+        $this->quimicosService = new QuimicosService();
+        $this->logsRetornoSolicitudesConsumoRepository = new LogsRetornoSolicitudesConsumoRepository($this->db);
+        $this->quimicosRepository = new QuimicosRepository($this->db);
     }
 
     public function saveSolicitudQuimico(SolicitudesConsumoDTO $solicitudesConsumoDTO): bool
@@ -58,11 +65,10 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
         }
     }
 
-    public function onGetSolicitudes(): array
+    public function onGetSolicitudes(string $fecha_minima): array
     {
         try {
-            $id_estado = 3; //Pendiente
-            $solicitudesBd = $this->solicitudesConsumoRepository->onGet_By__Id_Estado($id_estado);
+            $solicitudesBd = $this->solicitudesConsumoRepository->findBy_IdEstadoAndFechaMinima($fecha_minima);
             $solicitudes = Mapper::modelToSolicitudesConsumosDTO($solicitudesBd);
 
             foreach ($solicitudes as $solicitud) {
@@ -92,6 +98,7 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
                     if ($id == $quimico->id_quimico) {
                         $solicitud->descripcion_quimico = $quimico->descripcion_quimico;
                         $solicitud->umb_quimico = $quimico->umb_quimico;
+                        $solicitud->cantidad_disponible_quimico = $quimico->cantidad_disponible_quimico;
                     }
                 }
             }
@@ -194,6 +201,38 @@ class SolicitudesConsumoService implements ISolicitudesConsumoService
 
             if (!$update_estado) {
                 throw new \Exception("No se pudo actualizar el estado de la solicitud.");
+            }
+
+            $this->db->commit();
+
+            return true;
+        } catch (\Throwable $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
+    }
+
+    public function retornarSolicitudConsumo(LogsRetornoSolicitudesConsumoDTO $logRetornoSolicitudConsumoDTO): bool
+    {
+        try{
+            $this->db->beginTransaction();
+        
+            $logRetornoSolicitudConsumo = Mapper::logsRetornoSolicitudesConsumoDTOToModel($logRetornoSolicitudConsumoDTO);
+
+            if(!$this->logsRetornoSolicitudesConsumoRepository->save($logRetornoSolicitudConsumo)){
+                throw new \Exception("No se pudo guardar el log de retorno de la solicitud.");
+            }
+
+            $solicitudConsumo = Mapper::solicitudesConsumoDTOToModel($logRetornoSolicitudConsumoDTO->solicitudesConsumoDTO);
+
+            if(!$this->solicitudesConsumoRepository->update_Consumo_By__Id($solicitudConsumo)){
+                throw new \Exception("No se pudo actualizar el retorno de la solicitud.");
+            }
+
+            $quimico = Mapper::quimicosDTOToModel($logRetornoSolicitudConsumoDTO->solicitudesConsumoDTO->quimicoDTO);
+
+            if(!$this->quimicosRepository->update_Inventario_By__Id($quimico)){
+                throw new \Exception("No se pudo actualizar el retorno de la solicitud.");
             }
 
             $this->db->commit();

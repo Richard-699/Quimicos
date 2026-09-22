@@ -2,10 +2,13 @@
 require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 use App\Application\Service\QuimicosService;
+use App\Domain\DTO\LogsIngresoInventarioDTO;
 use App\Domain\DTO\LogsPreciosDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Shared\Util\Utilidades;
 use App\Shared\Validation\Validator;
+
+date_default_timezone_set('America/Bogota');
 
 function onGetQuimicos()
 {
@@ -329,6 +332,46 @@ function onPostUpdateQuimico(array $data)
     }
 }
 
+function actualizarInventario(array $data)
+{
+    try {
+        $id_quimico = isset($data['id_quimico_ingreso_inventario']) ? (string)$data['id_quimico_ingreso_inventario'] : null;
+        $cantidad_actual_inventario = isset($data['cantidad_actual_inventario']) ? (float)$data['cantidad_actual_inventario'] : null;
+        $cantidad_ingreso_inventario = (float) str_replace(',', '.', $data['cantidad_ingreso_inventario'] ?? 0);
+
+        $quimicosDTO = new QuimicosDTO(
+            id_quimico: $id_quimico,
+            cantidad_disponible_quimico: $cantidad_actual_inventario + $cantidad_ingreso_inventario
+        );
+
+        $logsIngresoInventarioDTO = new LogsIngresoInventarioDTO(
+            id_log_ingreso_inventario: null,
+            fecha_ingreso_inventario: date("Y-m-d H:i:s"),
+            cantidad_ingreso_inventario: $cantidad_ingreso_inventario,
+            id_quimico_ingreso_inventario: $id_quimico,
+            quimicosDTO: $quimicosDTO
+        );
+
+        Validator::validateDTO($logsIngresoInventarioDTO);
+
+        $quimicosService = new QuimicosService();
+        $updateQuimicos = $quimicosService->updateInventario($logsIngresoInventarioDTO);
+
+        if (!$updateQuimicos) {
+            throw new Exception("No se pudo actualizar el inventario del químico");
+        }
+
+        return [
+            'success' => true
+        ];
+    } catch (Exception $e) {
+        return [
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
+    }
+}
+
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 try {
@@ -351,6 +394,9 @@ try {
                 break;
             case 'delete_quimico':
                 $response = onPostDeleteQuimico($data);
+                break;
+            case 'actualizarInventario':
+                $response = actualizarInventario($data);
                 break;
             default:
                 throw new Exception("Acción no permitida.");

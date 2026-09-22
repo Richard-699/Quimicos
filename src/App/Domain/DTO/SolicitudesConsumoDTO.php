@@ -12,11 +12,14 @@ class SolicitudesConsumoDTO {
         public ?string $id_quimico_solicitud_consumo = null,
         public ?string $descripcion_quimico = null,
         public ?string $umb_quimico = null,
+        public ?float $cantidad_disponible_quimico = null,
         public ?float $cantidad_solicitud_consumo = null,
+        public ?bool $cantidad_consumo_actualizada = null,
         public ?int $cedula_solicitante = null,
         public ?string $nombres_solicitante_consumo = null,
         public ?string $apellidos_solicitante_consumo = null,
         public ?int $id_estado_solicitud_quimico = null,
-        public ?int $id_cadencia_solicitud_consumo = null
+        public ?int $id_cadencia_solicitud_consumo = null,
+        public ?QuimicosDTO $quimicoDTO = null
     ) {}
 }

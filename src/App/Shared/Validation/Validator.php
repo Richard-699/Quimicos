@@ -5,6 +5,8 @@ namespace App\Shared\Validation;
 use Exception;
 use App\Domain\DTO\AdministradoresDTO;
 use App\Domain\DTO\CadenciaActualDTO;
+use App\Domain\DTO\LogsIngresoInventarioDTO;
+use App\Domain\DTO\LogsRetornoSolicitudesConsumoDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\DTO\SolicitudesConsumoDTO;
 
@@ -24,6 +26,12 @@ class Validator
                 break;
             case $dto instanceof CadenciaActualDTO:
                 self::validateCadenciaActualDTO($dto);
+                break;
+            case $dto instanceof LogsRetornoSolicitudesConsumoDTO:
+                self::validateLogsRetornoSolicitudesConsumoDTO($dto);
+                break;
+            case $dto instanceof LogsIngresoInventarioDTO:
+                self::validateLogsIngresoInventarioDTO($dto);
                 break;
             default:
                 throw new Exception('No hay reglas de validación definidas para este DTO.');
@@ -137,6 +145,50 @@ class Validator
         }
         if (empty($dto->id_administrador_cadencia_actual)) {
             throw new Exception('Error al obtener el Id del administrador.');
+        }
+    }
+
+    private static function validateLogsRetornoSolicitudesConsumoDTO(LogsRetornoSolicitudesConsumoDTO $dto): void
+    {
+        if (empty($dto->id_log_retorno_solicitud_consumo)) {
+            throw new Exception('Error al generar el ID del log de retorno.');
+        }
+        if (empty($dto->id_solicitud_consumo)) {
+            throw new Exception('Error al obtener el id de la solicitud.');
+        }
+        if (empty($dto->fecha_log_retorno)) {
+            throw new Exception('Error al generar la fecha y la hora.');
+        }
+        if (empty($dto->cantidad_retorno)) {
+            throw new Exception('La cantidad de retorno es obligatoria.');
+        }else{
+            if ($dto->cantidad_retorno <= 0) {
+                throw new Exception("La cantidad a retornar debe ser mayor a cero.");
+            }
+        }
+        if ($dto->solicitudesConsumoDTO !== null) {
+            $nuevaCantidad = $dto->solicitudesConsumoDTO->cantidad_solicitud_consumo;
+
+            if ($nuevaCantidad < 0) {
+                $retorno = $dto->cantidad_retorno;
+                $original = $nuevaCantidad + $retorno;
+
+                throw new Exception("La cantidad a retornar ({$retorno}) no puede ser mayor a la cantidad solicitada ({$original}).");
+            }
+        }
+    }
+
+    private static function validateLogsIngresoInventarioDTO(LogsIngresoInventarioDTO $dto): void
+    {
+        if (empty($dto->cantidad_ingreso_inventario)) {
+            throw new Exception('La cantidad de ingreso es obligatoria.');
+        } else {
+            if ($dto->cantidad_ingreso_inventario <= 0) {
+                throw new Exception("La cantidad a ingresar debe ser mayor a cero.");
+            }
+        }
+        if (empty($dto->id_quimico_ingreso_inventario)) {
+            throw new Exception('Error al obtener el id del químico.');
         }
     }
 }

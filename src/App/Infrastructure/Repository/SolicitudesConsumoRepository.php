@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository;
 
 use App\Application\Interface\Repository\ISolicitudesConsumoRepository;
+use App\Domain\Enum\EstadoSolicitud;
 use App\Domain\Model\SolicitudesConsumo;
 use Override;
 use PDO;
@@ -30,10 +31,22 @@ class SolicitudesConsumoRepository implements ISolicitudesConsumoRepository
         return $stmt->execute();
     }
 
-    public function onGet_By__Id_Estado($id_estado): array
+    public function findBy_IdEstadoAndFechaMinima(string $fecha_minima): array
     {
-        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_solicitudes_consumo WHERE id_estado_solicitud_quimico = ?");
-        $stmt->execute([$id_estado]);
+        $sql = "SELECT * FROM quimicos_hwi_solicitudes_consumo 
+                WHERE (
+                    id_estado_solicitud_quimico = :id_pendiente 
+                    OR (id_estado_solicitud_quimico = :id_aprobado AND fecha_solicitud_consumo >= :fecha_minima)
+                )
+                AND cantidad_consumo_actualizada IS NULL;";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            'id_pendiente' => EstadoSolicitud::PENDIENTE->value,
+            'id_aprobado'  => EstadoSolicitud::APROBADO->value,
+            'fecha_minima' => $fecha_minima
+        ]);
+
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return array_map([SolicitudesConsumo::class, 'fromArray'], $rows);
@@ -48,6 +61,21 @@ class SolicitudesConsumoRepository implements ISolicitudesConsumoRepository
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id_estado', $id_estado);
         $stmt->bindParam(':id_solicitud', $id_solicitud);
+
+        return $stmt->execute();
+    }
+
+    public function update_Consumo_By__Id(SolicitudesConsumo $solicitudesConsumo): bool
+    {
+        $query = "UPDATE quimicos_hwi_solicitudes_consumo 
+                    SET cantidad_consumo_actualizada = :cantidad_consumo_actualizada,
+                    cantidad_solicitud_consumo =:cantidad_solicitud_consumo
+                    WHERE id_solicitud_consumo = :id_solicitud";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':cantidad_consumo_actualizada', $solicitudesConsumo->cantidad_consumo_actualizada);
+        $stmt->bindParam(':cantidad_solicitud_consumo', $solicitudesConsumo->cantidad_solicitud_consumo);
+        $stmt->bindParam(':id_solicitud', $solicitudesConsumo->id_solicitud_consumo);
 
         return $stmt->execute();
     }

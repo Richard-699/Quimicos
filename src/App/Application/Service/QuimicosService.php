@@ -3,6 +3,7 @@
 namespace App\Application\Service;
 
 use App\Application\Interface\Service\IQuimicosService;
+use App\Domain\DTO\LogsIngresoInventarioDTO;
 use App\Domain\DTO\LogsPreciosDTO;
 use Exception;
 use App\Infrastructure\Database\Connection;
@@ -11,6 +12,7 @@ use App\Infrastructure\Repository\UMBRepository;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\Model\QuimicosCelulasAreas;
 use App\Infrastructure\Repository\CelulasAreasRepository;
+use App\Infrastructure\Repository\LogsIngresoInventarioRepository;
 use App\Infrastructure\Repository\LogsPreciosRepository;
 use App\Infrastructure\Repository\PeligrosidadesRepository;
 use App\Infrastructure\Repository\QuimicosCelulasAreasRepository;
@@ -25,6 +27,7 @@ class QuimicosService implements IQuimicosService {
     private $quimicosCelulasAreasRepository;
     private $peligrosidadesRepository;
     private $logsPreciosRepository;
+    private $logsIngresoInventarioRepository;
 
     public function __construct() {
         $this->db = (new Connection())->dbQuimicosHwi;
@@ -35,6 +38,7 @@ class QuimicosService implements IQuimicosService {
         $this->celulasAreasRepository = new CelulasAreasRepository($this->db);
         $this->quimicosCelulasAreasRepository = new QuimicosCelulasAreasRepository($this->db);
         $this->peligrosidadesRepository = new PeligrosidadesRepository($this->db);
+        $this->logsIngresoInventarioRepository = new LogsIngresoInventarioRepository($this->db);
     }
 
     public function ongetQuimicos(): array{
@@ -320,6 +324,32 @@ class QuimicosService implements IQuimicosService {
             return false;
         }
         throw new \Exception('Not implemented');
-    }    
+    }
+
+    public function updateInventario(LogsIngresoInventarioDTO $logIngresoInventarioDTO): bool
+    {
+        try{
+            $this->db->beginTransaction();
+        
+            $logIngresoInventario = Mapper::logsIngresoInventarioDTOToModel($logIngresoInventarioDTO);
+
+            if(!$this->logsIngresoInventarioRepository->save($logIngresoInventario)){
+                throw new \Exception("No se pudo guardar el log de ingreso al inventario.");
+            }
+
+            $quimico = Mapper::quimicosDTOToModel($logIngresoInventarioDTO->quimicosDTO);
+
+            if(!$this->quimicosRepository->update_Inventario_By__Id($quimico)){
+                throw new \Exception("No se pudo actualizar el inventario del químico.");
+            }
+
+            $this->db->commit();
+
+            return true;
+        } catch (\Throwable $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
+    }
 }
 ?>

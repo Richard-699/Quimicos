@@ -7,7 +7,9 @@ use App\Domain\DTO\AdministradoresDTO;
 use App\Domain\DTO\CadenciaActualDTO;
 use App\Domain\DTO\CadenciasDTO;
 use App\Domain\DTO\CelulasAreasDTO;
+use App\Domain\DTO\LogsIngresoInventarioDTO;
 use App\Domain\DTO\LogsPreciosDTO;
+use App\Domain\DTO\LogsRetornoSolicitudesConsumoDTO;
 use App\Domain\DTO\PeligrosidadDTO;
 use App\Domain\DTO\QuimicosCelulasAreasDTO;
 use App\Domain\DTO\QuimicosDTO;
@@ -16,7 +18,9 @@ use App\Domain\DTO\UMBDTO;
 use App\Domain\Model\CadenciaActual;
 use App\Domain\Model\Cadencias;
 use App\Domain\Model\CelulasAreas;
+use App\Domain\Model\LogsIngresoInventario;
 use App\Domain\Model\LogsPrecios;
+use App\Domain\Model\LogsRetornoSolicitudesConsumo;
 use App\Domain\Model\Peligrosidad;
 use App\Domain\Model\Quimicos;
 use App\Domain\Model\QuimicosCelulasAreas;
@@ -197,6 +201,7 @@ class Mapper
             id_celula_area_solicitud_consumo: $model->id_celula_area_solicitud_consumo,
             id_quimico_solicitud_consumo: $model->id_quimico_solicitud_consumo,
             cantidad_solicitud_consumo: $model->cantidad_solicitud_consumo,
+            cantidad_consumo_actualizada: $model->cantidad_consumo_actualizada,
             cedula_solicitante: $model->cedula_solicitante,
             nombres_solicitante_consumo: $model->nombres_solicitante_consumo,
             apellidos_solicitante_consumo: $model->apellidos_solicitante_consumo,
@@ -217,6 +222,7 @@ class Mapper
                 id_celula_area_solicitud_consumo: $model->id_celula_area_solicitud_consumo,
                 id_quimico_solicitud_consumo: $model->id_quimico_solicitud_consumo,
                 cantidad_solicitud_consumo: $model->cantidad_solicitud_consumo,
+                cantidad_consumo_actualizada: $model->cantidad_consumo_actualizada,
                 cedula_solicitante: $model->cedula_solicitante,
                 nombres_solicitante_consumo: $model->nombres_solicitante_consumo,
                 apellidos_solicitante_consumo: $model->apellidos_solicitante_consumo,
@@ -233,6 +239,7 @@ class Mapper
             $dto->id_celula_area_solicitud_consumo,
             $dto->id_quimico_solicitud_consumo,
             $dto->cantidad_solicitud_consumo,
+            $dto->cantidad_consumo_actualizada,
             $dto->cedula_solicitante,
             $dto->nombres_solicitante_consumo,
             $dto->apellidos_solicitante_consumo,
@@ -295,6 +302,26 @@ class Mapper
             $dto->fecha_hora_registro_cadencia_actual,
             $dto->id_cadencias_cadencia_actual,
             $dto->id_administrador_cadencia_actual
+        );
+    }
+
+    public static function logsRetornoSolicitudesConsumoDTOToModel(LogsRetornoSolicitudesConsumoDTO $dto): LogsRetornoSolicitudesConsumo
+    {
+        return new LogsRetornoSolicitudesConsumo(
+            $dto->id_log_retorno_solicitud_consumo,
+            $dto->id_solicitud_consumo,
+            $dto->fecha_log_retorno,
+            $dto->cantidad_retorno
+        );
+    }
+
+    public static function logsIngresoInventarioDTOToModel(LogsIngresoInventarioDTO $dto): LogsIngresoInventario
+    {
+        return new LogsIngresoInventario(
+            $dto->id_log_ingreso_inventario,
+            $dto->fecha_ingreso_inventario,
+            $dto->cantidad_ingreso_inventario,
+            $dto->id_quimico_ingreso_inventario
         );
     }
 }

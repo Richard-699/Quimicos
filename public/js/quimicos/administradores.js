@@ -30,11 +30,15 @@ $(document).ready(function () {
                 "className": "dt-center",
                 "render": function (data, type, row) {
                     if (row.estado_administrador == 1) {
-                        return '-';
+                        return `
+                            <button class="btn btn-primary btn-sm" onclick="update(this, '${data}', 'update', '${row.id_celula_consumo_agua || ''}')">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        `;
                     }
 
                     return `
-                        <button class="btn btn-success btn-sm me-1" onclick="update(this, '${data}')">
+                        <button class="btn btn-success btn-sm me-1" onclick="update(this, '${data}', 'approve')">
                             <i class="bi bi-check-lg"></i>
                         </button>
                         <button class="btn btn-danger btn-sm" onclick="rechazar(this, '${data}')">
@@ -51,44 +55,91 @@ $(document).ready(function () {
     });
 });
 
-async function update(btn, id) {
-    const confirmado = await mostrarConfirmacion({
-        titulo: '¿Deseas aprobar este administrador?',
-        texto: 'Una vez aprobado, no se podrá revertir.',
-        icono: 'warning',
-        textoConfirmar: 'Sí, aprobar',
-        textoCancelar: 'Cancelar'
-    });
-
-    if (!confirmado) return;
-
+async function update(btn, id, action, id_celula_consumo_agua = '') {
     mostrarCarga();
     btn.disabled = true;
+
     try {
-        const response = await fetch('../../Handler/quimicos/administradoresHandler.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: 'approve',
-                id: id
-            })
+        const responsePermisos = await fetch('../../Handler/quimicos/administradoresHandler.php?action=obtenerPermisos', {
+            method: 'GET'
         });
+        const permisos = await responsePermisos.json();
+        const permisosEncoded = encodeURIComponent(JSON.stringify(permisos));
 
-        const data = await response.json();
-        ocultarCarga();
+        const responseCelulas = await fetch('../../Handler/quimicos/quimicosHandler.php?action=onGet_celulasAreas', {
+            method: 'GET'
+        });
+        const celulas = await responseCelulas.json();
+        const celulasEncoded = encodeURIComponent(JSON.stringify(celulas));
 
-        if (data.success) {
-            notification('success', 'Se aprobó el administrador.', 2000);
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
-        } else {
-            btn.disabled = false;
-            notification('error', 'Falló al aprobar el administrador, intenta nuevamente.', 2000);
+        var url = `_administradorPermisos.php?permisos=${permisosEncoded}&action=${action}&id_administrador=${id}&celulas=${celulasEncoded}&id_celula_consumo_agua=${id_celula_consumo_agua}`;
+
+        if (action == 'update') {
+            debugger;
+            const responsePermisosSelected = await fetch(`../../Handler/quimicos/administradoresHandler.php?action=obtenerPermisosAdministrador&id=${id}`, {
+                method: 'GET'
+            });
+            const permisosSelected = await responsePermisosSelected.json();
+            const permisosSelectedEncoded = encodeURIComponent(JSON.stringify(permisosSelected));
+
+            url = `_administradorPermisos.php?permisos=${permisosEncoded}&action=${action}&id_administrador=${id}&celulas=${celulasEncoded}&permisosSelected=${permisosSelectedEncoded}&id_celula_consumo_agua=${id_celula_consumo_agua}`;
         }
+
+        Fancybox.show([{
+            src: url,
+            type: 'ajax'
+        }], {
+            on: {
+                reveal: (fancybox, slide) => {
+                    ocultarCarga();
+
+                    const content = slide.$content;
+                    const selects = content.querySelectorAll('select[multiple]');
+
+                    selects.forEach(select => {
+
+                        if (!select.classList.contains('choices-initialized')) {
+
+                            new Choices(select, {
+                                removeItemButton: true,
+                                searchEnabled: true,
+                                placeholder: true,
+                                placeholderValue: 'Selecciona una o más opciones',
+                                searchPlaceholderValue: 'Buscar...',
+                                shouldSort: false,
+                                itemSelectText: ''
+                            });
+
+                            select.classList.add('choices-initialized');
+                        }
+                    });
+                },
+                destroy: (fancybox) => {
+                    const selects = document.querySelectorAll('.choices-initialized');
+
+                    selects.forEach(select => {
+                        if (select.choicesInstance) {
+                            select.choicesInstance.destroy();
+                            delete select.choicesInstance;
+                        }
+                    });
+
+                    if (typeof tabla !== 'undefined' && tabla) {
+                        tabla.ajax.reload(null, false);
+                    }
+
+                    document.body.classList.remove('fancybox-active');
+                    document.body.style.cursor = "default";
+                }
+            },
+
+            click: false,
+            trapFocus: false,
+            placeFocusBack: false
+        });
     } catch (error) {
-        ocultarCarga();
-        console.error('Error al rechazar:', error);
+        console.error('Error al cargar la modal:', error);
+    } finally {
         btn.disabled = false;
     }
 }

@@ -15,6 +15,7 @@ use App\Domain\DTO\QuimicosCelulasAreasDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\DTO\SolicitudesConsumoDTO;
 use App\Domain\DTO\UMBDTO;
+use App\Domain\DTO\ConsumoAguaDTO;
 use App\Domain\Model\CadenciaActual;
 use App\Domain\Model\Cadencias;
 use App\Domain\Model\CelulasAreas;
@@ -26,6 +27,7 @@ use App\Domain\Model\Quimicos;
 use App\Domain\Model\QuimicosCelulasAreas;
 use App\Domain\Model\SolicitudesConsumo;
 use App\Domain\Model\UMB;
+use App\Domain\Model\ConsumoAgua;
 
 class Mapper
 {
@@ -39,7 +41,8 @@ class Mapper
             correo_hwi_administrador: $model->correo_hwi_administrador,
             password_administrador: $model->password_administrador,
             password_is_temporal: $model->password_is_temporal,
-            estado_administrador: $model->estado_administrador
+            estado_administrador: $model->estado_administrador,
+            id_celula_consumo_agua: $model->id_celula_consumo_agua
         );
     }
 
@@ -53,7 +56,8 @@ class Mapper
             $dto->correo_hwi_administrador,
             $dto->password_administrador,
             $dto->password_is_temporal,
-            $dto->estado_administrador
+            $dto->estado_administrador,
+            $dto->id_celula_consumo_agua
         );
     }
 
@@ -322,6 +326,18 @@ class Mapper
             $dto->fecha_ingreso_inventario,
             $dto->cantidad_ingreso_inventario,
             $dto->id_quimico_ingreso_inventario
+        );
+    }
+
+    public static function consumoAguaDTOToModel(ConsumoAguaDTO $dto): ConsumoAgua
+    {
+        return new ConsumoAgua(
+            $dto->id_consumo_agua,
+            $dto->fecha_consumo_agua,
+            $dto->id_celula_consumo_agua,
+            $dto->id_tanque_abastecimiento_consumo_agua,
+            $dto->consumo_inicial_agua,
+            $dto->consumo_final_agua
         );
     }
 }

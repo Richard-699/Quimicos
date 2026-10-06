@@ -11,7 +11,7 @@ def obtener_consumos_mensuales(conexion):
     FROM quimicos_hwi_solicitudes_consumo AS sc
     INNER JOIN quimicos_hwi_quimicos AS q 
         ON sc.id_quimico_solicitud_consumo = q.id_quimico
-    LEFT JOIN quimicos_hwi_celulas_areas AS c 
+    LEFT JOIN gestion_ambiental_hwi_celulas_areas AS c 
         ON sc.id_celula_area_solicitud_consumo = c.id_celulas_areas
     WHERE sc.id_estado_solicitud_quimico = 1 
       AND YEAR(sc.fecha_solicitud_consumo) >= 2026

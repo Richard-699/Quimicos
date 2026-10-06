@@ -9,6 +9,7 @@ use App\Domain\DTO\LogsIngresoInventarioDTO;
 use App\Domain\DTO\LogsRetornoSolicitudesConsumoDTO;
 use App\Domain\DTO\QuimicosDTO;
 use App\Domain\DTO\SolicitudesConsumoDTO;
+use App\Domain\DTO\ConsumoAguaDTO;
 
 class Validator
 {
@@ -32,6 +33,9 @@ class Validator
                 break;
             case $dto instanceof LogsIngresoInventarioDTO:
                 self::validateLogsIngresoInventarioDTO($dto);
+                break;
+            case $dto instanceof ConsumoAguaDTO:
+                self::validateConsumoAguaDTO($dto);
                 break;
             default:
                 throw new Exception('No hay reglas de validación definidas para este DTO.');
@@ -189,6 +193,25 @@ class Validator
         }
         if (empty($dto->id_quimico_ingreso_inventario)) {
             throw new Exception('Error al obtener el id del químico.');
+        }
+    }
+
+    private static function validateConsumoAguaDTO(ConsumoAguaDTO $dto): void
+    {
+        if (empty($dto->id_celula_consumo_agua)) {
+            throw new Exception("ID de célula es obligatorio.");
+        }
+        if (empty($dto->fecha_consumo_agua)) {
+            throw new Exception("La fecha de consumo es obligatoria.");
+        }
+        if ($dto->consumo_inicial_agua === null || $dto->consumo_inicial_agua === '') {
+            throw new Exception("El consumo inicial es obligatorio.");
+        }
+        if ($dto->consumo_final_agua === null || $dto->consumo_final_agua === '') {
+            throw new Exception("El consumo final es obligatorio.");
+        }
+        if ($dto->id_celula_consumo_agua === 3 && empty($dto->id_tanque_abastecimiento_consumo_agua)) {
+            throw new Exception("Para Recubrimiento, el tanque es obligatorio.");
         }
     }
 }

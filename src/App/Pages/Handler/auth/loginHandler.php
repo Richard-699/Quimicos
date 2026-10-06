@@ -35,26 +35,25 @@ try {
     $is_temporal = false;
 
     if($administradorLogin){
-        if($administradorLogin->password_is_temporal == 1){
+        if($administradorLogin->administrador->password_is_temporal == 1){
             $is_temporal = true;
         }
-        if($administradorLogin->estado_administrador == 1){
+        if($administradorLogin->administrador->estado_administrador == 1){
             $approved = true;
         }
 
         $session_path = realpath(__DIR__ . '/../../../../../sessions'); 
         
-        // La ruta asume que el directorio 'sessions' está en la raíz de tu proyecto.
         if ($session_path !== false && is_dir($session_path) && is_writable($session_path)) {
             ini_set('session.save_path', $session_path);
         } else {
-            // Manejo de error para depuración si la carpeta no existe o no tiene permisos
-            // Puedes eliminar este 'throw' una vez que el problema se resuelva.
             throw new Exception("Error de configuración de sesión: Directorio no encontrado o sin permisos.");
         }
 
         session_start();
-        $_SESSION['administrador'] = $administradorLogin;
+        session_regenerate_id(true);
+        $_SESSION['administrador'] = $administradorLogin->administrador;
+        $_SESSION['permisosAdministradores'] = $administradorLogin->permisosAdministrador;
         $_SESSION['sidebarinactive'] = true;
     }
     

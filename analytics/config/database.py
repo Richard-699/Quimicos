@@ -1,31 +1,39 @@
 import os
-import streamlit as st
+import json
 import mysql.connector
 
 def obtener_conexion():
-    # Prioridad: 1. st.secrets (Streamlit Cloud), 2. Variables locales
-    if "DB_HOST" in st.secrets:
-        db_host = st.secrets["DB_HOST"]
-        db_user = st.secrets["DB_USER"]
-        db_pass = st.secrets["DB_PASSWORD"]
-        db_name = st.secrets["DB_NAME"]
-        db_port = int(st.secrets.get("DB_PORT", 3306))
-    else:
-        db_host = os.getenv("DB_HOST", "localhost")
-        db_user = os.getenv("DB_USER", "root")
-        db_pass = os.getenv("DB_PASSWORD", "")
-        db_name = os.getenv("DB_NAME", "nombre_bd_local")
-        db_port = int(os.getenv("DB_PORT", 3306))
+    # 1. Intentar archivo database.json del proyecto
+    config_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'config', 'database.json'))
+    if os.path.exists(config_file):
+        try:
+            with open(config_file, 'r', encoding='utf-8') as f:
+                cfg = json.load(f).get('dbp492eljihwxp', {})
+                return mysql.connector.connect(
+                    host=cfg.get('host', 'localhost'),
+                    user=cfg.get('user', 'root'),
+                    password=cfg.get('password', ''),
+                    database=cfg.get('database', 'dbp492eljihwxp'),
+                    port=int(cfg.get('port', 3306))
+                )
+        except Exception as e:
+            pass
+
+    # 2. Variables de entorno o fallback
+    db_host = os.getenv("DB_HOST", "localhost")
+    db_user = os.getenv("DB_USER", "root")
+    db_pass = os.getenv("DB_PASSWORD", "")
+    db_name = os.getenv("DB_NAME", "dbp492eljihwxp")
+    db_port = int(os.getenv("DB_PORT", 3306))
 
     try:
-        conn = mysql.connector.connect(
+        return mysql.connector.connect(
             host=db_host,
             user=db_user,
             password=db_pass,
             database=db_name,
             port=db_port
         )
-        return conn
     except mysql.connector.Error as err:
-        st.error(f"❌ Error conectando a MySQL en ({db_host}): {err}")
-        st.stop()
+        print(f"Error conectando a MySQL ({db_host}): {err}")
+        return None

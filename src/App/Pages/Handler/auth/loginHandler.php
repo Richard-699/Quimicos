@@ -9,7 +9,7 @@ use App\Shared\Validation\Validator;
 header('Content-Type: application/json');
 
 try {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['debug' => 'start', 'post' => $_POST]); exit;
         throw new Exception('Método no permitido');
     }
 

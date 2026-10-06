@@ -14,8 +14,8 @@ class Connection {
         }
         $config = json_decode(file_get_contents($configPath), true);
 
-        if (!$config) {
-            die("Error al leer la configuración de la base de datos.");
+        if (!$config || !isset($config['gestion_ambiental_hwi'])) {
+            throw new \Exception("Error al leer la configuración de la base de datos en: " . realpath($configPath));
         }
 
         $dsnQuimicosHwiHwi = "mysql:host={$config['gestion_ambiental_hwi']['host']};dbname={$config['gestion_ambiental_hwi']['database']};charset=utf8mb4";
@@ -23,7 +23,7 @@ class Connection {
             $this->dbQuimicosHwi = new PDO($dsnQuimicosHwiHwi, $config['gestion_ambiental_hwi']['user'], $config['gestion_ambiental_hwi']['password']);
             $this->dbQuimicosHwi->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            die("Error de conexión con la base de datos gestion_ambiental_hwi: " . $e->getMessage());
+            throw new \Exception("Error de conexión a la base de datos: " . $e->getMessage());
         }
     }
 }

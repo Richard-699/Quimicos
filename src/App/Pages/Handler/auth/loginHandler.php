@@ -63,7 +63,7 @@ try {
         'is_temporal' => $is_temporal
     ]);
 
-} catch (Exception $e) {
+} catch (\Throwable $e) {
     http_response_code(401);
     echo json_encode([
         'success' => false,

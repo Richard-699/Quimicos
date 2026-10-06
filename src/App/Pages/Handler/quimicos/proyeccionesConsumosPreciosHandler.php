@@ -16,15 +16,13 @@ try {
         $action = $_GET['action'] ?? null;
         switch ($action) {
             case 'debug_python':
-                $out1 = shell_exec('which python; which python3; python --version 2>&1; python3 --version 2>&1');
-                $out2 = shell_exec('python3 -c "import sys; print(sys.executable)" 2>&1');
-                $out3 = shell_exec('find /home/customer -name "pandas" -type d 2>/dev/null');
-                $out4 = shell_exec('find /home/customer -name "activate" 2>/dev/null');
+                $out1 = shell_exec('which pip; which pip3; python3 -m pip --version 2>&1');
+                $out2 = shell_exec('python3 -c "import sys, platform; print(platform.platform(), sys.version)" 2>&1');
+                $out3 = shell_exec('whereis python; whereis pip 2>&1');
                 echo json_encode([
-                    'binaries' => $out1,
-                    'py3_bin' => $out2,
-                    'pandas_loc' => $out3,
-                    'venvs' => $out4
+                    'pip' => $out1,
+                    'platform' => $out2,
+                    'whereis' => $out3
                 ]);
                 exit;
             case 'onGet_filtros':

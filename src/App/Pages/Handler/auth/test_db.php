@@ -55,12 +55,25 @@ try {
     $admins = $adminRepo->onGet();
     echo "Total administradores found: " . count($admins) . "\n";
     
-    echo "\nStep 4: Testing session path\n";
-    $session_path = realpath(__DIR__ . '/../../../../../sessions');
-    echo "Session path: " . var_export($session_path, true) . "\n";
-    echo "is_dir: " . var_export(is_dir($session_path), true) . "\n";
-    echo "is_writable: " . var_export(is_writable($session_path), true) . "\n";
-    echo "PDO ERROR: " . $e->getMessage() . "\n";
+    echo "\nStep 5: Testing LoginService->login('test@test.com')\n";
+    try {
+        $dto = new \App\Domain\DTO\AdministradoresDTO(
+            id_administrador: null,
+            cedula_administrador: null,
+            nombre_administrador: null,
+            apellidos_administrador: null,
+            correo_hwi_administrador: 'test@test.com',
+            password_administrador: '123',
+            password_is_temporal: null,
+            estado_administrador: null,
+            type: 'login'
+        );
+        echo "DTO created!\n";
+        $loginResult = $loginService->login($dto);
+        echo "Login result: " . var_export($loginResult, true) . "\n";
+    } catch (\Throwable $e) {
+        echo "Login attempt caught throwable: " . $e->getMessage() . "\n";
+    }
 } catch (Throwable $t) {
     echo "GENERAL ERROR: " . $t->getMessage() . "\n";
 }

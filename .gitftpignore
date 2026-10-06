@@ -1,2 +1,2 @@
-public/documents/*
-sessions/*
+public/documents/.*
+sessions/.*

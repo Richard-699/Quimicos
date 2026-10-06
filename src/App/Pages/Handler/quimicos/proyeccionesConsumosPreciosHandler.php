@@ -15,16 +15,6 @@ try {
     if ($method === 'GET') {
         $action = $_GET['action'] ?? null;
         switch ($action) {
-            case 'debug_python':
-                $out1 = shell_exec('which pip; which pip3; python3 -m pip --version 2>&1');
-                $out2 = shell_exec('python3 -c "import sys, platform; print(platform.platform(), sys.version)" 2>&1');
-                $out3 = shell_exec('whereis python; whereis pip 2>&1');
-                echo json_encode([
-                    'pip' => $out1,
-                    'platform' => $out2,
-                    'whereis' => $out3
-                ]);
-                exit;
             case 'onGet_filtros':
                 $response = $service->getFiltros();
                 break;

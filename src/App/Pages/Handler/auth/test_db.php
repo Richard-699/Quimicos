@@ -42,9 +42,13 @@ try {
     $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
     echo "Tables in DB: " . implode(", ", $tables) . "\n";
     
-    echo "\nStep 3: Testing LoginService autoload & query\n";
-    require_once __DIR__ . '/../../../../../vendor/autoload.php';
-    $loginService = new \App\Application\Service\LoginService();
+    echo "\nStep 3: PHP Version: " . phpversion() . " (ID: " . PHP_VERSION_ID . ")\n";
+    try {
+        require_once __DIR__ . '/../../../../../vendor/autoload.php';
+        echo "Autoload loaded successfully!\n";
+    } catch (\Throwable $e) {
+        echo "Autoload error: " . $e->getMessage() . "\n";
+    }
     echo "LoginService created successfully!\n";
     
     $adminRepo = new \App\Infrastructure\Repository\AdministradoresRepository($pdo);

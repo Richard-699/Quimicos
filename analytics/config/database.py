@@ -8,16 +8,23 @@ def obtener_conexion():
     if os.path.exists(config_file):
         try:
             with open(config_file, 'r', encoding='utf-8') as f:
-                cfg = json.load(f).get('dbp492eljihwxp', {})
-                return mysql.connector.connect(
-                    host=cfg.get('host', 'localhost'),
-                    user=cfg.get('user', 'root'),
-                    password=cfg.get('password', ''),
-                    database=cfg.get('database', 'dbp492eljihwxp'),
-                    port=int(cfg.get('port', 3306))
+                full_cfg = json.load(f)
+                cfg = (
+                    full_cfg.get('gestion_ambiental_hwi')
+                    or full_cfg.get('quimicos_hwi')
+                    or full_cfg.get('dbp492eljihwxp')
+                    or (next(iter(full_cfg.values())) if full_cfg else {})
                 )
+                if cfg:
+                    return mysql.connector.connect(
+                        host=cfg.get('host', 'localhost'),
+                        user=cfg.get('user', 'root'),
+                        password=cfg.get('password', ''),
+                        database=cfg.get('database', 'gestion_ambiental_hwi'),
+                        port=int(cfg.get('port', 3306))
+                    )
         except Exception as e:
-            pass
+            print(f"Error conectando a BD desde json: {e}")
 
     # 2. Variables de entorno o fallback
     db_host = os.getenv("DB_HOST", "localhost")

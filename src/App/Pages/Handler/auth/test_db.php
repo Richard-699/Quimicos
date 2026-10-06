@@ -42,7 +42,20 @@ try {
     $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
     echo "Tables in DB: " . implode(", ", $tables) . "\n";
     
-} catch (PDOException $e) {
+    echo "\nStep 3: Testing LoginService autoload & query\n";
+    require_once __DIR__ . '/../../../../../vendor/autoload.php';
+    $loginService = new \App\Application\Service\LoginService();
+    echo "LoginService created successfully!\n";
+    
+    $adminRepo = new \App\Infrastructure\Repository\AdministradoresRepository($pdo);
+    $admins = $adminRepo->onGet();
+    echo "Total administradores found: " . count($admins) . "\n";
+    
+    echo "\nStep 4: Testing session path\n";
+    $session_path = realpath(__DIR__ . '/../../../../../sessions');
+    echo "Session path: " . var_export($session_path, true) . "\n";
+    echo "is_dir: " . var_export(is_dir($session_path), true) . "\n";
+    echo "is_writable: " . var_export(is_writable($session_path), true) . "\n";
     echo "PDO ERROR: " . $e->getMessage() . "\n";
 } catch (Throwable $t) {
     echo "GENERAL ERROR: " . $t->getMessage() . "\n";

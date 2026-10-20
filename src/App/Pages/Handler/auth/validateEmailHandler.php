@@ -4,9 +4,6 @@ require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 use App\Application\Service\LoginService;
 use App\Domain\DTO\AdministradoresDTO;
-use App\Infrastructure\Repository\AdministradoresRepository;
-use App\Infrastructure\Repository\PermisosAdministradoresRepository;
-use App\Infrastructure\Repository\PermisosRepository;
 use App\Shared\Util\Utilidades;
 
 header('Content-Type: application/json');
@@ -58,7 +55,7 @@ try {
     $asunto = 'Contraseña Restablecida';
     $titulo = 'Contraseña Restablecida';
     $contenido = '
-        <p style="margin-top: 10px;">La siguiente es la contraseña temporal para acceder al Sistema Novedades de Nómina</p>
+        <p style="margin-top: 10px;">La siguiente es la contraseña temporal para acceder al sistema de Químicos</p>
         <p><span style="font-weight: bold;">Contraseña temporal:</span> ' . $password_temp . '</p>
     ';
 
@@ -69,7 +66,6 @@ try {
     }
 
     echo json_encode(['success' => true]);
-
 } catch (Exception $e) {
     echo json_encode([
         'success' => false,

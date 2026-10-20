@@ -101,10 +101,12 @@ function onPostUpdateAdministrador(array $data) {
             $resultAdministradorDTO = $administradoresService->aprobarAdministrador($administradoresDTO);
 
             $email = $resultAdministradorDTO->correo_hwi_administrador;
-            $asunto = 'Aprobación Sistema de Novedades de Nómina';
-            $titulo = 'Aprobación Sistema de Novedades de Nómina';
+            $asunto = 'Aprobación en Sistema de Químicos';
+            $titulo = 'Cuenta Aprobada';
+            $nombreAdmin = trim(($resultAdministradorDTO->nombre_administrador ?? '') . ' ' . ($resultAdministradorDTO->apellidos_administrador ?? ''));
             $contenido = '
-                <p style="margin-top: 10px;">Has sido aprobado en el sistema de novedades de nómina, ya puedes ingresar.</p>
+                <p style="margin-top: 5px; margin-bottom: 12px;">Hola <strong>' . htmlspecialchars($nombreAdmin ?: 'Usuario', ENT_QUOTES, 'UTF-8') . '</strong>,</p>
+                <p style="margin-bottom: 15px;">Tu cuenta ha sido aprobada en el sistema de <strong>Gestión Ambiental - Químicos</strong>. Ya puedes ingresar con tu correo institucional y contraseña.</p>
             ';
 
             $utilidades = new Utilidades();

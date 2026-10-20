@@ -10,6 +10,7 @@ class ConsumoAgua
         public ?int $id_celula_consumo_agua = null,
         public ?int $id_tanque_abastecimiento_consumo_agua = null,
         public ?float $consumo_inicial_agua = null,
-        public ?float $consumo_final_agua = null
+        public ?float $consumo_final_agua = null,
+        public ?string $observaciones_novedades_consumo_agua = null
     ) {}
 }

@@ -1,36 +1,48 @@
 window.addEventListener('load', function () {
     const inputEmail = document.getElementById('inputEmail');
     const errorEmail = document.getElementById('errorEmail');
-    const submitBtn = document.querySelector('button[type="submit"]');
+    const submitBtn = document.getElementById('validate_email_btn');
 
-    inputEmail.addEventListener('input', function () {
-        const email = inputEmail.value.trim();
+    function validarEmail() {
+        const email = inputEmail ? inputEmail.value.trim() : '';
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (regex.test(email)) {
-            errorEmail.textContent = "";
-            submitBtn.disabled = false;
-        } else {
-            errorEmail.textContent = "Correo inválido";
-            submitBtn.disabled = true;
+        if (!email) {
+            errorEmail.textContent = '';
+            if (submitBtn) submitBtn.disabled = true;
+            return;
         }
-    });
+
+        if (regex.test(email)) {
+            errorEmail.textContent = '';
+            if (submitBtn) submitBtn.disabled = false;
+        } else {
+            errorEmail.textContent = 'Ingrese un correo electrónico válido.';
+            if (submitBtn) submitBtn.disabled = true;
+        }
+    }
+
+    if (inputEmail) {
+        inputEmail.addEventListener('input', validarEmail);
+        inputEmail.addEventListener('blur', validarEmail);
+    }
 
     $('#formValidateEmail').on('submit', function (e) {
-        mostrarCarga();
         e.preventDefault();
-        
+        mostrarCarga();
+
         const form = this;
         const formData = new FormData(form);
 
         validateEmail();
 
-        async function validateEmail(){
+        async function validateEmail() {
             try {
                 const response = await fetch('../../Handler/auth/validateEmailHandler.php', {
                     method: 'POST',
                     body: formData
                 });
+
                 if (!response.ok) {
                     throw new Error('Error en la solicitud: ' + response.statusText);
                 }
@@ -43,7 +55,7 @@ window.addEventListener('load', function () {
                         window.location.href = 'login.php';
                     }, 2500);
                 } else {
-                    notification('error', result.message, 2500);
+                    notification('error', result.message || 'Error al validar el correo.', 3000);
                 }
             } catch (error) {
                 notification('error', 'Error al conectar con el servidor.', 3000);

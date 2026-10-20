@@ -58,6 +58,9 @@ class LoginService implements ILoginService {
 
     public function actualizar_password(AdministradoresDTO $administradoresDTO): bool{
         $administrador = $this->administradoresRepository->onGet_By__Email($administradoresDTO->correo_hwi_administrador);
+        if (!$administrador) {
+            throw new Exception("No se encontró ningún usuario con el correo especificado.");
+        }
         $id_administrador = $administrador->id_administrador;
         $administradoresDTO->id_administrador = $id_administrador;
         $administrador = Mapper::administradoresDTOToModel($administradoresDTO);

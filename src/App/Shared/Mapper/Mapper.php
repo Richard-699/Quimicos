@@ -337,7 +337,8 @@ class Mapper
             $dto->id_celula_consumo_agua,
             $dto->id_tanque_abastecimiento_consumo_agua,
             $dto->consumo_inicial_agua,
-            $dto->consumo_final_agua
+            $dto->consumo_final_agua,
+            $dto->observaciones_novedades_consumo_agua
         );
     }
 }

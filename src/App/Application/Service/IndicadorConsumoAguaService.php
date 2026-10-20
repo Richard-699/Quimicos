@@ -408,7 +408,7 @@ class IndicadorConsumoAguaService
 
             return [
                 'success'    => true,
-                'historico'  => $historico,
+                'historico'  => array_slice($historico, -7),
                 'proyeccion' => $proyeccion,
             ];
         } catch (Exception $e) {

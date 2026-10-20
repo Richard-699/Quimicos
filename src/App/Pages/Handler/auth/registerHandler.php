@@ -26,7 +26,7 @@ try {
     $data['password_is_temporal'] = 0;
     $data['estado_administrador'] = 3;
     $data['type'] = 'register';
-    if(isset($data['password_administrador'])){
+    if (isset($data['password_administrador'])) {
         $data['password_administrador'] = password_hash($data['password_administrador'], PASSWORD_DEFAULT);
     }
     $administradorDTO = new AdministradoresDTO(...$data);
@@ -34,23 +34,37 @@ try {
     Validator::validateDTO($administradorDTO);
 
     $loginService = new LoginService();
-    
+
     $validar_email_registrado = $loginService->validar_email_registrado($administradorDTO->correo_hwi_administrador);
 
-    if($validar_email_registrado){
+    if ($validar_email_registrado) {
         $status = true;
         throw new Exception();
-    }else{
+    } else {
         $guardar_administrador = $loginService->guardar_administrador($administradorDTO);
-        if(!$guardar_administrador){
+        if (!$guardar_administrador) {
             throw new Exception('Error al registrar, intente nuevamente.');
         }
 
         $email_superAdmin = 'ricardo.rojas@hacebwhirlpool.com';
         $asunto = 'Nuevo Registro Administrador';
         $titulo = 'Nuevo Administrador Registrado';
+
+        $nombreCompleto = trim(($administradorDTO->nombre_administrador ?? '') . ' ' . ($administradorDTO->apellidos_administrador ?? ''));
+        $cedula = $administradorDTO->cedula_administrador ? number_format($administradorDTO->cedula_administrador, 0, '', '.') : 'No registrada';
+        $correo = htmlspecialchars($administradorDTO->correo_hwi_administrador ?? '', ENT_QUOTES, 'UTF-8');
+
         $contenido = '
-            <p style="margin-top: 10px;">Se ha registrado un nuevo administrador en el sistema de inventario, puedes proceder con la verificación.</p>
+            <p style="margin-top: 5px; margin-bottom: 18px;">Se ha registrado un nuevo administrador en el sistema de <strong>Gestión Ambiental - Químicos</strong> y requiere verificación para su activación.</p>
+            
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin-bottom: 18px;">
+                <p style="margin: 6px 0; font-size: 14px;"><strong>Nombre:</strong> ' . htmlspecialchars($nombreCompleto ?: 'N/A', ENT_QUOTES, 'UTF-8') . '</p>
+                <p style="margin: 6px 0; font-size: 14px;"><strong>Cédula:</strong> ' . $cedula . '</p>
+                <p style="margin: 6px 0; font-size: 14px;"><strong>Correo HWI:</strong> ' . $correo . '</p>
+                <p style="margin: 6px 0; font-size: 14px;"><strong>Estado:</strong> <span style="display: inline-block; background-color: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 12px;">Pendiente de Aprobación</span></p>
+            </div>
+            
+            <p style="font-size: 13px; color: #64748b; margin-top: 15px;">Puedes proceder con la validación y asignación de permisos desde el módulo de <em>Administradores</em> en el sistema.</p>
         ';
 
         $utilidades = new Utilidades();
@@ -64,8 +78,7 @@ try {
     echo json_encode([
         'success' => true
     ]);
-
-}catch (Exception $e) {
+} catch (Exception $e) {
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage(),

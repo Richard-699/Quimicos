@@ -234,7 +234,7 @@ $(document).ready(function () {
             return;
         }
 
-        const labels   = serie.map(d => d.fecha);
+        const labels   = serie.map(d => (d.fecha_hora || d.fecha).replace(' ', 'T'));
         const consumos = serie.map(d => parseFloat(d.consumo_total || 0));
         const topes    = serie.map(d => d.tope_ml ? parseFloat(d.tope_ml) : null);
         const hayTopes = topes.some(v => v !== null);
@@ -298,6 +298,13 @@ $(document).ready(function () {
                     },
                     tooltip: {
                         callbacks: {
+                            title: function (tooltipItems) {
+                                if (!tooltipItems || !tooltipItems.length) return '';
+                                const idx = tooltipItems[0].dataIndex;
+                                const item = serie[idx];
+                                const raw = item ? (item.fecha_hora || item.fecha) : tooltipItems[0].label;
+                                return formatFechaHora(raw);
+                            },
                             label: ctx => {
                                 if (ctx.raw === null) return null;
                                 return ` ${ctx.dataset.label}: ${formatNum(ctx.raw, 2)} m³`;
@@ -500,8 +507,9 @@ $(document).ready(function () {
             return;
         }
 
-        const labelsHist = historico.map(d => d.fecha_mes);
-        const consHist   = historico.map(d => parseFloat(d.consumo_mensual || 0));
+        const histFiltrado = (historico || []).slice(-7);
+        const labelsHist = histFiltrado.map(d => d.fecha_mes);
+        const consHist   = histFiltrado.map(d => parseFloat(d.consumo_mensual || 0));
 
         const labelsProj = (proyeccion || []).map(d => d.fecha_mes);
         const consProj   = (proyeccion || []).map(d => parseFloat(d.consumo_proyectado || 0));
@@ -703,6 +711,7 @@ $(document).ready(function () {
                                 data-tanque="${(r.nombre_tanque || 'Sin tanque').replace(/"/g, '&quot;')}"
                                 data-inicial="${r.consumo_inicial_agua}"
                                 data-final="${r.consumo_final_agua}"
+                                data-observaciones="${(r.observaciones_novedades_consumo_agua || '').replace(/"/g, '&quot;')}"
                                 title="Editar consumo final">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>` : '—'}
@@ -916,13 +925,14 @@ $(document).ready(function () {
     // EDITAR CONSUMO (FANCYBOX)
     // ─────────────────────────────────────────────
     $(document).on('click', '.btn-edit-consumo', function () {
-        const id      = $(this).data('id');
-        const celula  = $(this).data('celula') || '';
-        const tanque  = $(this).data('tanque') || '';
-        const inicial = $(this).data('inicial') || 0;
-        const final   = $(this).data('final') || 0;
+        const id            = $(this).data('id');
+        const celula        = $(this).data('celula') || '';
+        const tanque        = $(this).data('tanque') || '';
+        const inicial       = $(this).data('inicial') || 0;
+        const final         = $(this).data('final') || 0;
+        const observaciones = $(this).data('observaciones') || '';
 
-        const url = `_editarConsumoAgua.php?id=${id}&celula=${encodeURIComponent(celula)}&tanque=${encodeURIComponent(tanque)}&inicial=${inicial}&final=${final}&v=${Date.now()}`;
+        const url = `_editarConsumoAgua.php?id=${id}&celula=${encodeURIComponent(celula)}&tanque=${encodeURIComponent(tanque)}&inicial=${inicial}&final=${final}&observaciones=${encodeURIComponent(observaciones)}&v=${Date.now()}`;
 
         if (typeof Fancybox !== 'undefined') {
             Fancybox.show([{ src: url, type: 'ajax' }], {
@@ -986,9 +996,23 @@ $(document).ready(function () {
 
     function formatFechaHora(str) {
         if (!str) return '—';
-        const fecha = str.substring(0, 10);
-        const hora = str.length > 10 ? str.substring(11, 16) : '';
-        return hora ? `${formatFecha(fecha)} ${hora}` : formatFecha(fecha);
+        const strClean = str.toString().trim();
+        const fecha = strClean.substring(0, 10);
+        const hora = strClean.length > 10 ? strClean.substring(11).trim() : '';
+        if (!hora) return formatFecha(fecha);
+
+        const parts = hora.split(':');
+        let h = parseInt(parts[0], 10);
+        const m = parts[1] || '00';
+        const s = parts[2] ? parts[2].substring(0, 2) : '';
+        if (!isNaN(h)) {
+            const ampm = h >= 12 ? 'p.m.' : 'a.m.';
+            h = h % 12 || 12;
+            const hStr = h < 10 ? '0' + h : h;
+            const timeStr = s ? `${hStr}:${m}:${s} ${ampm}` : `${hStr}:${m} ${ampm}`;
+            return `${formatFecha(fecha)}, ${timeStr}`;
+        }
+        return `${formatFecha(fecha)} ${hora}`;
     }
 
     function getPeriodoLabel() {

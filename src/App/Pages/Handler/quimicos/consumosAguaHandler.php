@@ -25,6 +25,7 @@ function onGetUltimosConsumos(array $data)
                 'nombre_tanque' => $c->nombre_tanque ?: 'No Aplica',
                 'consumo_inicial_agua' => $c->consumo_inicial_agua,
                 'consumo_final_agua' => $c->consumo_final_agua,
+                'observaciones_novedades_consumo_agua' => $c->observaciones_novedades_consumo_agua,
                 'id_tanque_abastecimiento_consumo_agua' => $c->id_tanque_abastecimiento_consumo_agua
             ];
         }
@@ -59,13 +60,15 @@ function onPostSaveConsumoAgua(array $data)
         $id_celula = isset($form['id_celula_consumo_agua']) && $form['id_celula_consumo_agua'] !== '' ? (int)$form['id_celula_consumo_agua'] : null;
         $id_tanque = isset($form['id_tanque_abastecimiento_consumo_agua']) && $form['id_tanque_abastecimiento_consumo_agua'] !== '' ? (int)$form['id_tanque_abastecimiento_consumo_agua'] : null;
         $fecha     = isset($form['fecha_consumo_agua']) && !empty($form['fecha_consumo_agua']) ? trim($form['fecha_consumo_agua']) : null;
+        $obs       = isset($form['observaciones_novedades_consumo_agua']) && trim($form['observaciones_novedades_consumo_agua']) !== '' ? trim($form['observaciones_novedades_consumo_agua']) : null;
         
         $dto = new ConsumoAguaDTO(
             fecha_consumo_agua: $fecha,
             id_celula_consumo_agua: $id_celula,
             id_tanque_abastecimiento_consumo_agua: $id_tanque,
             consumo_inicial_agua: isset($form['consumo_inicial_agua']) && $form['consumo_inicial_agua'] !== '' ? (float)$form['consumo_inicial_agua'] : null,
-            consumo_final_agua: isset($form['consumo_final_agua']) && $form['consumo_final_agua'] !== '' ? (float)$form['consumo_final_agua'] : null
+            consumo_final_agua: isset($form['consumo_final_agua']) && $form['consumo_final_agua'] !== '' ? (float)$form['consumo_final_agua'] : null,
+            observaciones_novedades_consumo_agua: $obs
         );
 
         Validator::validateDTO($dto);
@@ -89,6 +92,7 @@ function onPostUpdateConsumoAgua(array $data)
         
         $id_consumo = isset($form['id_consumo_agua']) && $form['id_consumo_agua'] !== '' ? (int)$form['id_consumo_agua'] : null;
         $final      = isset($form['consumo_final_agua']) && $form['consumo_final_agua'] !== '' ? (float)$form['consumo_final_agua'] : null;
+        $obs        = isset($form['observaciones_novedades_consumo_agua']) && trim($form['observaciones_novedades_consumo_agua']) !== '' ? trim($form['observaciones_novedades_consumo_agua']) : null;
         
         if (!$id_consumo) {
             throw new Exception("ID del registro es obligatorio.");
@@ -99,7 +103,8 @@ function onPostUpdateConsumoAgua(array $data)
 
         $dto = new ConsumoAguaDTO(
             id_consumo_agua: $id_consumo,
-            consumo_final_agua: $final
+            consumo_final_agua: $final,
+            observaciones_novedades_consumo_agua: $obs
         );
 
         $service = new ConsumoAguaService();

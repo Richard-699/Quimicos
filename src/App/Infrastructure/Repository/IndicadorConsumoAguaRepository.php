@@ -138,6 +138,7 @@ class IndicadorConsumoAguaRepository
                     t.tanque_abastecimiento_agua AS nombre_tanque,
                     c.consumo_inicial_agua,
                     c.consumo_final_agua,
+                    c.observaciones_novedades_consumo_agua,
                     (c.consumo_final_agua - c.consumo_inicial_agua) AS consumo_neto,
                     ml.supera_tope,
                     ml.tope_calculado,
@@ -162,6 +163,7 @@ class IndicadorConsumoAguaRepository
                     c.id_tanque_abastecimiento_consumo_agua,
                     t.tanque_abastecimiento_agua AS nombre_tanque,
                     c.consumo_inicial_agua, c.consumo_final_agua,
+                    c.observaciones_novedades_consumo_agua,
                     (c.consumo_final_agua - c.consumo_inicial_agua) AS consumo_neto,
                     NULL AS supera_tope, NULL AS tope_calculado, NULL AS score_anomalia
                 FROM gestion_ambiental_hwi_consumo_agua c
@@ -229,9 +231,10 @@ class IndicadorConsumoAguaRepository
         try {
             $sql = "
                 SELECT
+                    MAX(c.fecha_consumo_agua)                              AS fecha_hora,
                     DATE(c.fecha_consumo_agua)                             AS fecha,
                     SUM(c.consumo_final_agua - c.consumo_inicial_agua)     AS consumo_total,
-                    AVG(ml.tope_calculado)                                  AS tope_ml
+                    AVG(ml.tope_calculado)                                 AS tope_ml
                 FROM gestion_ambiental_hwi_consumo_agua c
                 LEFT JOIN gestion_ambiental_hwi_consumo_agua_ml_scores ml
                     ON c.id_consumo_agua = ml.id_consumo_agua_score
@@ -243,6 +246,7 @@ class IndicadorConsumoAguaRepository
         } catch (Exception $e) {
             $sql = "
                 SELECT
+                    MAX(c.fecha_consumo_agua)                          AS fecha_hora,
                     DATE(c.fecha_consumo_agua)                         AS fecha,
                     SUM(c.consumo_final_agua - c.consumo_inicial_agua) AS consumo_total,
                     NULL                                               AS tope_ml

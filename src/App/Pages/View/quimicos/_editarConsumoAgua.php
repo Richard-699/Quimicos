@@ -1,9 +1,27 @@
 <?php
-$id      = $_GET['id'] ?? '';
-$celula  = $_GET['celula'] ?? '';
-$tanque  = $_GET['tanque'] ?? '';
-$inicial = isset($_GET['inicial']) && is_numeric($_GET['inicial']) ? (float)$_GET['inicial'] : 0;
-$final   = isset($_GET['final']) && is_numeric($_GET['final']) ? (float)$_GET['final'] : 0;
+require_once __DIR__ . '/../../../../../vendor/autoload.php';
+use App\Infrastructure\Database\Connection;
+use App\Infrastructure\Repository\ConsumoAguaRepository;
+
+$id            = $_GET['id'] ?? '';
+$celula        = $_GET['celula'] ?? '';
+$tanque        = $_GET['tanque'] ?? '';
+$inicial       = isset($_GET['inicial']) && is_numeric($_GET['inicial']) ? (float)$_GET['inicial'] : 0;
+$final         = isset($_GET['final']) && is_numeric($_GET['final']) ? (float)$_GET['final'] : 0;
+$observaciones = $_GET['observaciones'] ?? '';
+
+if (!empty($id)) {
+    try {
+        $db = (new Connection())->dbQuimicosHwi;
+        $repo = new ConsumoAguaRepository($db);
+        $consumo = $repo->findById((int)$id);
+        if ($consumo) {
+            if ($consumo->consumo_inicial_agua !== null) $inicial = $consumo->consumo_inicial_agua;
+            if ($consumo->consumo_final_agua !== null) $final = $consumo->consumo_final_agua;
+            if ($consumo->observaciones_novedades_consumo_agua !== null) $observaciones = $consumo->observaciones_novedades_consumo_agua;
+        }
+    } catch (\Throwable $e) {}
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -43,7 +61,7 @@ $final   = isset($_GET['final']) && is_numeric($_GET['final']) ? (float)$_GET['f
                     </div>
 
                     <!-- Tarjeta Visual de Consumo Calculado en Tiempo Real -->
-                    <div class="col-md-12">
+                    <div class="col-md-12 mb-2">
                         <div id="box-consumo-calculado" class="consumo-calc-box">
                             <div class="d-flex align-items-center justify-content-between">
                                 <span class="calc-label" id="calc-label-text">
@@ -54,6 +72,13 @@ $final   = isset($_GET['final']) && is_numeric($_GET['final']) ? (float)$_GET['f
                                 </span>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Observaciones Novedades (Opcional) -->
+                    <div class="col-md-12 mb-2">
+                        <label for="observaciones_novedades_consumo_agua" class="form-label fw-semibold fancy-label">Observaciones Novedades (Opcional):</label>
+                        <textarea class="form-control shadow-sm input-editable" id="observaciones_novedades_consumo_agua" name="observaciones_novedades_consumo_agua" rows="3" maxlength="500" placeholder="Ingrese observaciones o novedades relevantes (máx. 500 caracteres)..."><?= htmlspecialchars((string)$observaciones) ?></textarea>
+                        <div class="text-end text-muted small mt-1"><span id="char-count-obs"><?= mb_strlen((string)$observaciones) ?></span>/500 caracteres</div>
                     </div>
                 </div>
 

@@ -6,8 +6,10 @@ use App\Shared\Util\PHPMailer;
 use App\Shared\Util\Exception;
 use App\Shared\Util\SMTP;
 
-class Utilidades {
-    public static function generarGUID() {
+class Utilidades
+{
+    public static function generarGUID()
+    {
         $data = random_bytes(16);
         $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
         $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
@@ -74,7 +76,8 @@ class Utilidades {
         }
     }
 
-    function generarPasswordTemporal($longitud = 8) {
+    function generarPasswordTemporal($longitud = 8)
+    {
         $caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $contrasena = '';
         for ($i = 0; $i < $longitud; $i++) {
@@ -83,4 +86,3 @@ class Utilidades {
         return $contrasena;
     }
 }
-?>

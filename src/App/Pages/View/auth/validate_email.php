@@ -1,54 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restablecer Contraseña</title>
-    <link rel="shortcut icon" href="../../../public/img/LogoBlanco.png" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <title>Restablecer Contraseña - Químicos HWI</title>
+    <link rel="shortcut icon" href="../../../../../public/img/LogoBlanco.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="../../../../../public/css/auth/estilos_validate_email.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <link rel="stylesheet" href="../../../../../public/css/utils/estilos_spinner.css">
+    <link rel="stylesheet" href="../../../../../public/css/auth/estilos_validate_email.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <?php
-    session_start();
-    include('../../../Shared/Util/spinner.php');
+        include('../../../Shared/Util/spinner.php');
     ?>
 </head>
 
 <body>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <p class="titleContraseña">Restablecer Contraseña</p>
-                </div>
-                <div class="card-body">
-                    <form id="formValidateEmail">
-                        <div class="row mt-4">
-                            <div class="col-12 form-group">
-                                <input type="text" class="custom-input" id="inputEmail" placeholder=" " name="correo_hwi_administrador">
-                                <label for="inputUsername" class="floating-label">Correo Corporativo: *</label>
-                            </div>
-                            <span id="errorEmail" style="color: red; margin-top:-30px; margin-left: 60px"></span>
-                            <div class="col-12 form-group">
-                                <button id="validate_email_btn" disabled type="submit" class="btn btn-success">Restablecer</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <div class="validate-card">
+        <div class="header-section">
+            <img src="../../../../../public/img/LogoBlanco.png" alt="HWI Logo" class="logo">
+            <h3 class="title">Restablecer <strong>Contraseña</strong></h3>
+            <p class="subtitle">Ingresa tu correo corporativo y te enviaremos una contraseña temporal de acceso.</p>
         </div>
+
+        <form id="formValidateEmail">
+            <div class="form-group">
+                <input type="email" class="custom-input" id="inputEmail" placeholder=" " name="correo_hwi_administrador" required autocomplete="email">
+                <label for="inputEmail" class="floating-label">Correo Corporativo: *</label>
+            </div>
+            
+            <span id="errorEmail" class="error-message"></span>
+
+            <div class="d-grid mt-2 mb-3">
+                <button id="validate_email_btn" disabled type="submit" class="btn-restablecer">
+                    Restablecer Contraseña
+                </button>
+            </div>
+
+            <p class="text-center mt-3 mb-0">
+                <a href="login.php">Cancelar y volver al inicio de sesión</a>
+            </p>
+        </form>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../../../../public/js/auth/validate_email.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="../../../../../public/js/utils/notifications.js"></script>
     <script src="../../../../../public/js/utils/spinner.js"></script>
+    <script src="../../../../../public/js/auth/validate_email.js"></script>
 </body>
 
 </html>

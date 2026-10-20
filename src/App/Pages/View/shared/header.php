@@ -25,48 +25,51 @@ $permisos = $_SESSION['permisosAdministradores'];
         <a href="javascript:void(0);" onclick="Inicio();" class="mt-3 hov"><i class="fas fa-home"></i> Inicio</a>
         <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />
         <?php
-            foreach ($permisos as $permiso) {
-                switch ($permiso['tipo_permiso']) {
+        foreach ($permisos as $permiso) {
+            switch ($permiso['tipo_permiso']) {
 
-                    case "Gestión Químicos":
-                        echo '<a class="hov" href="quimicos.php"">
+                case "Gestión Químicos":
+                    echo '<a class="hov" href="quimicos.php"">
                                 <i class="fa-solid fa-flask"></i> Químicos</a>
                                 <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        echo '<a class="hov" href="solicitudes.php">
+                    echo '<a class="hov" href="solicitudes.php">
                                 <i class="fa-solid fa-file-circle-exclamation"></i> Solicitudes</a>
                                 <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        echo '<a class="hov" href="informe.php">
+                    echo '<a class="hov" href="informe.php">
                                 <i class="fa-solid fa-file"></i> Informe Químicos</a>
                                 <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        echo '<a class="hov" href="proyeccionesConsumosPrecios.php">
+                    echo '<a class="hov" href="proyeccionesConsumosPrecios.php">
                                 <i class="fa-solid fa-chart-line"></i> Proyecciones Consumo y Precios</a>
                                 <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        break;
-                    case "Gestión Administradores":
-                        echo '<a class="hov" href="administradores.php">
+                    break;
+                case "Gestión Administradores":
+                    echo '<a class="hov" href="administradores.php">
                                 <i class="fa-solid fa-users"></i> Administradores</a>
                                 <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        break;
-                    case "Registrar Consumos Agua":
-                        echo '<a class="hov" href="consumosAgua.php">
+                    break;
+                case "Registrar Consumos Agua":
+                    echo '<a class="hov" href="consumosAgua.php">
                                 <i class="fa-solid fa-faucet-drip"></i> Consumo de Agua</a>
                                 <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        break;
-                    case "Visualizar Indicador Consumos Agua":
-                        echo '<a class="hov" href="indicadorConsumosAgua.php">
+                    break;
+                case "Visualizar Indicador Consumos Agua":
+                    echo '<a class="hov" href="indicadorConsumosAgua.php">
                                 <i class="fa-solid fa-dashboard"></i> Indicador Consumo de Agua</a>
                                 <hr style="width: 93%; margin-left: 4%; color: white; margin-top: -1px; margin-bottom: -1px" />';
-                        break;
-                }
+                    break;
             }
+        }
         ?>
-            
+
         <a href="javascript:void(0);" class="hov" id="BtnCerrarSesion"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
     </div>
 
     <div class="content">
         <nav class="navbar navbar-expand-lg navbar-light px-3">
-            <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰ Menú</button>
+            <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" type="button">
+                <i class="fa-solid fa-bars"></i>
+                <span>Menú</span>
+            </button>
             <div class="ms-auto d-flex align-items-center">
                 <span class='nombre-celula'>Administrador</span>
                 <a href="javascript:void(0);" id="BtnCerrarSesionMenu" class="text-dark icon-logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>

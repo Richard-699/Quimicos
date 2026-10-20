@@ -46,6 +46,7 @@ try {
                 $form = $data['form'] ?? [];
                 $id_consumo = isset($form['id_consumo_agua']) ? (int)$form['id_consumo_agua'] : null;
                 $final      = isset($form['consumo_final_agua']) ? (float)$form['consumo_final_agua'] : null;
+                $obs        = isset($form['observaciones_novedades_consumo_agua']) && trim($form['observaciones_novedades_consumo_agua']) !== '' ? trim($form['observaciones_novedades_consumo_agua']) : null;
 
                 if (!$id_consumo) throw new \Exception("ID de consumo es requerido.");
                 if ($final === null) throw new \Exception("Consumo final es requerido.");
@@ -53,7 +54,8 @@ try {
                 $consumoService = new ConsumoAguaService();
                 $dto = new ConsumoAguaDTO(
                     id_consumo_agua: $id_consumo,
-                    consumo_final_agua: $final
+                    consumo_final_agua: $final,
+                    observaciones_novedades_consumo_agua: $obs
                 );
                 $consumoService->updateConsumoAgua($dto);
 

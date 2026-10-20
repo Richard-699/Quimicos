@@ -93,6 +93,10 @@ class ConsumoAguaService implements IConsumoAguaService
                                 }
                             }
 
+                            $observaciones = !empty(trim($dto->observaciones_novedades_consumo_agua ?? '')) 
+                                ? htmlspecialchars(trim($dto->observaciones_novedades_consumo_agua)) 
+                                : 'Ninguna';
+
                             $contenidoHtml = "
                                 <p>Hola,</p>
                                 <p>El sistema de Machine Learning ha detectado que el consumo registrado hoy supera el tope predictivo calculado para la célula.</p>
@@ -101,6 +105,7 @@ class ConsumoAguaService implements IConsumoAguaService
                                     <li><strong>Tanque:</strong> {$tanqueStr}</li>
                                     <li><strong>Consumo Registrado:</strong> {$consumoDia} m³</li>
                                     <li><strong>Tope Calculado (ML):</strong> {$tope} m³</li>
+                                    <li><strong>Observaciones:</strong> {$observaciones}</li>
                                 </ul>
                                 <p>Por favor, revisa el consumo para verificar posibles fugas o anomalías.</p>
                             ";

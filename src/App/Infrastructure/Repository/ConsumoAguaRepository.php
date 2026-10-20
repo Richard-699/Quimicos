@@ -30,6 +30,7 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
                 c.id_tanque_abastecimiento_consumo_agua,
                 c.consumo_inicial_agua,
                 c.consumo_final_agua,
+                c.observaciones_novedades_consumo_agua,
                 t.tanque_abastecimiento_agua as nombre_tanque
             FROM gestion_ambiental_hwi_consumo_agua c
             LEFT JOIN gestion_ambiental_hwi_tanques_abastecimiento_agua t 
@@ -63,7 +64,8 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
                 $row['id_tanque_abastecimiento_consumo_agua'],
                 $row['consumo_inicial_agua'],
                 $row['consumo_final_agua'],
-                $row['nombre_tanque']
+                $row['nombre_tanque'],
+                $row['observaciones_novedades_consumo_agua'] ?? null
             );
         }
         
@@ -103,9 +105,9 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
     {
         $query = "
             INSERT INTO gestion_ambiental_hwi_consumo_agua 
-            (fecha_consumo_agua, id_celula_consumo_agua, id_tanque_abastecimiento_consumo_agua, consumo_inicial_agua, consumo_final_agua)
+            (fecha_consumo_agua, id_celula_consumo_agua, id_tanque_abastecimiento_consumo_agua, consumo_inicial_agua, consumo_final_agua, observaciones_novedades_consumo_agua)
             VALUES 
-            (:fecha, :id_celula, :id_tanque, :inicial, :final)
+            (:fecha, :id_celula, :id_tanque, :inicial, :final, :observaciones)
         ";
         
         $stmt = $this->db->prepare($query);
@@ -114,6 +116,7 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
         $stmt->bindParam(':id_tanque', $consumoAgua->id_tanque_abastecimiento_consumo_agua, $consumoAgua->id_tanque_abastecimiento_consumo_agua === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         $stmt->bindParam(':inicial', $consumoAgua->consumo_inicial_agua);
         $stmt->bindParam(':final', $consumoAgua->consumo_final_agua);
+        $stmt->bindParam(':observaciones', $consumoAgua->observaciones_novedades_consumo_agua, $consumoAgua->observaciones_novedades_consumo_agua === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         
         return $stmt->execute();
     }
@@ -127,7 +130,8 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
                 id_celula_consumo_agua,
                 id_tanque_abastecimiento_consumo_agua,
                 consumo_inicial_agua,
-                consumo_final_agua
+                consumo_final_agua,
+                observaciones_novedades_consumo_agua
             FROM gestion_ambiental_hwi_consumo_agua
             WHERE id_consumo_agua = :id
             LIMIT 1
@@ -145,7 +149,8 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
             $row['id_celula_consumo_agua'],
             $row['id_tanque_abastecimiento_consumo_agua'],
             $row['consumo_inicial_agua'] !== null ? (float)$row['consumo_inicial_agua'] : null,
-            $row['consumo_final_agua'] !== null ? (float)$row['consumo_final_agua'] : null
+            $row['consumo_final_agua'] !== null ? (float)$row['consumo_final_agua'] : null,
+            $row['observaciones_novedades_consumo_agua'] ?? null
         );
     }
 
@@ -153,12 +158,14 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
     {
         $query = "
             UPDATE gestion_ambiental_hwi_consumo_agua 
-            SET consumo_final_agua = :final
+            SET consumo_final_agua = :final,
+                observaciones_novedades_consumo_agua = :observaciones
             WHERE id_consumo_agua = :id
         ";
         
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':final', $consumoAgua->consumo_final_agua);
+        $stmt->bindParam(':observaciones', $consumoAgua->observaciones_novedades_consumo_agua, $consumoAgua->observaciones_novedades_consumo_agua === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $stmt->bindParam(':id', $consumoAgua->id_consumo_agua, PDO::PARAM_INT);
         
         return $stmt->execute();

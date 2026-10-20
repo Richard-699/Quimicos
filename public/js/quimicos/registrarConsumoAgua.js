@@ -115,6 +115,11 @@ $(document).ready(async function () {
         actualizarCalculoConsumo();
     });
 
+    $(document).on('input keyup', '#observaciones_novedades_consumo_agua', function() {
+        const len = $(this).val().length;
+        $('#char-count-obs').text(len);
+    });
+
     document.getElementById('formRegistrarConsumo').addEventListener('submit', async function (e) {
         e.preventDefault();
         
@@ -140,12 +145,17 @@ $(document).ready(async function () {
             return;
         }
         
+        const obsVal = document.getElementById('observaciones_novedades_consumo_agua') 
+            ? document.getElementById('observaciones_novedades_consumo_agua').value.trim() 
+            : '';
+
         mostrarCarga();
         const formObj = {
             id_celula_consumo_agua: document.getElementById('id_celula_consumo_agua').value,
             fecha_consumo_agua: fechaVal,
             consumo_inicial_agua: consumoInicial,
-            consumo_final_agua: consumoFinal
+            consumo_final_agua: consumoFinal,
+            observaciones_novedades_consumo_agua: obsVal.length > 0 ? obsVal : null
         };
         
         if (id_celula == 3) {

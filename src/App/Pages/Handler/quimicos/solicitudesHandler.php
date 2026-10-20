@@ -112,7 +112,11 @@ function updateCadenciaActual(array $data) {
         date_default_timezone_set('America/Bogota');
         $fecha_hora_registro_cadencia_actual = date('Y-m-d H:i:s');
         $id_cadencias_cadencia_actual = isset($data['id_cadencias_cadencia_actual']) ? $data['id_cadencias_cadencia_actual'] : null;
-        $session_path = realpath(__DIR__ . '/../../../../../sessions');
+        $session_dir = __DIR__ . '/../../../../../sessions';
+        if (!is_dir($session_dir)) {
+            @mkdir($session_dir, 0777, true);
+        }
+        $session_path = realpath($session_dir);
 
         if ($session_path && is_writable($session_path)) {
             ini_set('session.save_path', $session_path);

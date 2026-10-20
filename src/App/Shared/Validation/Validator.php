@@ -213,5 +213,8 @@ class Validator
         if ($dto->id_celula_consumo_agua === 3 && empty($dto->id_tanque_abastecimiento_consumo_agua)) {
             throw new Exception("Para Recubrimiento, el tanque es obligatorio.");
         }
+        if (!empty($dto->observaciones_novedades_consumo_agua) && mb_strlen($dto->observaciones_novedades_consumo_agua) > 500) {
+            throw new Exception("Las observaciones no pueden superar los 500 caracteres.");
+        }
     }
 }

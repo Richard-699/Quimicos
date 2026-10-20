@@ -1,0 +1,105 @@
+.contenido-agregar-quimico {
+    max-width: 1000px;
+    width: 700px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .contenido-agregar-quimico {
+        width: 90%;
+        max-width: 100%;
+        padding: 0 15px;
+    }
+}
+
+.fancy-titulo {
+    color: #003D4B;
+    font-weight: 700;
+}
+
+.fancy-titulo-icon {
+    color: #079ABD;
+}
+
+.fancy-label {
+    font-size: 0.82rem;
+    color: #3A6872;
+}
+
+.input-select {
+    border-color: #cbd5e1;
+    font-weight: 500;
+}
+
+.input-readonly {
+    background-color: #f8fafc !important;
+    font-weight: 600;
+}
+
+.input-editable {
+    border-color: #079ABD;
+    font-weight: 600;
+}
+
+/* ── CAJA DE CÁLCULO DE DIFERENCIA EN TIEMPO REAL ── */
+.consumo-calc-box {
+    background: linear-gradient(135deg, #e8f9f5, #f0fdf4);
+    border: 1.5px dashed #2DB992;
+    border-radius: 10px;
+    padding: 14px 18px;
+    transition: all 0.3s ease;
+}
+
+.consumo-calc-box-hidden {
+    display: none;
+}
+
+.consumo-calc-box.invalido {
+    background: #fef2f2;
+    border-color: #ef4444;
+}
+
+.calc-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #003D4B;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.calc-icon {
+    color: #079ABD;
+}
+
+.calc-valor {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0D7256;
+    letter-spacing: -0.2px;
+}
+
+.calc-valor.invalido {
+    color: #dc2626;
+    font-size: 0.95rem;
+}
+
+/* Botón con el color estándar de los fancyboxes del proyecto (#138496) */
+#btn-save {
+    background-color: #138496;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#btn-save:hover {
+    background-color: #117a8b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}

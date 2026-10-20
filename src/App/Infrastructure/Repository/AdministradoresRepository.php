@@ -17,7 +17,7 @@ class AdministradoresRepository implements IAdministradoresRepository
 
     public function onGet(): array
     {
-        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_administradores");
+        $stmt = $this->db->prepare("SELECT * FROM gestion_ambiental_hwi_administradores");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -26,7 +26,7 @@ class AdministradoresRepository implements IAdministradoresRepository
 
     public function onGet_By__Id($id): ?Administradores
     {
-        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_administradores WHERE id_administrador = ?");
+        $stmt = $this->db->prepare("SELECT * FROM gestion_ambiental_hwi_administradores WHERE id_administrador = ?");
         $stmt->execute([$id]);
         $row = $stmt->fetch();
         if (!$row) {
@@ -38,7 +38,7 @@ class AdministradoresRepository implements IAdministradoresRepository
 
     public function onGet_By__Email(string $correo_hwi_administrador): ?Administradores
     {
-        $stmt = $this->db->prepare("SELECT * FROM quimicos_hwi_administradores WHERE correo_hwi_administrador = ?");
+        $stmt = $this->db->prepare("SELECT * FROM gestion_ambiental_hwi_administradores WHERE correo_hwi_administrador = ?");
         $stmt->execute([$correo_hwi_administrador]);
         $row = $stmt->fetch();
 
@@ -54,7 +54,7 @@ class AdministradoresRepository implements IAdministradoresRepository
         $columnas = implode(', ', array_keys($data));
         $placeholders = ':' . implode(', :', array_keys($data));
 
-        $query = "INSERT INTO quimicos_hwi_administradores ($columnas) VALUES ($placeholders)";
+        $query = "INSERT INTO gestion_ambiental_hwi_administradores ($columnas) VALUES ($placeholders)";
         $stmt = $this->db->prepare($query);
         foreach ($data as $campo => $valor) {
             $stmt->bindValue(":$campo", $valor);
@@ -64,7 +64,7 @@ class AdministradoresRepository implements IAdministradoresRepository
 
     public function update_password(Administradores $administradores): bool
     {
-        $query = "UPDATE quimicos_hwi_administradores 
+        $query = "UPDATE gestion_ambiental_hwi_administradores 
                     SET password_administrador = :password, password_is_temporal = :istemporal 
                     WHERE id_administrador = :id";
 
@@ -78,7 +78,7 @@ class AdministradoresRepository implements IAdministradoresRepository
 
     public function updateStatusAdministrador($id, $id_estado): bool
     {
-        $query = "UPDATE quimicos_hwi_administradores 
+        $query = "UPDATE gestion_ambiental_hwi_administradores 
                     SET estado_administrador = :estado_administrador
                     WHERE id_administrador = :id_administrador";
 
@@ -89,9 +89,22 @@ class AdministradoresRepository implements IAdministradoresRepository
         return $stmt->execute();
     }
 
+    public function updateCelulaConsumoAgua($id, $id_celula): bool
+    {
+        $query = "UPDATE gestion_ambiental_hwi_administradores 
+                    SET id_celula_consumo_agua = :id_celula
+                    WHERE id_administrador = :id_administrador";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_celula', $id_celula);
+        $stmt->bindParam(':id_administrador', $id);
+
+        return $stmt->execute();
+    }
+
     public function delete(string $id)
     {
-        $stmt = $this->db->prepare("DELETE FROM quimicos_hwi_administradores WHERE id_administrador = :id");
+        $stmt = $this->db->prepare("DELETE FROM gestion_ambiental_hwi_administradores WHERE id_administrador = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->rowCount();

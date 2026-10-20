@@ -1,8 +1,8 @@
-streamlit
 pandas
 numpy
 mysql-connector-python
-plotly
+sqlalchemy
+pymysql
 scikit-learn
 groq
 python-dotenv

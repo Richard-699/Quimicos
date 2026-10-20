@@ -1,4 +1,5 @@
-#btnAgregarQuimico {
+#btnAgregarQuimico,
+#btnRegistrarConsumo {
     background-color: #17a2b8;
     color: white;
     border: none;
@@ -10,7 +11,8 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#btnAgregarQuimico:hover {
+#btnAgregarQuimico:hover,
+#btnRegistrarConsumo:hover {
     background-color: #072B31;
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);

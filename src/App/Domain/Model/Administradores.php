@@ -11,7 +11,8 @@ class Administradores {
         public ?string $correo_hwi_administrador,
         public ?string $password_administrador,
         public ?int $password_is_temporal,
-        public ?string $estado_administrador
+        public ?string $estado_administrador,
+        public ?int $id_celula_consumo_agua = null
     ) {}
 
     public static function fromArray(array $data): self {
@@ -23,7 +24,8 @@ class Administradores {
             $data['correo_hwi_administrador'] ?? null,
             $data['password_administrador'] ?? null,
             $data['password_is_temporal'] ?? null,
-            $data['estado_administrador'] ?? null
+            $data['estado_administrador'] ?? null,
+            $data['id_celula_consumo_agua'] ?? null
         );
     }
 
@@ -37,7 +39,8 @@ class Administradores {
             'correo_hwi_administrador' => $this->correo_hwi_administrador,
             'password_administrador' => $this->password_administrador,
             'password_is_temporal' => $this->password_is_temporal,
-            'estado_administrador' => $this->estado_administrador
+            'estado_administrador' => $this->estado_administrador,
+            'id_celula_consumo_agua' => $this->id_celula_consumo_agua
         ];
     }
 }

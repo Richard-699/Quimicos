@@ -1,0 +1,775 @@
+/* ======================================================
+   INFORME Y DASHBOARD DE QUÍMICOS — CSS
+   Paleta oficial HWI: Azul Petróleo, Teal y Verde Esmeralda
+   ====================================================== */
+
+:root {
+    --corp-dark:     #003D4B; /* HWI Principal: Azul Petróleo Oscuro (RGB 0, 61, 75) */
+    --corp-teal-mid: #3A6872; /* HWI Principal: Teal Medio (RGB 58, 104, 114) */
+    --corp-teal:     #079ABD; /* HWI Principal: Azul Cyan / Teal Brillante (RGB 7, 154, 189) */
+    --corp-blue-lt:  #8BCCDD; /* HWI Principal: Pastel Cyan (RGB 139, 204, 221) */
+    --corp-light:    #EEF0F2; /* HWI Principal: Gris Hielo / Claro (RGB 238, 240, 242) */
+
+    --corp-green:    #2DB992; /* HWI Secundario: Verde Esmeralda (RGB 45, 185, 146) */
+    --corp-amber:    #FBB93F; /* HWI Secundario: Amarillo / Ámbar (RGB 251, 185, 63) */
+    --corp-aqua:     #36CFF2; /* HWI Secundario: Celeste Vibrante (RGB 54, 207, 242) */
+    --red-danger:    #DC2626;
+
+    --bg-page:       #f4f7f9;
+    --bg-card:       #ffffff;
+    --border:        #e2e8f0;
+    --text-dark:     #003D4B;
+    --text-mid:      #3A6872;
+    --text-light:    #64748b;
+
+    --radius-lg:     14px;
+    --radius-md:     10px;
+    --radius-sm:     6px;
+
+    --shadow-card:   0 2px 12px rgba(0, 61, 75, 0.08);
+    --shadow-hover:  0 8px 24px rgba(0, 61, 75, 0.14);
+    --transition:    0.25s ease;
+}
+
+/* ── SCROLL FIX: el header global tiene overflow:hidden, lo sobreescribimos ── */
+body {
+    overflow: hidden !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-page);
+    color: var(--text-dark);
+}
+
+.content {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: 100vh !important;
+}
+
+.informe-dashboard-wrapper {
+    padding: 20px 24px 40px;
+    max-width: 1700px;
+    margin: 0 auto;
+}
+
+/* ── HEADER BANNER ── */
+.dash-header-banner {
+    background: linear-gradient(135deg, var(--corp-dark) 0%, #002730 60%, var(--corp-teal-mid) 100%);
+    border-radius: var(--radius-lg);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 61, 75, 0.25);
+    color: white;
+}
+
+.dash-header-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.dash-header-icon {
+    width: 52px;
+    height: 52px;
+    background: rgba(7, 154, 189, 0.25);
+    border: 1.5px solid rgba(139, 204, 221, 0.35);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--corp-aqua);
+    flex-shrink: 0;
+}
+
+.dash-header-text h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+    letter-spacing: -0.3px;
+    color: white;
+}
+
+.dash-header-text p {
+    font-size: 0.82rem;
+    color: var(--corp-blue-lt);
+    margin: 0;
+}
+
+.dash-live-badge {
+    background: rgba(45, 185, 146, 0.2);
+    border: 1px solid rgba(45, 185, 146, 0.5);
+    color: #4ade80;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.dash-live-dot {
+    width: 7px;
+    height: 7px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: livePulse 2s infinite;
+}
+
+@keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* ── BARRA DE FILTROS ── */
+.dash-filter-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+
+.dash-filters-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.dash-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+/* Reducimos el ancho del filtro Año como solicitó el usuario */
+.dash-filter-group-anio {
+    flex: 0 0 128px;
+    min-width: 118px;
+    max-width: 138px;
+}
+
+.dash-filter-group-mes {
+    flex: 0 0 145px;
+    min-width: 135px;
+    max-width: 155px;
+}
+
+/* Ampliamos el ancho de Área / Célula para que quepa el texto completo sin partirse */
+.dash-filter-group-celula {
+    flex: 2 1 250px;
+    min-width: 250px;
+}
+
+.dash-filter-group-estado {
+    flex: 0 0 150px;
+    min-width: 140px;
+    max-width: 165px;
+}
+
+.dash-filter-group-search {
+    flex: 2 1 250px;
+    min-width: 240px;
+}
+
+.dash-filter-label {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.dash-filter-label i {
+    color: var(--corp-teal);
+    font-size: 0.75rem;
+}
+
+.dash-select,
+.dash-input {
+    height: 38px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0 10px;
+    font-size: 0.85rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    background: #f8fafc;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    cursor: pointer;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dash-select:focus,
+.dash-input:focus {
+    outline: none;
+    border-color: var(--corp-teal);
+    box-shadow: 0 0 0 3px rgba(7, 154, 189, 0.12);
+    background: white;
+}
+
+.dash-filter-actions {
+    display: flex;
+    gap: 8px;
+    min-width: unset;
+    flex: 0;
+}
+
+.dash-btn {
+    height: 38px;
+    padding: 0 18px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: all var(--transition);
+}
+
+.dash-btn-primary {
+    background: var(--corp-dark);
+    color: white;
+}
+
+.dash-btn-primary:hover {
+    background: var(--corp-teal);
+    box-shadow: 0 4px 14px rgba(0, 61, 75, 0.25);
+    transform: translateY(-1px);
+}
+
+.dash-btn-secondary {
+    background: #f1f5f9;
+    color: var(--text-mid);
+    border: 1.5px solid var(--border);
+}
+
+.dash-btn-secondary:hover {
+    background: #e2e8f0;
+    color: var(--text-dark);
+}
+
+/* ── KPI GRID: 2 FILAS DE 3 COLUMNAS CORPORATIVAS ── */
+.dash-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+@media (max-width: 1024px) {
+    .dash-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .dash-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dash-kpi-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3.5px;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.dash-kpi-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.kpi-costo::before       { background: linear-gradient(90deg, var(--corp-green), #34d399); }
+.kpi-evitado::before     { background: linear-gradient(90deg, #e11d48, #fb7185); }
+.kpi-cantidad::before    { background: linear-gradient(90deg, var(--corp-teal), var(--corp-aqua)); }
+.kpi-quimicos::before    { background: linear-gradient(90deg, var(--corp-dark), var(--corp-teal)); }
+.kpi-registrados::before { background: linear-gradient(90deg, #6366f1, #a855f7); }
+.kpi-celulas::before     { background: linear-gradient(90deg, var(--corp-amber), #fbbf24); }
+
+.kpi-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.kpi-costo       .kpi-icon-wrap { background: rgba(45, 185, 146, 0.12); color: #0d7256; }
+.kpi-evitado     .kpi-icon-wrap { background: rgba(225, 29, 72, 0.12);  color: #be123c; }
+.kpi-cantidad    .kpi-icon-wrap { background: rgba(7, 154, 189, 0.1);   color: var(--corp-teal); }
+.kpi-quimicos    .kpi-icon-wrap { background: rgba(0, 61, 75, 0.08);    color: var(--corp-dark); }
+.kpi-registrados .kpi-icon-wrap { background: rgba(99, 102, 241, 0.12); color: #4f46e5; }
+.kpi-celulas     .kpi-icon-wrap { background: rgba(251, 185, 63, 0.15); color: #b45309; }
+
+.kpi-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.kpi-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text-mid);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kpi-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi-sub {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── CHARTS ROWS & GRID ── */
+.dash-charts-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.dash-charts-row-split {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.dash-charts-row-split > .dash-chart-card {
+    width: 100%;
+    min-width: 0;
+}
+
+.dash-chart-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow var(--transition);
+}
+
+.dash-chart-card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.dash-chart-wide {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+.dash-chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dash-chart-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--corp-dark);
+}
+
+.dash-chart-title i {
+    color: var(--corp-teal);
+    font-size: 0.95rem;
+}
+
+.dash-chart-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.dash-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 50px;
+}
+
+.badge-corp-teal  { background: rgba(7, 154, 189, 0.12); color: var(--corp-teal); }
+.badge-corp-green { background: rgba(45, 185, 146, 0.15); color: #0d7256; }
+.badge-corp-dark  { background: rgba(0, 61, 75, 0.1);    color: var(--corp-dark); }
+
+.dash-chart-body {
+    padding: 16px;
+    flex: 1;
+    min-height: 380px;
+    position: relative;
+}
+
+.dash-chart-body canvas {
+    max-height: 400px;
+}
+
+/* ── TABLA DETALLADA RESUMEN ── */
+.dash-table-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.dash-table-search-wrap {
+    position: relative;
+    width: 260px;
+}
+
+.dash-table-search-wrap i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+
+.dash-table-search {
+    width: 100%;
+    height: 34px;
+    padding: 0 12px 0 30px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    background: #f8fafc;
+    font-family: 'Inter', sans-serif;
+    transition: all var(--transition);
+}
+
+.dash-table-search:focus {
+    outline: none;
+    border-color: var(--corp-teal);
+    box-shadow: 0 0 0 3px rgba(7, 154, 189, 0.12);
+    background: white;
+}
+
+.dash-table-responsive {
+    overflow-x: auto;
+    max-height: 480px;
+}
+
+.dash-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.dash-table thead th {
+    background: #f8fafc;
+    color: var(--corp-dark);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.3px;
+    padding: 12px 14px;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.dash-table tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+    vertical-align: middle;
+}
+
+.dash-table tbody tr:hover {
+    background: #f0fdf4;
+}
+
+.dash-table-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--text-mid);
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dash-table-pagination {
+    display: flex;
+    gap: 4px;
+}
+
+.page-btn {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text-dark);
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all var(--transition);
+}
+
+.page-btn:hover:not([disabled]) {
+    background: var(--corp-dark);
+    color: white;
+    border-color: var(--corp-dark);
+}
+
+.page-btn.active {
+    background: var(--corp-teal);
+    color: white;
+    border-color: var(--corp-teal);
+}
+
+.page-btn[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.page-dots {
+    padding: 4px 6px;
+    color: var(--text-mid);
+}
+
+/* Badges de tabla */
+.cell-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.costo-badge {
+    font-weight: 700;
+    color: #0D7256;
+}
+
+.impacto-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: #e8f9f5;
+    color: #0D7256;
+    border: 1px solid #a7f3d0;
+}
+
+/* Badges de estado de solicitudes */
+.badge-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+
+.badge-estado-aprobado {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+
+.badge-estado-rechazado {
+    background: #ffe4e6;
+    color: #be123c;
+    border: 1px solid #fecdd3;
+}
+
+.badge-estado-pendiente {
+    background: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+.solicitante-text {
+    font-size: 0.78rem;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.solicitante-text i {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+}
+
+.fecha-text {
+    font-family: 'Inter', monospace, sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-mid);
+    white-space: nowrap;
+}
+
+/* ── CHOICES.JS ESTILIZACIÓN CORPORATIVA HWI ── */
+.choices {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.choices__inner {
+    min-height: 38px;
+    height: 38px;
+    padding: 2px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: #f8fafc;
+    font-size: 0.85rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.is-focused .choices__inner {
+    border-color: var(--corp-teal);
+    box-shadow: 0 0 0 3px rgba(7, 154, 189, 0.12);
+    background-color: white;
+}
+
+.choices__list--dropdown {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 8px 24px rgba(0, 61, 75, 0.15);
+    background: white;
+    z-index: 100;
+}
+
+.choices__list--dropdown .choices__item--selectable {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    color: var(--text-dark);
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: #e0f2fe;
+    color: var(--corp-dark);
+}
+
+.choices[data-type*="select-one"] .choices__input {
+    border-bottom: 1px solid var(--border);
+    background-color: #f8fafc;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-light);
+}
+
+.empty-state i {
+    font-size: 2.2rem;
+    color: #cbd5e1;
+    margin-bottom: 10px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+    .dash-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .dash-charts-row-split {
+        grid-template-columns: 1fr;
+    }
+    .dash-header-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .informe-dashboard-wrapper {
+        padding: 12px;
+    }
+    .dash-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+    .dash-filter-group {
+        min-width: 100%;
+    }
+}

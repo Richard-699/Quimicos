@@ -26,7 +26,7 @@ $(document).ready(function () {
         const formObj = {};
         formData.forEach((value, key) => {
             if (formObj[key] === undefined) {
-                formObj[key] = value; // Asignar valor directo
+                formObj[key] = value; // Asignar valor dire cto
             } else if (Array.isArray(formObj[key])) {
                 formObj[key].push(value);
             } else {

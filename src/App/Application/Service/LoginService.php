@@ -4,23 +4,27 @@ namespace App\Application\Service;
 
 use App\Application\Interface\Service\ILoginService;
 use App\Domain\DTO\AdministradoresDTO;
+use App\Domain\DTO\LoginDTO;
 use App\Infrastructure\Repository\AdministradoresRepository;
 use Exception;
 use App\Shared\Mapper\Mapper;
 use App\Infrastructure\Database\Connection;
+use App\Infrastructure\Repository\PermisosAdministradoresRepository;
 
 class LoginService implements ILoginService {
 
     private $db;
     private $administradoresRepository;
+    private $permisosAdministradoresRepository;
 
     public function __construct() {
         $this->db = (new Connection())->dbQuimicosHwi;
 
         $this->administradoresRepository = new AdministradoresRepository($this->db);
+        $this->permisosAdministradoresRepository = new PermisosAdministradoresRepository($this->db);
     }
 
-    public function login(AdministradoresDTO $administradoresDTO): AdministradoresDTO {
+    public function login(AdministradoresDTO $administradoresDTO): LoginDTO {
         $administrador = $this->administradoresRepository->onGet_By__Email($administradoresDTO->correo_hwi_administrador);
 
         if (!$administrador || !password_verify($administradoresDTO->password_administrador, $administrador->password_administrador)) {
@@ -28,8 +32,14 @@ class LoginService implements ILoginService {
         }
 
         $administradoresDTO = Mapper::modelToAdministradoresDTO($administrador);
+        $id = $administrador->id_administrador;
 
-        return $administradoresDTO;
+        $permisosAdministradores = $this->permisosAdministradoresRepository->findPermisosByAdministradorId($id);
+
+        return new LoginDTO(
+            administrador: $administradoresDTO,
+            permisosAdministrador: $permisosAdministradores
+        );
     }
 
     public function validar_email_registrado($email): bool{

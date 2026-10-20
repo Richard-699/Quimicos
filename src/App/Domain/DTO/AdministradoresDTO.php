@@ -13,5 +13,7 @@ class AdministradoresDTO {
         public ?int $password_is_temporal = null,
         public ?int $estado_administrador = null,
         public ?string $type = null,
+        public ?array $permisosAdministrador = null,
+        public ?int $id_celula_consumo_agua = null,
     ) {}
 }

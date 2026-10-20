@@ -17,43 +17,54 @@ class Utilidades {
         return $guid;
     }
 
-    public function enviarCorreo($destinatario, $asunto, $titulo, $contenidoHtml){
+    public static function enviarCorreo($destinatario, $asunto, $titulo, $contenidoHtml)
+    {
         try {
             $mail = new PHPMailer(true);
             $mail->isSMTP();
-            $mail->Host       = 'gtxm1009.siteground.biz';
+            $mail->Host       = 'mail.hacebwhirlpoolindustrial.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'hwiverificacion@hacebwhirlpoolindustrial.com';
             $mail->Password   = 'HWI2023*';
             $mail->SMTPSecure = 'ssl';
             $mail->Port       = 465;
-            $mail->CharSet = 'UTF-8';
-            $mail->Encoding = 'base64';
+            $mail->CharSet    = 'UTF-8';
+            $mail->Encoding   = 'base64';
 
             $mail->setFrom('hwiverificacion@hacebwhirlpoolindustrial.com', 'Equipo BI');
             $mail->addAddress($destinatario);
             $mail->isHTML(true);
             $mail->Subject = $asunto;
 
+            // URL del logo (Asegúrate que esta imagen tenga el fondo blanco/transparente como la foto)
             $logoUrl = "https://sistemaevaluacioncontratistas.hacebwhirlpoolindustrial.com/Evaluador_HWI/Imagenes/LogoBlancoHWI.png";
 
             $mail->Body = '
-                <div style="border-radius:10px; border: 1px solid #cccccc; max-width: 100%; max-height: 100%; margin-top: 50px; margin-left: auto; margin-right: auto; text-align: center; padding: 20px;">
-                    <div style="text-align: center;">
-                        <div style="display: inline-block; border-radius: 10px; max-width: 200px; padding: 10px;">
-                            <img src="' . $logoUrl . '" alt="Logo Empresa" style="max-width: 100%; height: auto; border-radius: 50%; border: 1px solid #cccccc;">
+            <html>
+            <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; margin: 0;">
+                <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    
+                    <div style="text-align: center; padding: 30px 20px; border-bottom: 4px solid #005691;">
+                        <img src="' . $logoUrl . '" alt="Haceb Whirlpool" style="width: 200px; height: auto;">
+                    </div>
+
+                    <div style="padding: 30px; color: #333333; line-height: 1.6;">
+                        <h2 style="text-align: center; color: #222222; margin-bottom: 25px; font-weight: bold;">
+                            ' . $titulo . '
+                        </h2>
+                        
+                        <div style="font-size: 15px;">
+                            ' . $contenidoHtml . '
                         </div>
                     </div>
-                    <h4 style="margin-top: 20px;">' . $titulo . '</h4>
-                    <hr style="background-color: #cccccc; border: none; height: 1px; width: 100%; margin-top: 20px; margin-bottom: 20px;">
-                    <div style="width: 95%; text-align: justify; margin-left: auto; margin-right: auto;">
-                        ' . $contenidoHtml . '
+
+                    <div style="text-align: center; padding: 20px; background-color: #f9f9f9; color: #888888; font-size: 12px; border-top: 1px solid #eeeeee;">
+                        <p style="margin: 0;">Copyright © Haceb Whirlpool Industrial S.A.S</p>
                     </div>
                 </div>
-                <div style="text-align: center;">
-                    <p style="color: #999999;">Copyright © Haceb Whirlpool Industrial S.A.S</p>
-                </div>
-            ';
+            </body>
+            </html>
+        ';
 
             $mail->send();
             return true;

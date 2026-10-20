@@ -6,9 +6,16 @@ import streamlit.components.v1 as components
 
 # Módulos del Proyecto
 from data.consultas import cargar_datos_completos, cargar_datos_ingresos
-from ui.estilos import aplicar_estilos_corporativos
 from logic.calculos import calcular_proyeccion
 from logic.chatbot import inicializar_groq, obtener_modelo_activo, generar_respuesta
+
+@st.cache_resource
+def obtener_groq():
+    client = inicializar_groq()
+    modelo = obtener_modelo_activo(client)
+    return client, modelo
+
+client, MODELO_AUTO = obtener_groq()
 
 def formato_cop(valor):
     if pd.isna(valor): return "$0"
@@ -23,7 +30,6 @@ def formato_cop(valor):
 # 1. INICIALIZACIÓN Y ANCLAJE DE SCRIPTS JS
 # ---------------------------------------------------------
 st.set_page_config(page_title="HWI - Proyecciones", layout="wide")
-aplicar_estilos_corporativos()
 
 js_holder = st.empty()
 
@@ -144,7 +150,15 @@ with col_dash:
     
     umb_val = df_q['umb'].dropna().iloc[0] if 'umb' in df_q.columns and not df_q['umb'].dropna().empty else 'kg'
     
-    datos = calcular_proyeccion(df_q, quimico_seleccionado, st.session_state.ver_anio_siguiente, hoy, anio_actual)
+    hoy_str = hoy.strftime('%Y-%m-%d')
+
+    datos = calcular_proyeccion(
+        df_q, 
+        quimico_seleccionado, 
+        st.session_state.ver_anio_siguiente, 
+        hoy_str, 
+        anio_actual
+    )
 
     dash_container = st.container(height=480, border=False)
     
@@ -304,14 +318,59 @@ with col_chat:
             st.rerun()
 
     # 3. Captura del chat
+
     if prompt := st.chat_input("Pregunta sobre compras, stock o proyecciones..."):
-        st.session_state.pending_prompt = prompt
-        
+    # 1. Si la pregunta menciona el año siguiente, activar el toggle de proyección
         if any(p in prompt.lower() for p in [str(anio_siguiente), "siguiente", "próximo", "proximo", "2027"]) and not st.session_state.ver_anio_siguiente:
             st.session_state.ver_anio_siguiente = True
-            ejecutar_js_carga("mostrar")
 
-        st.rerun()
+        # 2. Agregar mensaje del usuario a la sesión
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        st.chat_message("user", avatar="👤").markdown(prompt)
+
+        # 3. Preparar contexto para el bot
+        if datos is not None:
+            df_tabla_limpia = datos['df_consolidado'].drop_duplicates(subset=['fecha'], keep='last')
+            tabla_str = df_tabla_limpia[['fecha', 'consumo_kg', 'precio_quimico', 'gasto_total', 'tipo']].to_string(index=False)
+            stock_str = f"{datos['stock_act']:,.2f} {umb_val} (Mínimo: {datos['stock_min']}, Máximo: {datos['stock_max']})"
+            alerta_str = f"ALERTA COMPRA: {datos['momento_reorden']} | CANTIDAD SUGERIDA A PEDIR: {datos['sug_pedir']:,.2f} {umb_val}"
+            tiempo_str = f"TIEMPO DE ENTREGA: {datos['lt_min']} a {datos['lt_max']} días hábiles"
+        else:
+            tabla_str = "Sin datos de tabla para mostrar."
+            stock_str = "No hay datos de stock para la célula seleccionada."
+            alerta_str = "No hay alertas de compra."
+            tiempo_str = "No hay datos de tiempo de entrega."
+
+        if not df_i_q.empty:
+            df_i_q['fecha_ingreso'] = pd.to_datetime(df_i_q['fecha_ingreso']).dt.strftime('%Y-%m-%d')
+            texto_ingresos = df_i_q[['fecha_ingreso', 'cantidad_ingreso']].to_string(index=False)
+        else:
+            texto_ingresos = "Sin ingresos registrados."
+
+        contexto = (
+            f"PRODUCTO: {nombre_limpio} | CÉLULA FILTRADA: {celula_seleccionada} | STOCK DISPONIBLE: {stock_str}\n"
+            f"{alerta_str}\n"
+            f"{tiempo_str}\n"
+            f"HISTÓRICO DE INGRESOS A INVENTARIO:\n{texto_ingresos}\n\n"
+            f"TABLA RESUMEN EN PANTALLA:\n{tabla_str}"
+        )
+
+        # 4. Generar y mostrar respuesta en tiempo real sin recargar la página
+        with st.chat_message("assistant", avatar="🤖"):
+            with st.spinner("Escribiendo..."):
+                respuesta = generar_respuesta(client, MODELO_AUTO, st.session_state.messages, contexto)
+                
+                if not respuesta:
+                    modelo_fallback = "llama3-70b-8192" if MODELO_AUTO != "llama3-70b-8192" else "mixtral-8x7b-32768"
+                    respuesta = generar_respuesta(client, modelo_fallback, st.session_state.messages, contexto)
+
+                if respuesta:
+                    st.markdown(respuesta)
+                    st.session_state.messages.append({"role": "assistant", "content": respuesta})
+                else:
+                    fallback_msg = "Disculpa, hubo una interrupción momentánea en la conexión. Por favor, intenta formular tu pregunta de nuevo."
+                    st.markdown(fallback_msg)
+                    st.session_state.messages.append({"role": "assistant", "content": fallback_msg})
 
 # ---------------------------------------------------------
 # 4. FINALIZACIÓN Y OCULTAMIENTO DEL SPINNER PHP

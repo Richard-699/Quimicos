@@ -1,28 +1,22 @@
 import os
 import re
-import streamlit as st
 from dotenv import load_dotenv
-from groq import Groq
 
 load_dotenv()
 
 def inicializar_groq():
-    """Conecta con la API de Groq priorizando st.secrets o el archivo .env."""
-    api_key = None
-    
+    """Conecta con la API de Groq usando .env o variable de entorno."""
+    api_key = os.getenv("GROQ_API_KEY")
+        
+    if not api_key:
+        return None
+        
     try:
-        api_key = st.secrets.get("GROQ_API_KEY")
-    except Exception:
-        pass
-        
-    if not api_key:
-        api_key = os.getenv("GROQ_API_KEY")
-        
-    if not api_key:
-        st.error("❌ No se encontró la clave 'GROQ_API_KEY' en el archivo .env ni en st.secrets.")
-        st.stop()
-        
-    return Groq(api_key=api_key)
+        from groq import Groq
+        return Groq(api_key=api_key)
+    except Exception as e:
+        print(f"Error inicializando Groq: {e}")
+        return None
 
 def obtener_modelo_activo(client):
     """Busca un modelo de chat de texto activo en Groq evitando modelos restringidos o de voz."""

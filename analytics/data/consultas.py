@@ -1,7 +1,13 @@
+import os
 import pandas as pd
 import numpy as np
-import streamlit as st
 from config.database import obtener_conexion
+
+# Decorador simple (Streamlit eliminado)
+def cache_data(*args, **kwargs):
+    def decorator(fn):
+        return fn
+    return decorator
 
 # Importar los repositorios
 from data.repository.consumosRepository import obtener_consumos_mensuales
@@ -9,7 +15,7 @@ from data.repository.preciosRepository import obtener_precios_mensuales
 from data.repository.quimicosRepository import obtener_maestro_quimicos
 from data.repository.ingresosRepository import obtener_ingresos_inventario
 
-@st.cache_data(ttl=600)
+@cache_data(ttl=600)
 def cargar_datos_ingresos():
     conexion = obtener_conexion()
     if conexion is None:
@@ -19,10 +25,10 @@ def cargar_datos_ingresos():
         conexion.close()
         return df
     except Exception as e:
-        st.error(f"❌ Error obteniendo ingresos: {e}")
+        print(f"Error obteniendo ingresos: {e}")
         return pd.DataFrame({'descripcion_quimico': [], 'fecha_ingreso': [], 'cantidad_ingreso': []})
 
-@st.cache_data(ttl=600)
+@cache_data(ttl=600)
 def cargar_datos_completos():
     """Llama a los repositorios, une la data y prepara el DataFrame final."""
     conexion = obtener_conexion()
@@ -60,7 +66,7 @@ def cargar_datos_completos():
         return df_final.dropna(subset=['descripcion_quimico'])
         
     except Exception as e:
-        st.error(f"❌ Error ejecutando repositorios: {e}")
+        print(f"Error ejecutando repositorios: {e}")
         return _generar_datos_fallback()
 
 def _generar_datos_fallback():

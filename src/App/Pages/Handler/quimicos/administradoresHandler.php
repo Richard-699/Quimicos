@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 use App\Application\Service\AdministradoresService;
 use App\Domain\DTO\AdministradoresDTO;
+use App\Shared\Util\Utilidades;
 use App\Shared\Validation\Validator;
 
 function onPostAprobarAdministrador(array $data){
@@ -72,28 +73,46 @@ function onPostDeleteAdministrador(array $data){
     }
 }
 
-function onPostUpdatePermisosAdministrador(array $data){
+function onPostUpdateAdministrador(array $data) {
     try {
         $form = $data['form'] ?? [];
-
-        $administradoresService = new AdministradoresService();
+        $action = $form['action'] ?? '';
+        $permisosAdministrador = $form['permisos_administradores'] ?? [];
+        $tiene_celulas = isset($form['tiene_celulas']) ? 1 : 0;
 
         $administradoresDTO = new AdministradoresDTO(
-            id_administrador: $form['id_administrador'],
+            id_administrador: $form['id_administrador'] ?? null,
             cedula_administrador: null,
             nombre_administrador: null,
             apellidos_administrador: null,
             correo_hwi_administrador: null,
             password_administrador: null,
-            password_is_temporal: null,
             estado_administrador: null,
-            type: null
+            type: 'update',
+            permisosAdministrador: $permisosAdministrador,
+            id_celula_consumo_agua: $form['id_celula_consumo_agua'] !== '' ? (int)$form['id_celula_consumo_agua'] : null
         );
 
-        $aprobar_administrador = $administradoresService->updatePermisosAdministrador($administradoresDTO);
+        Validator::validateDTO($administradoresDTO);
 
-        if (!$aprobar_administrador) {
-            throw new Exception("No se pudo aprobar el administrador.");
+        $administradoresService = new AdministradoresService();
+
+        if ($action === 'approve') {
+            $resultAdministradorDTO = $administradoresService->aprobarAdministrador($administradoresDTO);
+
+            $email = $resultAdministradorDTO->correo_hwi_administrador;
+            $asunto = 'Aprobación Sistema de Novedades de Nómina';
+            $titulo = 'Aprobación Sistema de Novedades de Nómina';
+            $contenido = '
+                <p style="margin-top: 10px;">Has sido aprobado en el sistema de novedades de nómina, ya puedes ingresar.</p>
+            ';
+
+            $utilidades = new Utilidades();
+            if (!$utilidades->enviarCorreo($email, $asunto, $titulo, $contenido)) {
+                throw new Exception('Error al enviar el correo de aprobación.');
+            }
+        } elseif ($action === 'update') {
+            $administradoresService->updatePermisosAdministrador($administradoresDTO);
         }
 
         return [
@@ -126,6 +145,48 @@ function onGetAdministradores() {
     }
 }
 
+function obtenerPermisos() {
+    try {
+        $administradoresService = new AdministradoresService();
+        $permisos = $administradoresService->obtenerPermisos();
+
+        if ($permisos) {
+            return $permisos;
+        } else {
+            throw new Exception("No se encontraron permisos.");
+        }
+    } catch (Exception $e) {
+        return [
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
+    }
+}
+
+function obtenerPermisosAdministrador($data) {
+    try {
+        $id = $data['id'] ?? null;
+
+        if ($id === null) {
+            throw new Exception("Error al procesar el Id del administrador.");
+        }
+
+        $administradoresService = new AdministradoresService();
+        $permisosAdministrador = $administradoresService->obtenerPermisosAdministradorById($id);
+
+        if ($permisosAdministrador) {
+            return $permisosAdministrador;
+        } else {
+            throw new Exception("No se encontraron permisos para este administrador.");
+        }
+    } catch (Exception $e) {
+        return [
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
+    }
+}
+
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 try {
@@ -143,8 +204,8 @@ try {
             case 'approve':
                 $response = onPostAprobarAdministrador($data);
                 break;
-            case 'update':
-                $response = onPostUpdatePermisosAdministrador($data);
+            case 'updateAdministrador':
+                $response = onPostUpdateAdministrador($data);
                 break;
             case 'delete_administrador':
                 $response = onPostDeleteAdministrador($data);
@@ -159,6 +220,12 @@ try {
         switch ($action) {
             case 'onGet_administradores':
                 $response = onGetAdministradores();
+                break;
+            case 'obtenerPermisos':
+                $response = obtenerPermisos();
+                break;
+            case 'obtenerPermisosAdministrador':
+                $response = obtenerPermisosAdministrador($_GET);
                 break;
             default:
                 throw new Exception("Acción no permitida.");

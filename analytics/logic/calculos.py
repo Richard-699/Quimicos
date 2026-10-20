@@ -2,6 +2,12 @@ import pandas as pd
 import numpy as np
 import datetime
 
+# Decorador simple (Streamlit eliminado)
+def cache_data(*args, **kwargs):
+    def decorator(fn):
+        return fn
+    return decorator
+
 MESES_ESPANOL = {
     'January': 'enero', 'February': 'febrero', 'March': 'marzo',
     'April': 'abril', 'May': 'mayo', 'June': 'junio',
@@ -10,11 +16,7 @@ MESES_ESPANOL = {
 }
 
 def generar_pronostico_demanda(df_hist, rango_proyeccion):
-    """
-    Motor de Pronóstico Logístico: Suavizado Exponencial (EMA) con 
-    Amortiguación de Tendencia y Retorno a la Media (Mean Reversion).
-    Evita sobreestimaciones por picos temporales.
-    """
+    # ... (Tu código actual de pronóstico se mantiene igual) ...
     df_valid = df_hist[df_hist['consumo_kg'] >= 0]['consumo_kg'].values
     n_puntos = len(df_valid)
     
@@ -23,12 +25,10 @@ def generar_pronostico_demanda(df_hist, rango_proyeccion):
     elif n_puntos == 1:
         return [round(float(df_valid[0]), 2)] * len(rango_proyeccion)
 
-    # 1. Parámetros Estadísticos Base
     media_historica = float(np.mean(df_valid))
     pico_maximo = float(np.max(df_valid))
     ultimo_valor = float(df_valid[-1])
 
-    # 2. Suavizado Exponencial para estimar el Nivel Actual (Alpha = 0.4)
     alpha = 0.4
     nivel = df_valid[0]
     tendencia = 0.0
@@ -38,35 +38,32 @@ def generar_pronostico_demanda(df_hist, rango_proyeccion):
         nivel = alpha * df_valid[i] + (1 - alpha) * (nivel + tendencia)
         tendencia = 0.2 * (nivel - prev_nivel) + 0.8 * tendencia
 
-    # 3. Proyección con Retorno Progresivo a la Media (Mean Reversion)
     preds_finales = []
     nivel_proyectado = nivel
-    
-    # Factor de atracción hacia el promedio real del año
     factor_retorno_media = 0.15 
     
     for h in range(len(rango_proyeccion)):
-        # La tendencia se amortigua rápidamente (phi = 0.5)
         tendencia *= 0.5 
-        
-        # El nivel futuro se atrae paulatinamente hacia la media histórica
         nivel_proyectado = (1 - factor_retorno_media) * (nivel_proyectado + tendencia) + (factor_retorno_media * media_historica)
-        
-        # Cota de seguridad: no superar el pico histórico máximo + 10%
         cota_superior = max(pico_maximo * 1.1, media_historica * 1.3)
         val_final = min(max(0.0, nivel_proyectado), cota_superior)
-        
         preds_finales.append(round(val_final, 2))
 
     return preds_finales
 
 
-def calcular_proyeccion(df_q, quimico_nombre, ver_anio_siguiente, hoy, anio_actual):
+@cache_data(ttl=1800, show_spinner=False)
+def calcular_proyeccion(df_q, quimico_nombre, ver_anio_siguiente, fecha_ref_str, anio_actual):
     """
     Procesa datos históricos y genera proyecciones equilibradas de demanda para HWI.
+    Nota: Se reemplaza el objeto `hoy` por `fecha_ref_str` (string tipo 'YYYY-MM-DD')
+    para garantizar la compatibilidad con el sistema de caché de Streamlit.
     """
     if df_q.empty:
         return None
+
+    # Reconvertir el string a fecha
+    hoy = pd.to_datetime(fecha_ref_str)
 
     df_q = df_q.copy()
     df_q['fecha'] = pd.to_datetime(df_q['fecha'])
@@ -79,7 +76,6 @@ def calcular_proyeccion(df_q, quimico_nombre, ver_anio_siguiente, hoy, anio_actu
     if pd.isna(fecha_min_historica) or fecha_min_historica > primer_dia_mes_actual:
         fecha_min_historica = ultimo_mes_cerrado
 
-    # Rango histórico va hasta el mes actual (inclusive) para visualizar lo que va del mes
     rango_historico = pd.date_range(start=fecha_min_historica, end=primer_dia_mes_actual, freq='MS')
     df_hist_completo = pd.DataFrame({'fecha': rango_historico})
 
@@ -92,7 +88,7 @@ def calcular_proyeccion(df_q, quimico_nombre, ver_anio_siguiente, hoy, anio_actu
     df_hist['gasto_total'] = df_hist['consumo_kg'] * df_hist['precio_quimico']
     df_hist['tipo'] = 'Histórico'
 
-    # 2. GENERAR PROYECCIÓN EQUILIBRADA (Solo con meses cerrados)
+    # 2. GENERAR PROYECCIÓN EQUILIBRADA
     df_hist_training = df_hist[df_hist['fecha'] <= ultimo_mes_cerrado]
     
     fin_proyeccion = pd.to_datetime(f"{anio_actual + 1}-12-01") if ver_anio_siguiente else pd.to_datetime(f"{anio_actual}-12-01")

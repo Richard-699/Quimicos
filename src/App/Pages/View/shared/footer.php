@@ -3,12 +3,15 @@
 
 </div> <!-- content -->
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../../../../../public/js/shared/header.js"></script>
 <script src="../../../../../public/js/utils/spinner.js"></script>
 <script>
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
+    const content = document.querySelector('.content');
     sidebar.classList.toggle('collapsed');
+    if (content) content.classList.toggle('expanded');
     const isCollapsed = sidebar.classList.contains('collapsed');
     localStorage.setItem('menuCollapsed', isCollapsed);
   }
@@ -27,12 +30,14 @@
     }
     ?>
 
+    const content = document.querySelector('.content');
     if (isCollapsed === 'true') {
       sidebar.classList.add('collapsed');
+      if (content) content.classList.add('expanded');
     } else {
       sidebar.classList.remove('collapsed');
+      if (content) content.classList.remove('expanded');
     }
-
   });
 
   // ✅ Cerrar sidebar si se hace clic fuera en pantallas pequeñas
@@ -50,8 +55,6 @@
     }
   });
 </script>
-
-
 
 </body>
 

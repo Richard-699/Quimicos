@@ -18,8 +18,8 @@ try {
         cedula_administrador: null,
         nombre_administrador: null,
         apellidos_administrador: null,
-        correo_hwi_administrador: $_POST['correo_hwi_administrador'] ?? '',
-        password_administrador: $_POST['password_administrador'] ?? '',
+        correo_hwi_administrador: trim($_POST['correo_hwi_administrador'] ?? ''),
+        password_administrador: trim($_POST['password_administrador'] ?? ''),
         password_is_temporal: null,
         estado_administrador: null,
         type: 'login'

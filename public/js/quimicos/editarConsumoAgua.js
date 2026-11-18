@@ -58,10 +58,20 @@ $(document).ready(function () {
 
         const initVal = $('#consumo_inicial_agua').val().replace(',', '.');
         const finalVal = $('#consumo_final_agua').val().replace(',', '.');
+        const fechaVal = ($('#fecha_consumo_agua').val() || '').trim();
         const obsVal = ($('#observaciones_novedades_consumo_agua').val() || '').trim();
 
         const consumoInicial = parseFloat(initVal) || 0;
         const consumoFinal = parseFloat(finalVal);
+
+        if (!fechaVal) {
+            if (typeof notification === 'function') {
+                notification('error', 'La fecha de consumo es obligatoria.', 3000);
+            } else {
+                alert('La fecha de consumo es obligatoria.');
+            }
+            return;
+        }
 
         if (isNaN(consumoFinal)) {
             if (typeof notification === 'function') {
@@ -72,11 +82,11 @@ $(document).ready(function () {
             return;
         }
 
-        if (consumoFinal <= consumoInicial) {
+        if (consumoFinal < consumoInicial) {
             if (typeof notification === 'function') {
-                notification('error', 'El consumo final debe ser mayor que el inicial.', 3000);
+                notification('error', 'El consumo final no puede ser menor al inicial.', 3000);
             } else {
-                alert('El consumo final debe ser mayor que el inicial.');
+                alert('El consumo final no puede ser menor al inicial.');
             }
             return;
         }
@@ -91,6 +101,7 @@ $(document).ready(function () {
                     action: 'update_consumo_agua',
                     form: {
                         id_consumo_agua: parseInt(id_consumo),
+                        fecha_consumo_agua: fechaVal,
                         consumo_final_agua: consumoFinal,
                         observaciones_novedades_consumo_agua: obsVal.length > 0 ? obsVal : null
                     }
@@ -98,32 +109,34 @@ $(document).ready(function () {
             });
 
             const resultado = await response.json();
-            if (typeof ocultarCarga === 'function') ocultarCarga();
 
             if (resultado.success) {
                 if (typeof notification === 'function') {
-                    notification('success', 'Consumo actualizado correctamente.', 2000);
+                    notification('success', resultado.message || 'Consumo actualizado correctamente.', 2500);
                 }
-                setTimeout(function () {
-                    if (typeof Fancybox !== 'undefined' && Fancybox.close) {
+                setTimeout(() => {
+                    if (typeof Fancybox !== 'undefined') {
                         Fancybox.close();
+                    } else if (parent && parent.Fancybox) {
+                        parent.Fancybox.close();
                     }
-                }, 800);
+                }, 1000);
             } else {
                 if (typeof notification === 'function') {
-                    notification('error', resultado.message || 'Error al actualizar consumo.', 3000);
+                    notification('error', resultado.message || 'Error al actualizar el consumo.', 3500);
                 } else {
-                    alert(resultado.message || 'Error al actualizar consumo.');
+                    alert(resultado.message || 'Error al actualizar el consumo.');
                 }
             }
         } catch (error) {
-            if (typeof ocultarCarga === 'function') ocultarCarga();
-            console.error(error);
+            console.error('Error al actualizar consumo:', error);
             if (typeof notification === 'function') {
-                notification('error', 'Ocurrió un error inesperado al actualizar.', 3000);
+                notification('error', 'Error de conexión con el servidor.', 3000);
             } else {
-                alert('Ocurrió un error inesperado al actualizar.');
+                alert('Error de conexión con el servidor.');
             }
+        } finally {
+            if (typeof ocultarCarga === 'function') ocultarCarga();
         }
     });
 });

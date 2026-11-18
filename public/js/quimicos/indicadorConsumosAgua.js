@@ -709,10 +709,11 @@ $(document).ready(function () {
                                 data-id="${r.id_consumo_agua}"
                                 data-celula="${(r.nombre_celula || '').replace(/"/g, '&quot;')}"
                                 data-tanque="${(r.nombre_tanque || 'Sin tanque').replace(/"/g, '&quot;')}"
+                                data-fecha="${r.fecha_consumo_agua || ''}"
                                 data-inicial="${r.consumo_inicial_agua}"
                                 data-final="${r.consumo_final_agua}"
                                 data-observaciones="${(r.observaciones_novedades_consumo_agua || '').replace(/"/g, '&quot;')}"
-                                title="Editar consumo final">
+                                title="Editar consumo">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>` : '—'}
                         </td>
@@ -928,11 +929,12 @@ $(document).ready(function () {
         const id            = $(this).data('id');
         const celula        = $(this).data('celula') || '';
         const tanque        = $(this).data('tanque') || '';
+        const fecha         = $(this).data('fecha') || '';
         const inicial       = $(this).data('inicial') || 0;
         const final         = $(this).data('final') || 0;
         const observaciones = $(this).data('observaciones') || '';
 
-        const url = `_editarConsumoAgua.php?id=${id}&celula=${encodeURIComponent(celula)}&tanque=${encodeURIComponent(tanque)}&inicial=${inicial}&final=${final}&observaciones=${encodeURIComponent(observaciones)}&v=${Date.now()}`;
+        const url = `_editarConsumoAgua.php?id=${id}&celula=${encodeURIComponent(celula)}&tanque=${encodeURIComponent(tanque)}&fecha=${encodeURIComponent(fecha)}&inicial=${inicial}&final=${final}&observaciones=${encodeURIComponent(observaciones)}&v=${Date.now()}`;
 
         if (typeof Fancybox !== 'undefined') {
             Fancybox.show([{ src: url, type: 'ajax' }], {

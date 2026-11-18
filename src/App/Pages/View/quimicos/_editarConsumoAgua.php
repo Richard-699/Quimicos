@@ -6,6 +6,7 @@ use App\Infrastructure\Repository\ConsumoAguaRepository;
 $id            = $_GET['id'] ?? '';
 $celula        = $_GET['celula'] ?? '';
 $tanque        = $_GET['tanque'] ?? '';
+$fecha         = $_GET['fecha'] ?? '';
 $inicial       = isset($_GET['inicial']) && is_numeric($_GET['inicial']) ? (float)$_GET['inicial'] : 0;
 $final         = isset($_GET['final']) && is_numeric($_GET['final']) ? (float)$_GET['final'] : 0;
 $observaciones = $_GET['observaciones'] ?? '';
@@ -18,9 +19,16 @@ if (!empty($id)) {
         if ($consumo) {
             if ($consumo->consumo_inicial_agua !== null) $inicial = $consumo->consumo_inicial_agua;
             if ($consumo->consumo_final_agua !== null) $final = $consumo->consumo_final_agua;
+            if (!empty($consumo->fecha_consumo_agua)) $fecha = date('Y-m-d', strtotime($consumo->fecha_consumo_agua));
             if ($consumo->observaciones_novedades_consumo_agua !== null) $observaciones = $consumo->observaciones_novedades_consumo_agua;
         }
     } catch (\Throwable $e) {}
+}
+
+if (empty($fecha)) {
+    $fecha = date('Y-m-d');
+} else {
+    $fecha = date('Y-m-d', strtotime($fecha));
 }
 ?>
 <!DOCTYPE html>
@@ -50,12 +58,18 @@ if (!empty($id)) {
                         <input type="text" class="form-control shadow-sm input-readonly" value="<?= htmlspecialchars(!empty($tanque) && $tanque !== 'null' ? $tanque : 'No Aplica') ?>" readonly>
                     </div>
 
+                    <!-- Campo Editable de Fecha de Consumo -->
+                    <div class="col-md-6 mb-2">
+                        <label for="fecha_consumo_agua" class="form-label fw-semibold fancy-label">Fecha de Consumo: *</label>
+                        <input type="date" class="form-control shadow-sm input-editable" id="fecha_consumo_agua" name="fecha_consumo_agua" value="<?= htmlspecialchars($fecha) ?>" max="<?= date('Y-m-d') ?>" required>
+                    </div>
+
                     <div class="col-md-6 mb-2">
                         <label for="consumo_inicial_agua" class="form-label fw-semibold fancy-label">Consumo Inicial: *</label>
                         <input type="text" class="form-control decimal-input shadow-sm input-readonly" id="consumo_inicial_agua" name="consumo_inicial_agua" value="<?= str_replace('.', ',', (string)$inicial) ?>" readonly>
                     </div>
 
-                    <div class="col-md-6 mb-2">
+                    <div class="col-md-12 mb-2">
                         <label for="consumo_final_agua" class="form-label fw-semibold fancy-label">Consumo Final: *</label>
                         <input type="text" class="form-control decimal-input shadow-sm input-editable" id="consumo_final_agua" name="consumo_final_agua" value="<?= str_replace('.', ',', (string)$final) ?>" placeholder="Ingrese nuevo consumo final">
                     </div>

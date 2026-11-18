@@ -92,6 +92,7 @@ function onPostUpdateConsumoAgua(array $data)
         
         $id_consumo = isset($form['id_consumo_agua']) && $form['id_consumo_agua'] !== '' ? (int)$form['id_consumo_agua'] : null;
         $final      = isset($form['consumo_final_agua']) && $form['consumo_final_agua'] !== '' ? (float)$form['consumo_final_agua'] : null;
+        $fecha      = isset($form['fecha_consumo_agua']) && !empty($form['fecha_consumo_agua']) ? trim($form['fecha_consumo_agua']) : null;
         $obs        = isset($form['observaciones_novedades_consumo_agua']) && trim($form['observaciones_novedades_consumo_agua']) !== '' ? trim($form['observaciones_novedades_consumo_agua']) : null;
         
         if (!$id_consumo) {
@@ -103,6 +104,7 @@ function onPostUpdateConsumoAgua(array $data)
 
         $dto = new ConsumoAguaDTO(
             id_consumo_agua: $id_consumo,
+            fecha_consumo_agua: $fecha,
             consumo_final_agua: $final,
             observaciones_novedades_consumo_agua: $obs
         );

@@ -30,8 +30,6 @@ class ConsumoAguaService implements IConsumoAguaService
     {
         return $this->consumoAguaRepository->getLastConsumosByCelula($id_celula);
     }
-    
-
 
     public function saveConsumoAgua(ConsumoAguaDTO $dto): bool
     {
@@ -44,6 +42,10 @@ class ConsumoAguaService implements IConsumoAguaService
         if ($this->consumoAguaRepository->existeRegistroFecha($dto->id_celula_consumo_agua, $dto->id_tanque_abastecimiento_consumo_agua, $fechaRegistro)) {
             $tanque = $dto->id_tanque_abastecimiento_consumo_agua ? " para este tanque" : "";
             throw new Exception("Ya existe un registro de consumo de agua el día {$fechaRegistro} para esta célula{$tanque}.");
+        }
+
+        if ($dto->consumo_final_agua < $dto->consumo_inicial_agua) {
+            throw new Exception("El consumo final no puede ser menor al inicial (" . number_format($dto->consumo_inicial_agua, 4) . ").");
         }
 
         $dto->fecha_consumo_agua = "{$fechaRegistro} " . date('H:i:s');
@@ -86,7 +88,6 @@ class ConsumoAguaService implements IConsumoAguaService
                                 if ($rowT && !empty($rowT['tanque_abastecimiento_agua'])) {
                                     $tanqueStr = $rowT['tanque_abastecimiento_agua'];
                                 } else {
-                                    // Fallback: try raw query without prepared statement
                                     $rawResult = $this->db->query("SELECT tanque_abastecimiento_agua FROM gestion_ambiental_hwi_tanques_abastecimiento_agua WHERE id_tanque_abastecimiento_agua = {$idTanqueInt} LIMIT 1");
                                     $rawRow = $rawResult ? $rawResult->fetch(PDO::FETCH_ASSOC) : null;
                                     $tanqueStr = ($rawRow && !empty($rawRow['tanque_abastecimiento_agua'])) ? $rawRow['tanque_abastecimiento_agua'] : "Tanque {$idTanqueInt}";
@@ -124,6 +125,8 @@ class ConsumoAguaService implements IConsumoAguaService
 
     public function updateConsumoAgua(ConsumoAguaDTO $dto): bool
     {
+        date_default_timezone_set('America/Bogota');
+
         if (empty($dto->id_consumo_agua)) {
             throw new Exception("ID del registro es obligatorio para actualizar.");
         }
@@ -135,6 +138,28 @@ class ConsumoAguaService implements IConsumoAguaService
 
         if ($dto->consumo_final_agua < $existente->consumo_inicial_agua) {
             throw new Exception("El consumo final no puede ser menor al inicial (" . number_format($existente->consumo_inicial_agua, 4) . ").");
+        }
+
+        // Si se especificó una nueva fecha
+        if (!empty($dto->fecha_consumo_agua)) {
+            $nuevaFecha = date('Y-m-d', strtotime($dto->fecha_consumo_agua));
+
+            // Validar que no exista otro registro para esa misma célula y tanque en la nueva fecha (excluyendo el registro actual)
+            if ($this->consumoAguaRepository->existeRegistroFecha(
+                $existente->id_celula_consumo_agua,
+                $existente->id_tanque_abastecimiento_consumo_agua,
+                $nuevaFecha,
+                (int)$dto->id_consumo_agua
+            )) {
+                $tanque = $existente->id_tanque_abastecimiento_consumo_agua ? " para este tanque" : "";
+                throw new Exception("Ya existe otro registro de consumo de agua el día {$nuevaFecha} para esta célula{$tanque}.");
+            }
+
+            // Conservar la hora original si la tenía o poner la hora actual
+            $horaOriginal = date('H:i:s', strtotime($existente->fecha_consumo_agua ?: 'now'));
+            $dto->fecha_consumo_agua = "{$nuevaFecha} {$horaOriginal}";
+        } else {
+            $dto->fecha_consumo_agua = $existente->fecha_consumo_agua;
         }
 
         $consumoAgua = Mapper::consumoAguaDTOToModel($dto);

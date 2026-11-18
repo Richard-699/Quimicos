@@ -72,7 +72,7 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
         return $result;
     }
     
-    public function existeRegistroFecha(int $id_celula, ?int $id_tanque, string $fecha): bool
+    public function existeRegistroFecha(int $id_celula, ?int $id_tanque, string $fecha, ?int $excluirId = null): bool
     {
         // $fecha can be just 'YYYY-MM-DD', so we check using DATE()
         $query = "
@@ -87,12 +87,19 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
         } else {
             $query .= " AND id_tanque_abastecimiento_consumo_agua IS NULL";
         }
+
+        if ($excluirId !== null) {
+            $query .= " AND id_consumo_agua != :excluir_id";
+        }
         
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id_celula', $id_celula, PDO::PARAM_INT);
         $stmt->bindParam(':fecha', $fecha);
         if ($id_tanque !== null) {
             $stmt->bindParam(':id_tanque', $id_tanque, PDO::PARAM_INT);
+        }
+        if ($excluirId !== null) {
+            $stmt->bindParam(':excluir_id', $excluirId, PDO::PARAM_INT);
         }
         
         $stmt->execute();
@@ -158,12 +165,14 @@ class ConsumoAguaRepository implements IConsumoAguaRepository
     {
         $query = "
             UPDATE gestion_ambiental_hwi_consumo_agua 
-            SET consumo_final_agua = :final,
+            SET fecha_consumo_agua = :fecha,
+                consumo_final_agua = :final,
                 observaciones_novedades_consumo_agua = :observaciones
             WHERE id_consumo_agua = :id
         ";
         
         $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':fecha', $consumoAgua->fecha_consumo_agua);
         $stmt->bindParam(':final', $consumoAgua->consumo_final_agua);
         $stmt->bindParam(':observaciones', $consumoAgua->observaciones_novedades_consumo_agua, $consumoAgua->observaciones_novedades_consumo_agua === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $stmt->bindParam(':id', $consumoAgua->id_consumo_agua, PDO::PARAM_INT);

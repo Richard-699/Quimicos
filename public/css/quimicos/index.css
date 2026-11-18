@@ -1,101 +1,217 @@
-/* ------------------------------
-   1. Fuentes
---------------------------------*/
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap');
+/* ==========================================================================
+   HWI SMARTCENTER - INICIO CORPORATIVO
+   Haceb Whirlpool Industrial · Diseño Limpio, Sobrio y Profesional
+   ========================================================================== */
 
-/* ------------------------------
-   2. Reset y HTML/Body Base
---------------------------------*/
-html,
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Inconsolata', monospace;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
+.hwi-home-clean {
+    background-color: #f8fafc;
+    min-height: calc(100vh - 70px);
+    padding: 32px 24px 60px 24px;
 }
 
-body {
-  position: relative;
-  z-index: 0;
+.hwi-clean-inner {
+    max-width: 1140px;
+    margin: 0 auto;
 }
 
-/* ------------------------------
-   3. Video de Fondo
---------------------------------*/
-.background-video {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  z-index: -2;
+/* Banner de Bienvenida */
+.hwi-welcome-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  /* Capa oscura */
-  z-index: -1;
+.hwi-welcome-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    border: 1px solid #e2e8f0;
 }
 
-/* ------------------------------
-   4. Contenedor de Video / Sección Hero
---------------------------------*/
-.video-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.hwi-welcome-title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #003D4B;
+    margin-bottom: 8px;
+    line-height: 1.25;
 }
 
-.video-content {
-  position: relative;
-  z-index: 1;
-  color: white;
-  text-align: center;
+.hwi-welcome-desc {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin-bottom: 0;
+    max-width: 780px;
+    line-height: 1.5;
 }
 
-.video-content h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: bold;
+/* Grid de Módulos Principales */
+.hwi-modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
 }
 
-
-/* ------------------------------
-   6. Header y Aside en el frente
---------------------------------*/
-header,
-aside {
-  position: relative;
-  z-index: 2;
+.hwi-module-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-
-/* Animación de entrada del video */
-.background-video {
-  opacity: 0;
-  transition: opacity 1.5s ease-in;
+.hwi-module-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 61, 75, 0.08);
+    border-color: #0093B2;
+    color: inherit;
 }
 
-.background-video.loaded {
-  opacity: 1;
+.hwi-module-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
 }
 
-/* Animación fadeOut */
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
+.hwi-module-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.icon-celula {
+    background: #e0f2fe;
+    color: #0284c7;
+}
+
+.icon-ilu {
+    background: #e0f7fa;
+    color: #0093B2;
+}
+
+.icon-rotacion {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.icon-visualizar {
+    background: #ecfeff;
+    color: #0891b2;
+}
+
+.icon-horas {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.icon-ausentismos {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.icon-formacion {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.icon-novedades {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.icon-personal {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.hwi-module-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.hwi-module-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.45;
+    margin-bottom: 16px;
+}
+
+.hwi-module-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #0093B2;
+}
+
+.hwi-module-footer i {
+    transition: transform 0.2s ease;
+}
+
+.hwi-module-card:hover .hwi-module-footer i {
+    transform: translateX(3px);
+}
+
+/* Barra inferior de estado */
+.hwi-info-footer {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    color: #64748b;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.hwi-info-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hwi-info-item strong {
+    color: #1e293b;
+}
+
+@media (max-width: 768px) {
+    .hwi-home-clean {
+        padding: 16px 12px;
+    }
+    .hwi-welcome-card {
+        padding: 20px;
+    }
+    .hwi-modules-grid {
+        grid-template-columns: 1fr;
+    }
 }

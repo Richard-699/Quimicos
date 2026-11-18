@@ -140,8 +140,8 @@ $(document).ready(async function () {
             return;
         }
 
-        if (consumoFinal <= consumoInicial) {
-            notification('error', 'El consumo final debe ser mayor que el inicial.', 3000);
+        if (consumoFinal < consumoInicial) {
+            notification('error', 'El consumo final no puede ser menor al inicial.', 3000);
             return;
         }
         

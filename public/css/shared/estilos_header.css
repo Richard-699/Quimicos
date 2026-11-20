@@ -73,12 +73,142 @@ body.swal2-shown {
   margin-left: -220px !important;
 }
 
-.navbar {
+.navbar,
+.hwi-top-navbar {
   position: relative;
   z-index: 10;
-  background-color: #E0E0E0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: black;
+  background-color: #edf2f7 !important;
+  border-bottom: 1px solid #cbd5e1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  min-height: 58px;
+  padding: 8px 18px !important;
+}
+
+/* Pastilla de Célula Activa */
+.hwi-nav-pill-celula {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 980px;
+  padding: 5px 14px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #003D4B;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.hwi-nav-pill-celula .nombre-celula {
+  margin-right: 0;
+  font-weight: 700;
+  color: #003D4B;
+}
+
+.btn-config-celula {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  text-decoration: none !important;
+}
+
+.btn-config-celula:hover {
+  background: #e2e8f0;
+  color: #003D4B;
+}
+
+/* Dropdown de Selección de Célula */
+.hwi-nav-dropdown {
+  background: #edf2f7 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+  padding: 6px 0 !important;
+  min-width: 200px !important;
+}
+
+.hwi-nav-dropdown .dropdown-item {
+  color: #1e293b !important;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.hwi-nav-dropdown .dropdown-item:hover {
+  background-color: #e2e8f0 !important;
+  color: #003D4B !important;
+}
+
+.hwi-nav-dropdown .dropdown-item.active {
+  background-color: #e0f2fe !important;
+  color: #0284c7 !important;
+  font-weight: 700;
+}
+
+/* Pastilla de Usuario Administrador */
+.hwi-nav-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 980px;
+  padding: 4px 12px 4px 6px;
+  font-size: 0.82rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.user-avatar-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #003D4B;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.user-name-text {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Botón de Cerrar Sesión en Navbar */
+.btn-logout-nav {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  font-size: 0.95rem;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+}
+
+.btn-logout-nav:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  color: #003D4B;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .navbar-brand {
@@ -561,7 +691,10 @@ body.swal2-height-auto,
 .compensate-for-scrollbar,
 body.compensate-for-scrollbar,
 html.with-fancybox,
-html.with-fancybox body {
+html.with-fancybox body,
+html.with-fancybox #sidebar,
+html.with-fancybox .sidebar,
+html.with-fancybox .content {
   padding-right: 0 !important;
   margin-right: 0 !important;
 }
